@@ -1,1 +1,416 @@
-/* Add your CSS here */
+.body {
+    margin: 0;
+}
+
+.header {
+    background-color: rgb(140, 140, 140);
+    display: flex;
+    flex-direction: row;
+    height: 10vh;
+    align-items: center;
+}
+
+.title {
+    position: absolute;
+    font-size: 50px;
+    margin-right: auto;
+    margin-left: 38%;
+}
+
+.search-bar {
+    position: absolute;
+    margin-right: auto;
+    margin-left: 85%;
+}
+
+.main {
+    display: flex;
+    height: 90vh;
+}
+
+.sidebar {
+    flex: 1;
+    border-right: 2px dotted;
+}
+
+#questions-sidebar {
+    margin-top: 15%;
+    width: 100%;
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+}
+
+#tags-sidebar {
+    width: 100%;
+    display: flex; 
+    flex-direction: column; 
+    align-items: center; 
+}
+
+.questions-sidebar-header {
+    color: rgb(8, 8, 197);
+}
+
+.tags-sidebar-header {
+    color: rgb(8, 8, 197);
+}
+
+#tags-sidebar:hover, #questions-sidebar:hover {
+    background-color: gray;
+    cursor: pointer;
+}
+
+.forum {
+    flex: 4;
+}
+
+.forum-1 {
+    display: flex;
+    flex-direction: row;
+}
+
+.forum-title {
+    margin-right: auto;
+    margin-left: 5%;
+}
+
+.ask-question-btn {
+    margin-left: auto;
+    margin-bottom: auto;
+    margin-top: 20%;
+    margin-right: 10%;
+    align-self: center;
+    background-color: rgb(68, 68, 210);
+    color: white;
+}
+
+.ask-question-btn:hover {
+    cursor: pointer;
+}
+
+.forum-2 {
+    display: flex;
+    flex-direction: row;
+}
+
+.num-of-questions-header {
+    margin-right: auto;
+    margin-left: 5%;
+}
+
+.question-btn-container {
+    margin-left: auto;
+    margin-right: 10%;
+    align-self: center;
+}
+
+.post {
+    border-top: 2px dotted;
+    border-bottom: 2px dotted;
+    height: 7vh;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+.view-and-answer-count {
+    display: flex;
+    flex-direction: column;
+    margin-left: 30px;
+    color: gray;
+}
+
+
+.title-and-tags {
+    display: flex;
+    flex-direction: column;
+}
+
+
+.post-title {
+    margin-left: 60px;
+    color: rgb(8, 8, 197);
+    margin-bottom: 5px;
+}
+
+.tags {
+    margin-top: auto;
+    margin-left: 70px;
+}
+
+.tag {
+    background-color: gray;
+    color: white;
+    border: 1px solid;
+    margin-bottom: 5px;
+    margin-right: 10px;
+    border-radius: 5px;
+    padding: 3px;
+}
+
+.post-username {
+    margin-left: auto;
+    color: rgb(249, 4, 4);
+    margin-right: .5%;
+}
+
+.post-time {
+    color: gray;
+    margin-right: 2%
+}
+
+.ask-question-form {
+    display: flex;
+    flex-direction: column;
+    align-items: left;
+    margin-left: 15%;
+    margin-top: 6%;
+}
+
+.form-question-subheader-container {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+}
+
+.form-label {
+    font-size: 30px;
+    margin-bottom: 10px;
+}
+
+.form-input {
+    width: 80%;
+}
+
+.form-submessage {
+    margin-bottom: 7px;
+    font-style: italic;
+}
+
+.submit-form {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+}
+
+#no-questions-found {
+    font-weight: bold;
+    font-size: 26px;
+    position: absolute;
+    margin-right: auto;
+    margin-left: 30%;
+    margin-top: 3%;
+}
+
+.mandatory-fields-message {
+    margin-left: auto;
+    margin-right: 20%;
+    color: red;
+}
+
+.submit-btn {
+    width: 10%;
+    background-color: rgb(63, 63, 189);
+    color: white;
+}
+
+.submit-btn:hover {
+    cursor: pointer;
+}
+
+.post-title:hover {
+    cursor: pointer;
+}
+
+/* .answer-page {
+    display: flex;
+    flex-direction: row;
+} */
+
+.answers-header {
+    display: grid;
+    grid-template-columns: 0.3fr 2fr 0.3fr;
+    margin-top: 2%;
+    justify-items: center;
+}
+
+.question-details-answers-page {
+    display: grid;
+    grid-template-columns: 0.2fr 1fr 0.5fr;
+    position: absolute;
+    margin-top: 5%;
+    border-bottom: 1px black dotted;
+    gap: 3%;
+    justify-items: center;
+}
+
+.views-count-answers-page {
+   color: gray;
+}
+
+.answer-posts {
+    margin-top: 15%;
+    margin-bottom: 5%;
+}
+
+.answer-post {
+    display: grid;
+    grid-template-columns: 3fr 1fr;
+    justify-items: center;
+    padding-left: 3%;
+    padding-right: 3%;
+    gap: 3%;
+    border-bottom: 1px black dotted;
+    height: 14%;
+    align-items: center;
+}
+
+.question-title-answers-page {
+    font-weight: bold;
+    
+}
+
+.answer-count-answers-page {
+    font-weight: bold;
+}
+
+#answer-question-btn {
+    background-color: rgb(76, 76, 204);
+    color: white;
+    position: relative;
+    margin-right: auto;
+    margin-left: 10%;
+}
+
+#answer-question-btn:hover {
+    cursor: pointer
+}
+
+.post-username-question-answers-page {
+    color: red;
+}
+
+.post-username-answers-page {
+    color: green;
+}
+
+.answer-form {
+    display: flex;
+    flex-direction: column;
+    margin-left: 10%;
+}
+
+.answer-form-label {
+    font-size: 40px;
+}
+
+.answer-question-form-subheader-container {
+    display: flex;
+    flex-direction: column;
+    margin-top: 5%;
+}
+
+.username-field-answer-form {
+   display: flex;
+   flex-direction: column;
+   margin-bottom: 3%;
+}
+
+.text-field-answer-form {
+    display: flex;
+    flex-direction: column; 
+}
+
+#answer-form-username-input, #answer-form-text-input {
+    width: 40%;
+}
+
+.submit-answer-form {
+    display: flex;
+    flex-direction: row;
+}
+
+.mandatory-fields-message-answer-form {
+    color: red;
+    margin-left: auto;
+    margin-right: 60%;
+    font-size: 15px;
+}
+
+.submit-btn-answer-form {
+    background-color: rgb(65, 65, 210);
+    color: white;
+    margin-right: auto;
+    height: 40;
+    width: 100;
+}
+
+.submit-btn-answer-form:hover {
+    cursor: pointer;
+}
+
+#active-btn, #newest-btn, #unanswered-btn {
+    background-color: rgb(205, 204, 204);
+}
+
+#active-btn:hover, #newest-btn:hover, #unanswered-btn:hover {
+    cursor: pointer;
+}
+
+#tags-container {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr); 
+    grid-auto-rows: auto; 
+    grid-gap: 10px;
+    margin-right: auto;
+    margin-left: 10%;
+    margin-top: 5%;
+}
+
+.tag-container {
+    display: flex;
+    flex-direction: column;
+    border: 2px black dotted;
+    width: 160px;
+    height: 90px;
+    margin-bottom: 10%;
+    align-items: center;
+    justify-content: center;
+}
+
+.tag-name {
+    font-size: 18px;
+    color: blue;
+}
+
+.tags-page-header {
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+    align-items: center;
+}
+
+#num-of-tags-header {
+    font-size: 26px;
+    font-weight: bold;
+    margin-left: 5%;
+}
+
+.tags-page-title {
+    font-weight: bold;
+    font-size: 26px;
+    margin-left: 30%;
+}
+
+#tags-page-ask-question-btn {
+    margin-left: 40%;
+}
+
+.tag-name:hover {
+    cursor: pointer;
+}
+
+.tag-num-of-questions {
+    font-size: 18px;
+}
