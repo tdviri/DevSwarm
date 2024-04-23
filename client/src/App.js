@@ -5,8 +5,12 @@ import React from 'react';
 import Navbar from './components/navbar.js';
 import Sidebar from './components/sidebar.js';
 import Forum from './components/forum.js';
+import Welcome from './components/welcome.js';
+import Register from './components/register.js';
+import Login from './components/login.js';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 function getMostRecentAnswerTime(question, answers) {
     let mostRecentAnswerTime = 0;
@@ -24,6 +28,7 @@ function App() {
   const [search, setSearch] = useState('');
   const [answers, setAnswers] = useState(null);
   const [tags, setTags] = useState(null);
+  const [users, setUsers] = useState(null);
   const [isNoQuestionsFound, setIsNoQuestionsFound] = useState(false);
   const [displayAnswers, setDisplayAnswers] = useState(false);
   const [answerPageIndex, setAnswerPageIndex] = useState(-1);
@@ -34,6 +39,8 @@ function App() {
   const [isUnansweredBtnClicked, setIsUnansweredBtnClick] = useState(false);
   const [currentTag, setCurrentTag] = useState(null);
   const [isShowingTaggedQuestions, setIsShowingTaggedQuestions] = useState(false);
+  const [isLoggedIn, setIsLoggedIn] = useState(false);
+  const [isGuest, setIsGuest] = useState(false);
   let response;
 
   useEffect(()=> {
@@ -47,6 +54,8 @@ function App() {
     setAnswers(response.data);
     response = await axios.get('http://localhost:8000/retrievetags');
     setTags(response.data);
+    response = await axios.get('http://localhost:8000/retrieveusers');
+    setUsers(response.data);
  }
 
   async function handleAnswerPageIndex(index, questionsArr, answerArr, showAnswers){
@@ -167,14 +176,33 @@ function App() {
 
   return (
     <div className="body">
-      {questions && answers && tags && <div> 
-        <Navbar setCurrentTag={setCurrentTag} onSearch={setSearch} setIsNoQuestionsFound={setIsNoQuestionsFound} questions={questions} tags={tags} />
-        <div id="main" className="main">
-          <Sidebar toggleDisplayTagsPage={toggleDisplayTagsPage} />
-          {<Forum setSearch={setSearch} displayTagsPage={displayTagsPage} setCurrentTag={setCurrentTag} toggleUnansweredBtnClicked={toggleUnansweredBtnClicked} setSortField={handleSort} addNewQuestion={addNewQuestion} fetchData={fetchData} answerPageIndex={answerPageIndex} displayAnswerForm={displayAnswerForm} displayAnswers={displayAnswers} showAnswerForm={showAnswerForm} handleAskQuestionBtn={handleAskQuestionBtn} isAskQuestionBtnClicked={isAskQuestionBtnClicked} setDisplayTagsPage={setDisplayTagsPage} tags={mapTags} ansArray={answers} setQuestions={setQuestions} handleAnswerPageIndex={handleAnswerPageIndex} isNoQuestionsFound={isNoQuestionsFound} questions={getSorted()} />}
-        </div>
-      </div>}
-    </div> 
+      {(!isLoggedIn && !isGuest && questions && answers && tags) && (
+        <Welcome setIsGuest={setIsGuest} setIsLoggedIn={setIsLoggedIn} users={users} />
+      )}
+      <Router>
+        <Routes>
+          <Route path="/">
+            {!isLoggedIn && !isGuest ? (
+              <Route exact path="/" element={<Welcome setIsGuest={setIsGuest} setIsLoggedIn={setIsLoggedIn} users={users} />} />
+            ) : null}
+  
+            <Route path="/login" element={<Login />} />
+            <Route path="/register" element={<Register />} />
+  
+            {(isLoggedIn || isGuest) && (
+              <Route path='' element={ <div>
+                <Navbar setCurrentTag={setCurrentTag} onSearch={setSearch} setIsNoQuestionsFound={setIsNoQuestionsFound} questions={questions} tags={tags} />
+                <div id="main" className="main">
+                  <Sidebar toggleDisplayTagsPage={toggleDisplayTagsPage} />
+                  <Forum setSearch={setSearch} displayTagsPage={displayTagsPage} setCurrentTag={setCurrentTag} toggleUnansweredBtnClicked={toggleUnansweredBtnClicked} setSortField={handleSort} addNewQuestion={addNewQuestion} fetchData={fetchData} answerPageIndex={answerPageIndex} displayAnswerForm={displayAnswerForm} displayAnswers={displayAnswers} showAnswerForm={showAnswerForm} handleAskQuestionBtn={handleAskQuestionBtn} isAskQuestionBtnClicked={isAskQuestionBtnClicked} setDisplayTagsPage={setDisplayTagsPage} tags={mapTags} ansArray={answers} setQuestions={setQuestions} handleAnswerPageIndex={handleAnswerPageIndex} isNoQuestionsFound={isNoQuestionsFound} questions={getSorted()} />
+                </div>
+              </div>
+             } />
+            )}
+          </Route>
+        </Routes>
+      </Router>
+    </div>
   );
 }
 

@@ -7,7 +7,8 @@ const cors = require('cors');
 const mongoose = require('mongoose');
 const Question = require('./models/questions');
 const Answer = require('./models/answers');
-const Tag = require('./models/tags')
+const Tag = require('./models/tags');
+const User = require('./models/users');
 
 const app = express();
 app.use(cors());
@@ -65,6 +66,11 @@ app.get('/retrievetags', async(req, res)=>{
     res.send(tags);
 })
 
+app.get('/retrieveusers', async(req, res)=>{
+    const users = await User.find();
+    res.send(users);
+})
+
 app.put('/updatequestions', async(req, res)=> {
     const newData = req.body;
     await Question.deleteMany({}); 
@@ -91,4 +97,9 @@ app.put('/addquestion', async(req, res)=>{
     const newData = req.body;
     const insertedQuestion = await Question.create(newData);
     res.send(insertedQuestion); 
+})
+
+app.put('/addUser', async(req, res)=>{
+    const newData = req.body;
+    await User.create(newData);
 })
