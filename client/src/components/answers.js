@@ -1,17 +1,19 @@
 import React from 'react';
 import '../stylesheets/App.css';
-import PropTypes from 'prop-types';
+import { useState } from 'react';
 
 export default function Answers(props) {
+    const [startIndex, setStartIndex] = useState(0);
     let currTime = new Date();
     let elapsedTime = currTime.getTime() - new Date(props.questions[props.answerPageIndex].ask_date_time).getTime();
+    console.log(elapsedTime)
     let answerPosts = [];
     let answerPage;
     let startYear = new Date(props.questions[props.answerPageIndex].ask_date_time).getFullYear();
     let endYear = currTime.getFullYear();
 
     let years = Math.abs(Math.floor(endYear - startYear));
-    if (currTime.getMonth() < new Date(props.questions[props.answerPageIndex].ask_date_time).getMonth() || (currTime.getMonth() === new Date(props.questions[props.index].ask_date_time).getMonth() && currTime.getDate() < new Date(props.questions[props.index].ask_date_time).getDate())) {
+    if (currTime.getMonth() < new Date(props.questions[props.answerPageIndex].ask_date_time).getMonth() || (currTime.getMonth() === new Date(props.questions[props.answerPageIndex].ask_date_time).getMonth() && currTime.getDate() < new Date(props.questions[props.answerPageIndex].ask_date_time).getDate())) {
         years--;
     }
     
@@ -81,7 +83,7 @@ export default function Answers(props) {
         <span className="question-text-answer-page"> {props.questions[props.answerPageIndex].text} </span>
         <div className="answer-info">
           <span className="post-username-question-answers-page"> {props.questions[props.answerPageIndex].asked_by} </span>
-          <span className="post-time-answers-page"> asked {monthArr[new Date(props.questions[props.answerPageIndex].ask_date_time).getMonth()]} {new Date(props.questions[props.index].ask_date_time).getDay()}, {new Date(props.questions[props.index].ask_date_time).getFullYear()} at {new Date(props.questions[props.index].ask_date_time).getHours()}:{String(new Date(props.questions[props.index].ask_date_time).getMinutes()).padStart(2, '0')}</span>
+          <span className="post-time-answers-page"> asked {monthArr[new Date(props.questions[props.answerPageIndex].ask_date_time).getMonth()]} {new Date(props.questions[props.answerPageIndex].ask_date_time).getDay()}, {new Date(props.questions[props.answerPageIndex].ask_date_time).getFullYear()} at {new Date(props.questions[props.answerPageIndex].ask_date_time).getHours()}:{String(new Date(props.questions[props.answerPageIndex].ask_date_time).getMinutes()).padStart(2, '0')}</span>
         </div>
     </div></div>
     
@@ -97,7 +99,7 @@ export default function Answers(props) {
         <span className="question-text-answer-page"> {props.questions[props.answerPageIndex].text} </span>
         <div className="answer-info">
           <span className="post-username-question-answers-page"> {props.questions[props.answerPageIndex].asked_by} </span>
-          <span className="post-time-answers-page"> asked {monthArr[new Date(props.questions[props.answerPageIndex].ask_date_time).getMonth()]} {new Date(props.questions[props.index].ask_date_time).getDay()} at {new Date(props.questions[props.index].ask_date_time).getHours()}:{String(new Date(props.questions[props.index].ask_date_time).getMinutes()).padStart(2, '0')}</span>
+          <span className="post-time-answers-page"> asked {monthArr[new Date(props.questions[props.answerPageIndex].ask_date_time).getMonth()]} {new Date(props.questions[props.answerPageIndex].ask_date_time).getDay()} at {new Date(props.questions[props.answerPageIndex].ask_date_time).getHours()}:{String(new Date(props.questions[props.answerPageIndex].ask_date_time).getMinutes()).padStart(2, '0')}</span>
         </div>
     </div></div>
   }
@@ -179,17 +181,14 @@ export default function Answers(props) {
   return (
     <>
         <div>{answerPage}</div>
-        <div className="answer-posts">{answerPosts}</div>
+        <div className="answer-posts">{answerPosts.slice(startIndex, startIndex + 5)}</div>
+        <div className="pagination-buttons">
+            <button disabled={startIndex === 0} onClick={() => setStartIndex(startIndex - 5)}>Prev</button>
+            <button disabled={startIndex + 5 >= answerPosts.length} onClick={() => setStartIndex(startIndex + 5)}>Next</button>
+        </div>
         <button onClick={() => props.showAnswerForm(true)} id="answer-question-btn">Answer Question</button>
     </>
   );
 }
 
-Answers.propTypes = {
-  questions: PropTypes.array.isRequired,
-  answerPageIndex: PropTypes.number.isRequired,
-  answers: PropTypes.array.isRequired,
-  handleAskQuestionBtn: PropTypes.func.isRequired,
-  showAnswerForm: PropTypes.func.isRequired
-};
 
