@@ -176,21 +176,17 @@ function App() {
 
   return (
     <div className="body">
-      {(!isLoggedIn && !isGuest && questions && answers && tags) && (
-        <Welcome setIsGuest={setIsGuest} setIsLoggedIn={setIsLoggedIn} users={users} />
-      )}
       <Router>
         <Routes>
-          <Route path="/">
-            {!isLoggedIn && !isGuest ? (
+            {!isLoggedIn && !isGuest && (
               <Route exact path="/" element={<Welcome setIsGuest={setIsGuest} setIsLoggedIn={setIsLoggedIn} users={users} />} />
-            ) : null}
+            )}
   
             <Route path="/login" element={<Login />} />
             <Route path="/register" element={<Register />} />
   
             {(isLoggedIn || isGuest) && (
-              <Route path='' element={ <div>
+              <Route path='/content' element={ <div>
                 <Navbar setCurrentTag={setCurrentTag} onSearch={setSearch} setIsNoQuestionsFound={setIsNoQuestionsFound} questions={questions} tags={tags} />
                 <div id="main" className="main">
                   <Sidebar toggleDisplayTagsPage={toggleDisplayTagsPage} />
@@ -199,7 +195,6 @@ function App() {
               </div>
              } />
             )}
-          </Route>
         </Routes>
       </Router>
     </div>

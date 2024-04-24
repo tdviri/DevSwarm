@@ -48,7 +48,7 @@ export default function Login(props) {
 
     return (
         <form className="login-page-form" onSubmit={handleSubmit}>
-            <h1 className="login-form-header">Register</h1>
+            <h1 className="login-form-header">Login</h1>
             <div className="login-form-email-input-container">
                 <label className="login-form-input-header">Email/Username</label>
                 <input className="login-form-input" type="text" required name="email" />

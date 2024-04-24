@@ -2,11 +2,13 @@ import React from 'react';
 import '../stylesheets/App.css';
 import axios from 'axios';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; 
 
 export default function Register(props) {
     const [differentPasswords, setDifferentPasswords] = useState(false);
     const [passwordContainsName, setPasswordContainsName] = useState(false);
     const [passwordContainsEmail, setPasswordContainsEmail] = useState(false);
+    const navigate = useNavigate();
 
     async function handleSubmit(e) {
         e.preventDefault();
@@ -44,6 +46,10 @@ export default function Register(props) {
             password: password
         }
         await axios.put('http://localhost:8000/addUser', newUser);
+        console.log("hi")
+        // console.log("before navigate")
+        navigate('/login');
+        // console.log("after navigate");
       }
     
 
@@ -74,7 +80,7 @@ export default function Register(props) {
             <input className="register-form-input" type="text" required name="verifyPassword" />
         </div>
         <br /><br />
-        <input className="signup-btn" type="submit" value="SignUp" />
+        <input className="signup-btn" type="submit" value="Sign Up" />
         <div className="register-form-error-messages">
             {differentPasswords && <div className="register-error-message">Passwords do not match.</div>}
             {passwordContainsName && <div className="register-error-message">Password cannot contain your name.</div>}
