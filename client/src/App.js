@@ -11,6 +11,8 @@ import Login from './components/login.js';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
+import { useAppContext } from './AppContext';
+import { AppProvider } from './AppContext';
 
 function getMostRecentAnswerTime(question, answers) {
     let mostRecentAnswerTime = 0;
@@ -24,24 +26,44 @@ function getMostRecentAnswerTime(question, answers) {
   }
 
 function App() {
-  const [questions, setQuestions] = useState(null);
-  const [search, setSearch] = useState('');
-  const [answers, setAnswers] = useState(null);
-  const [tags, setTags] = useState(null);
-  const [users, setUsers] = useState(null);
-  const [loggedInUser, setLoggedInUser] = useState(null);
-  const [isNoQuestionsFound, setIsNoQuestionsFound] = useState(false);
-  const [displayAnswers, setDisplayAnswers] = useState(false);
-  const [answerPageIndex, setAnswerPageIndex] = useState(-1);
-  const [displayAnswerForm, setIsDisplayAnswerForm] = useState(false);
-  const [displayTagsPage, setDisplayTagsPage] = useState(false);
-  const [isAskQuestionBtnClicked, setIsAskQuestionBtnClicked] = useState(false);
-  const [sortField, setSortField] = useState('ask_date_time');
-  const [isUnansweredBtnClicked, setIsUnansweredBtnClick] = useState(false);
-  const [currentTag, setCurrentTag] = useState(null);
-  const [isShowingTaggedQuestions, setIsShowingTaggedQuestions] = useState(false);
-  const [isLoggedIn, setIsLoggedIn] = useState(false);
-  const [isGuest, setIsGuest] = useState(false);
+  const { 
+    questions,
+    setQuestions,
+    search,
+    setSearch,
+    answers,
+    setAnswers,
+    tags,
+    setTags,
+    users,
+    setUsers,
+    loggedInUser,
+    setLoggedInUser,
+    isNoQuestionsFound,
+    setIsNoQuestionsFound,
+    displayAnswers,
+    setDisplayAnswers,
+    answerPageIndex,
+    setAnswerPageIndex,
+    displayAnswerForm,
+    setIsDisplayAnswerForm,
+    displayTagsPage,
+    setDisplayTagsPage,
+    isAskQuestionBtnClicked,
+    setIsAskQuestionBtnClicked,
+    sortField,
+    setSortField,
+    isUnansweredBtnClicked,
+    setIsUnansweredBtnClick,
+    currentTag,
+    setCurrentTag,
+    isShowingTaggedQuestions,
+    setIsShowingTaggedQuestions,
+    isLoggedIn,
+    setIsLoggedIn,
+    isGuest,
+    setIsGuest,
+   } = useAppContext();
   let response;
 
   useEffect(()=> {
@@ -210,6 +232,7 @@ function App() {
     //     </Routes>
     //   </Router>
     // </div>
+<AppProvider>
 <div className="body">
   <Router>
     <Routes>
@@ -255,7 +278,7 @@ function App() {
     </Routes>
   </Router>
 </div>
-
+</AppProvider>
   );
 }
 
