@@ -175,29 +175,48 @@ function App() {
   }
 
   return (
+    // <div className="body">
+    //   <Router>
+    //     <Routes>
+    //         {!isLoggedIn && !isGuest && (
+    //           <Route exact path="/" element={<Welcome setIsGuest={setIsGuest} setIsLoggedIn={setIsLoggedIn} users={users} />} />
+    //         )}
+  
+    //         <Route path="/login" element={<Login />} />
+    //         <Route path="/register" element={<Register />} />
+  
+    //         {(isLoggedIn || isGuest) && (
+    //           <Route path='/content' element={ <div>
+    //             <Navbar setCurrentTag={setCurrentTag} onSearch={setSearch} setIsNoQuestionsFound={setIsNoQuestionsFound} questions={questions} tags={tags} />
+    //             <div id="main" className="main">
+    //               <Sidebar toggleDisplayTagsPage={toggleDisplayTagsPage} />
+    //               <Forum setSearch={setSearch} displayTagsPage={displayTagsPage} setCurrentTag={setCurrentTag} toggleUnansweredBtnClicked={toggleUnansweredBtnClicked} setSortField={handleSort} addNewQuestion={addNewQuestion} fetchData={fetchData} answerPageIndex={answerPageIndex} displayAnswerForm={displayAnswerForm} displayAnswers={displayAnswers} showAnswerForm={showAnswerForm} handleAskQuestionBtn={handleAskQuestionBtn} isAskQuestionBtnClicked={isAskQuestionBtnClicked} setDisplayTagsPage={setDisplayTagsPage} tags={mapTags} ansArray={answers} setQuestions={setQuestions} handleAnswerPageIndex={handleAnswerPageIndex} isNoQuestionsFound={isNoQuestionsFound} questions={getSorted()} />
+    //             </div>
+    //           </div>
+    //          } />
+    //         )}
+    //     </Routes>
+    //   </Router>
+    // </div>
+    
     <div className="body">
-      <Router>
-        <Routes>
-            {!isLoggedIn && !isGuest && (
-              <Route exact path="/" element={<Welcome setIsGuest={setIsGuest} setIsLoggedIn={setIsLoggedIn} users={users} />} />
-            )}
-  
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
-  
-            {(isLoggedIn || isGuest) && (
-              <Route path='/content' element={ <div>
-                <Navbar setCurrentTag={setCurrentTag} onSearch={setSearch} setIsNoQuestionsFound={setIsNoQuestionsFound} questions={questions} tags={tags} />
-                <div id="main" className="main">
-                  <Sidebar toggleDisplayTagsPage={toggleDisplayTagsPage} />
-                  <Forum setSearch={setSearch} displayTagsPage={displayTagsPage} setCurrentTag={setCurrentTag} toggleUnansweredBtnClicked={toggleUnansweredBtnClicked} setSortField={handleSort} addNewQuestion={addNewQuestion} fetchData={fetchData} answerPageIndex={answerPageIndex} displayAnswerForm={displayAnswerForm} displayAnswers={displayAnswers} showAnswerForm={showAnswerForm} handleAskQuestionBtn={handleAskQuestionBtn} isAskQuestionBtnClicked={isAskQuestionBtnClicked} setDisplayTagsPage={setDisplayTagsPage} tags={mapTags} ansArray={answers} setQuestions={setQuestions} handleAnswerPageIndex={handleAnswerPageIndex} isNoQuestionsFound={isNoQuestionsFound} questions={getSorted()} />
-                </div>
-              </div>
-             } />
-            )}
-        </Routes>
-      </Router>
-    </div>
+    {!isLoggedIn && !isGuest && !showLoginPage && !showRegisterPage && (
+      <Welcome setIsGuest={setIsGuest} setIsLoggedIn={setIsLoggedIn} users={users} />
+    )}
+    {showLoginPage && <Login setLoggedInUser={setLoggedInUser} users={users} setIsLoggedIn={setIsLoggedIn} />}
+    {showRegisterPage && <Register setUsers={setUsers}/>}
+      {questions && answers && tags && (isLoggedIn || isGuest) &&
+        <div> 
+          <Navbar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
+          <div id="main" className="main">
+            <Sidebar toggleDisplayTagsPage={toggleDisplayTagsPage} />
+            <Forum 
+             setSearch={setSearch} displayTagsPage={displayTagsPage} setCurrentTag={setCurrentTag} toggleUnansweredBtnClicked={toggleUnansweredBtnClicked} setSortField={handleSort} addNewQuestion={addNewQuestion} fetchData={fetchData} answerPageIndex={answerPageIndex} displayAnswerForm={displayAnswerForm} displayAnswers={displayAnswers} showAnswerForm={showAnswerForm} handleAskQuestionBtn={handleAskQuestionBtn} isAskQuestionBtnClicked={isAskQuestionBtnClicked} setDisplayTagsPage={setDisplayTagsPage} tags={mapTags} ansArray={answers} setQuestions={setQuestions} handleAnswerPageIndex={handleAnswerPageIndex} isNoQuestionsFound={isNoQuestionsFound} questions={getSorted()}
+            />
+          </div>
+        </div>
+      }
+</div>
   );
 }
 
