@@ -1,17 +1,14 @@
 import React from 'react';
 import '../stylesheets/App.css';
 import Searchbar from './searchbar.js';
-import PropTypes from 'prop-types';
-import { Navigate, useNavigate } from 'react-router-dom';
 import { useAppContext } from './appContext.js';
 
 export default function Navbar() {
-  const {isLoggedIn, setIsLoggedIn } = useAppContext();
-  const navigate = useNavigate();
+  const {setIsGuest, isLoggedIn, setIsLoggedIn } = useAppContext();
 
   function logOut(){
-    setIsLoggedIn(true);
-    navigate('/');
+    setIsLoggedIn(false);
+    setIsGuest(false);
   }
 
   return (

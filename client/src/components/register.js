@@ -2,15 +2,13 @@ import React from 'react';
 import '../stylesheets/App.css';
 import axios from 'axios';
 import { useState } from 'react';
-import { useNavigate } from 'react-router-dom'; 
 import { useAppContext } from './appContext';
 
 export default function Register() {
     const [differentPasswords, setDifferentPasswords] = useState(false);
     const [passwordContainsName, setPasswordContainsName] = useState(false);
     const [passwordContainsEmail, setPasswordContainsEmail] = useState(false);
-    const {setUsers} = useAppContext();
-    const navigate = useNavigate();
+    const {setUsers, setShowRegisterPage, setShowLoginPage} = useAppContext();
 
     async function handleSubmit(e) {
         e.preventDefault();
@@ -48,9 +46,8 @@ export default function Register() {
             password: password
         }
         await axios.put('http://localhost:8000/addUser', newUser);
-        const response = await axios.get('http://localhost:8000/retrieveusers');
-        setUsers(response.data);
-        navigate('/login');
+        setShowRegisterPage(false);
+        setShowLoginPage(true);
       }
     
 
