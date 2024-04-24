@@ -1,6 +1,7 @@
 import React from 'react';
 import '../stylesheets/App.css';
 import PropTypes from 'prop-types';
+import { useAppContext } from './appContext';
 
 export default function ActiveBtn(props) {
     function sortActive(){

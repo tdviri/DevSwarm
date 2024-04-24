@@ -3,6 +3,7 @@ import '../stylesheets/App.css';
 import axios from 'axios';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; 
+import { useAppContext } from './appContext';
 
 export default function Register(props) {
     const [differentPasswords, setDifferentPasswords] = useState(false);

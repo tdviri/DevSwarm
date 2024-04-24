@@ -10,8 +10,32 @@ import Answers from './answers.js';
 import Tags from './tags.js';
 import AnswerQuestionForm from './answerQuestionForm.js';
 import PropTypes from 'prop-types';
+import { useAppContext } from './appContext';
 
 export default function Forum(props) {
+  const [loggedInUser={loggedInUser},
+    isLoggedIn={isLoggedIn},
+    setSearch={setSearch} ,
+    displayTagsPage={displayTagsPage} ,
+    setCurrentTag={setCurrentTag} ,
+    toggleUnansweredBtnClicked={toggleUnansweredBtnClicked} ,
+    setSortField={handleSort} ,
+    addNewQuestion={addNewQuestion} ,
+    fetchData={fetchData} ,
+    answerPageIndex={answerPageIndex} ,
+    displayAnswerForm={displayAnswerForm} ,
+    displayAnswers={displayAnswers} ,
+    showAnswerForm={showAnswerForm} ,
+    handleAskQuestionBtn={handleAskQuestionBtn} ,
+    isAskQuestionBtnClicked={isAskQuestionBtnClicked} ,
+    setDisplayTagsPage={setDisplayTagsPage} ,
+    tags={mapTags} ,
+    ansArray={answers} ,
+    setQuestions={setQuestions} ,
+    handleAnswerPageIndex={handleAnswerPageIndex} ,
+    isNoQuestionsFound={isNoQuestionsFound} 
+  ] = useAppContext();
+
   function displayQuestionCount(){
       return props.questions.length;
   }

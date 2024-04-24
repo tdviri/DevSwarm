@@ -3,6 +3,7 @@ import '../stylesheets/App.css';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom'; 
 import { useLocation } from 'react-router-dom';
+import { useAppContext } from './appContext';
 
 export default function Login(props) {
     const [unregisteredEmail, setUnregisteredEmail] = useState(false);

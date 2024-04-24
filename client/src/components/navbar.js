@@ -3,22 +3,24 @@ import '../stylesheets/App.css';
 import Searchbar from './searchbar.js';
 import PropTypes from 'prop-types';
 import { Navigate, useNavigate } from 'react-router-dom';
+import { useAppContext } from './appContext.js';
 
-export default function Navbar(props) {
+export default function Navbar() {
+  const [setSortField, isLoggedIn, setIsLoggedIn, setCurrentTag, setSearch, setIsNoQuestionsFound, questions, tags ] = useAppContext();
   const navigate = useNavigate();
 
   function logOut(){
-    props.setIsLoggedIn(true);
+    setIsLoggedIn(true);
     navigate('/');
   }
 
   return (
       <div id="header" className="header">
-        {props.isLoggedIn && <btn className="log-out-btn" onClick={logOut}>Log Out</btn>}
+        {isLoggedIn && <btn className="log-out-btn" onClick={logOut}>Log Out</btn>}
         <div className="title">
           Fake Stack Overflow
         </div>
-        <Searchbar setSortField={props.setSortField} setCurrentTag={props.setCurrentTag} onChange={props.onSearch} setIsNoQuestionsFound={props.setIsNoQuestionsFound} handleIsNoQuestionsFound={props.handleIsNoQuestionsFound} setQuestions={props.setQuestions} questions={props.questions} tags={props.tags}/>
+        <Searchbar/>
       </div>
   );
 }
