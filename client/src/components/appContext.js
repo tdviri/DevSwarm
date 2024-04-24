@@ -5,6 +5,11 @@ import axios from 'axios';
 const AppContext = createContext();
 
 export const AppProvider = ({ children }) => {
+  
+  useEffect(()=> {
+    fetchData();
+  }, [])
+
   const [questions, setQuestions] = useState(null);
   const [search, setSearch] = useState('');
   const [answers, setAnswers] = useState(null);
@@ -24,11 +29,7 @@ export const AppProvider = ({ children }) => {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isGuest, setIsGuest] = useState(false);
   const [showRegisterPage, setShowRegisterPage] = useState(false);
-
-
-  useEffect(()=> {
-    fetchData();
-  }, [])
+  const [showLoginPage, setShowLoginPage] = useState(false);
 
   async function fetchData() {
     console.log("Hi")
@@ -86,7 +87,9 @@ export const AppProvider = ({ children }) => {
         setIsGuest,
         showRegisterPage, 
         setShowRegisterPage, 
-        fetchData
+        fetchData,
+        showLoginPage,
+        setShowLoginPage
       }}
     >
       {children}
