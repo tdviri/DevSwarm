@@ -46,10 +46,9 @@ export default function Register(props) {
             password: password
         }
         await axios.put('http://localhost:8000/addUser', newUser);
-        console.log("hi")
-        // console.log("before navigate")
-        navigate('/login');
-        // console.log("after navigate");
+        const response = await axios.get('http://localhost:8000/retrieveusers');
+        props.setUsers(response.data);
+        navigate('/login', { state: { users: response.data } });
       }
     
 

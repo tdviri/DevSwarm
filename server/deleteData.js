@@ -20,7 +20,6 @@ async function deleteAllData() {
   await deleteAllDocuments(Tag);
   await deleteAllDocuments(User);
 
-  console.log("hi")
   mongoose.disconnect();
 }
 

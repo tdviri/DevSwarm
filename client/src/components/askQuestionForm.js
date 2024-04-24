@@ -13,9 +13,9 @@ export default function AskQuestionForm(props) {
     e.preventDefault();
     const formValues = new FormData(e.target);
     const questionTitle = formValues.get('title');
+    const questionSummary = formValues.get('summary');
     const questionText = formValues.get('text');
     const questionTags = formValues.get('tags').split(" ");
-    const questionUsername = formValues.get('username');
     setFormTitleError(false);
     setTagLengthError(false);
     setTagCountError(false);
@@ -63,10 +63,11 @@ export default function AskQuestionForm(props) {
         }
         let newQuestion = {
           title: questionTitle,
+          summary: questionSummary,
           text: questionText,
           tags: tagIdsArr,
           answers: [],
-          asked_by: questionUsername,
+          asked_by: props.loggedInUser.username, 
           ask_date_time: new Date(),
           views: 0,
         };
@@ -78,33 +79,34 @@ export default function AskQuestionForm(props) {
     <form id="ask-question-form" className="ask-question-form" onSubmit={handleSubmit}>
       <div className="form-question-subheader-container">
         <label className="form-label">Question Title*</label>
-        <span className="form-submessage">Limit title to 100 characters or less</span>
+        <span className="form-submessage">Limit title to 50 characters or less</span>
         <input id="question-title" className="form-input" type="text" required name="title" />
       </div>
       <br /><br />
       <div className="form-question-subheader-container">
-        <label className="form-label">Question Text*</label>
-        <span className="form-submessage">Add details</span>
-        <textarea id="question-text" className="form-input" type="text" required name="text"></textarea>
+        <label className="form-label">Question Summary*</label>
+        <span className="form-submessage">Limit title to 140 characters or less</span>
+        <textarea id="question-text" className="form-input" type="text" required name="summary"></textarea>
       </div>
       <br /><br />
+      <div className="form-question-subheader-container">
+        <label className="form-label">Text*</label>
+        <span className="form-submessage">Add details</span>
+        <textarea id="question-username" className="form-input" type="text" required name="text"></textarea>
+      </div>
+      <br/><br/>
       <div className="form-question-subheader-container">
         <label className="form-label">Tags*</label>
         <span className="form-submessage">Add keywords separated by whitespace</span>
         <input id="question-tags" className="form-input" type="text" required name="tags" />
       </div>
       <br /><br />
-      <div className="form-question-subheader-container">
-        <label className="form-label">Username*</label>
-        <input id="question-username" className="form-input" type="text" required name="username" />
-      </div>
-      <br/><br/>
       <div className="submit-form">
         <input id="submit-btn" className="submit-btn" type="submit" value="Post Question" />
         <span className="mandatory-fields-message">* indicates mandatory fields</span>
       </div>
       <div className="ask-question-form-error-message">
-        {formTitleError && <div className="error-message">Question title cannot be more than 100 characters in length</div>}
+        {formTitleError && <div className="error-message">Question title cannot be more than 140 characters in length</div>}
         {tagCountError && <div className="error-message">Number of tags cannot be more than 5</div>}
         {tagLengthError && <div className="error-message">Length of each tag cannot be more than 20 characters in length</div>}
       </div>

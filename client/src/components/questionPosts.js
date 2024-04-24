@@ -1,8 +1,11 @@
 import React from 'react';
 import PropTypes from 'prop-types';
+import { useState } from 'react';
 
 export default function QuestionPosts(props) {
-    const questionData = props.questions.map(question => {
+    const [startIndex, setStartIndex] = useState(0);
+
+    const questionData = props.questions.slice(startIndex, startIndex + 5).map(question => {
       const postUsername = `${question.asked_by}`;
       let postTime;
       const currentTime = new Date();
@@ -44,6 +47,18 @@ export default function QuestionPosts(props) {
       };
     });
 
+    const handleNext = () => {
+      if (startIndex + 5 < props.questions.length) {
+        setStartIndex(startIndex + 5);
+      }
+    };
+
+    const handlePrev = () => {
+      if (startIndex >= 5) {
+        setStartIndex(startIndex - 5);
+      }
+    };
+
   return (
       <div className="posts-container">
         {questionData.map((question, index) => (
@@ -66,6 +81,10 @@ export default function QuestionPosts(props) {
             <span className="post-time">{question.postTime}</span>
           </div>
         ))}
+         {props.questions.length > 5 && <div className="pagination">
+            <button onClick={handlePrev} disabled={startIndex === 0}>Prev</button>
+            <button onClick={handleNext} disabled={startIndex + 5 >= props.questions.length}>Next</button>
+          </div>}
       </div>
   );
 }

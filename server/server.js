@@ -80,16 +80,13 @@ app.put('/updatequestions', async(req, res)=> {
 
 app.put('/updateanswers', async(req, res)=> {
     const newData = req.body;
-    // await Answer.deleteMany({});
     const insertedAnswer = await Answer.create(newData);
-    // const lastInsertedAnswer = insertedAnswer[insertedAnswer.length - 1]; 
     res.send(insertedAnswer); 
 })
 
 app.put('/updatetags', async(req, res)=> {
     const newData = req.body;
     const insertedTag = await Tag.create(newData);
-    console.log(insertedTag)
     res.send(insertedTag); 
 })
 
@@ -102,4 +99,5 @@ app.put('/addquestion', async(req, res)=>{
 app.put('/addUser', async(req, res)=>{
     const newData = req.body;
     await User.create(newData);
+    res.send();
 })

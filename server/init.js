@@ -13,7 +13,7 @@ let userArgs = process.argv.slice(2);
 
 if (!userArgs[0].startsWith('mongodb')) {
     console.log('ERROR: You need to specify a valid mongodb URL as the first argument');
-    return
+    return;
 }
 
 let Tag = require('./models/tags')

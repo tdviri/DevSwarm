@@ -29,6 +29,7 @@ function App() {
   const [answers, setAnswers] = useState(null);
   const [tags, setTags] = useState(null);
   const [users, setUsers] = useState(null);
+  const [loggedInUser, setLoggedInUser] = useState(null);
   const [isNoQuestionsFound, setIsNoQuestionsFound] = useState(false);
   const [displayAnswers, setDisplayAnswers] = useState(false);
   const [answerPageIndex, setAnswerPageIndex] = useState(-1);
@@ -48,14 +49,16 @@ function App() {
   }, [])
 
   async function fetchData() {
+    console.log("Hi")
+    console.log("fetch data")
     response = await axios.get('http://localhost:8000/retrievequestions'); 
     setQuestions(response.data);
     response = await axios.get('http://localhost:8000/retrieveanswers');
     setAnswers(response.data);
     response = await axios.get('http://localhost:8000/retrievetags');
     setTags(response.data);
-    response = await axios.get('http://localhost:8000/retrieveusers');
-    setUsers(response.data);
+    // response = await axios.get('http://localhost:8000/retrieveusers');
+    // setUsers(response.data);
  }
 
   async function handleAnswerPageIndex(index, questionsArr, answerArr, showAnswers){
@@ -63,6 +66,7 @@ function App() {
     setDisplayAnswers(showAnswers);
     setAnswerPageIndex(index);
     questionsArr[index].views++;
+    console.log("updating all questions, **may result in deletion")
     await axios.put('http://localhost:8000/updatequestions', questionsArr);
     fetchData();
   }
@@ -106,12 +110,14 @@ function App() {
 
   function getFilteredQuestions(){
     let filteredQuestions = questions;
+    let isSearch = false;
     if (isUnansweredBtnClicked){
       filteredQuestions = filteredQuestions.filter(question => {
         return question.answers.length === 0;
       })
     }
     if (search){
+      isSearch = true;
       let searchValues = search.split(" ");
       filteredQuestions = filteredQuestions.filter(question => {
         let titleTerms = question.title.split(" ");
@@ -139,11 +145,17 @@ function App() {
     if (!isShowingTaggedQuestions && !isUnansweredBtnClicked && !search){
       return questions;
     }
+    if (isSearch){
+      return getSorted(filteredQuestions);
+    }
     return filteredQuestions;
   }
 
-  function getSorted(){
-    const filtered = getFilteredQuestions();
+  function getSorted(searchValues){
+    let filtered = searchValues;
+    if (searchValues === undefined){
+      filtered = getFilteredQuestions();
+    }
     if (sortField === null){
       return filtered;
     }
@@ -175,29 +187,75 @@ function App() {
   }
 
   return (
-    <div className="body">
-      <Router>
-        <Routes>
-            {!isLoggedIn && !isGuest && (
-              <Route exact path="/" element={<Welcome setIsGuest={setIsGuest} setIsLoggedIn={setIsLoggedIn} users={users} />} />
-            )}
+    // <div className="body">
+    //   <Router>
+    //     <Routes>
+    //         {!isLoggedIn && !isGuest && (
+    //           <Route exact path="/" element={<Welcome setIsGuest={setIsGuest} setIsLoggedIn={setIsLoggedIn} users={users} />} />
+    //         )}
   
-            <Route path="/login" element={<Login />} />
-            <Route path="/register" element={<Register />} />
+    //         <Route path="/login" element={<Login />} />
+    //         <Route path="/register" element={<Register />} />
   
-            {(isLoggedIn || isGuest) && (
-              <Route path='/content' element={ <div>
-                <Navbar setCurrentTag={setCurrentTag} onSearch={setSearch} setIsNoQuestionsFound={setIsNoQuestionsFound} questions={questions} tags={tags} />
-                <div id="main" className="main">
-                  <Sidebar toggleDisplayTagsPage={toggleDisplayTagsPage} />
-                  <Forum setSearch={setSearch} displayTagsPage={displayTagsPage} setCurrentTag={setCurrentTag} toggleUnansweredBtnClicked={toggleUnansweredBtnClicked} setSortField={handleSort} addNewQuestion={addNewQuestion} fetchData={fetchData} answerPageIndex={answerPageIndex} displayAnswerForm={displayAnswerForm} displayAnswers={displayAnswers} showAnswerForm={showAnswerForm} handleAskQuestionBtn={handleAskQuestionBtn} isAskQuestionBtnClicked={isAskQuestionBtnClicked} setDisplayTagsPage={setDisplayTagsPage} tags={mapTags} ansArray={answers} setQuestions={setQuestions} handleAnswerPageIndex={handleAnswerPageIndex} isNoQuestionsFound={isNoQuestionsFound} questions={getSorted()} />
-                </div>
-              </div>
-             } />
-            )}
-        </Routes>
-      </Router>
-    </div>
+    //         {(isLoggedIn || isGuest) && (
+    //           <Route path='/content' element={ <div>
+    //             <Navbar setCurrentTag={setCurrentTag} onSearch={setSearch} setIsNoQuestionsFound={setIsNoQuestionsFound} questions={questions} tags={tags} />
+    //             <div id="main" className="main">
+    //               <Sidebar toggleDisplayTagsPage={toggleDisplayTagsPage} />
+    //               <Forum setSearch={setSearch} displayTagsPage={displayTagsPage} setCurrentTag={setCurrentTag} toggleUnansweredBtnClicked={toggleUnansweredBtnClicked} setSortField={handleSort} addNewQuestion={addNewQuestion} fetchData={fetchData} answerPageIndex={answerPageIndex} displayAnswerForm={displayAnswerForm} displayAnswers={displayAnswers} showAnswerForm={showAnswerForm} handleAskQuestionBtn={handleAskQuestionBtn} isAskQuestionBtnClicked={isAskQuestionBtnClicked} setDisplayTagsPage={setDisplayTagsPage} tags={mapTags} ansArray={answers} setQuestions={setQuestions} handleAnswerPageIndex={handleAnswerPageIndex} isNoQuestionsFound={isNoQuestionsFound} questions={getSorted()} />
+    //             </div>
+    //           </div>
+    //          } />
+    //         )}
+    //     </Routes>
+    //   </Router>
+    // </div>
+<div className="body">
+  <Router>
+    <Routes>
+      {!isLoggedIn && !isGuest && (
+        <Route exact path="/" element={<Welcome setIsGuest={setIsGuest} setIsLoggedIn={setIsLoggedIn} users={users} />} />
+      )}
+      <Route path="/login" element={<Login setLoggedInUser={setLoggedInUser} users={users} setIsLoggedIn={setIsLoggedIn} />} />
+      <Route path="/register" element={<Register setUsers={setUsers}/>} />
+      {questions && answers && tags && (
+        <Route path="/home" element={
+          <div> 
+            <Navbar setSortField={setSortField} isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} setCurrentTag={setCurrentTag} onSearch={setSearch} setIsNoQuestionsFound={setIsNoQuestionsFound} questions={questions} tags={tags} />
+            <div id="main" className="main">
+              <Sidebar toggleDisplayTagsPage={toggleDisplayTagsPage} />
+              <Forum 
+                loggedInUser={loggedInUser}
+                isLoggedIn={isLoggedIn}
+                setSearch={setSearch} 
+                displayTagsPage={displayTagsPage} 
+                setCurrentTag={setCurrentTag} 
+                toggleUnansweredBtnClicked={toggleUnansweredBtnClicked} 
+                setSortField={handleSort} 
+                addNewQuestion={addNewQuestion} 
+                fetchData={fetchData} 
+                answerPageIndex={answerPageIndex} 
+                displayAnswerForm={displayAnswerForm} 
+                displayAnswers={displayAnswers} 
+                showAnswerForm={showAnswerForm} 
+                handleAskQuestionBtn={handleAskQuestionBtn} 
+                isAskQuestionBtnClicked={isAskQuestionBtnClicked} 
+                setDisplayTagsPage={setDisplayTagsPage} 
+                tags={mapTags} 
+                ansArray={answers} 
+                setQuestions={setQuestions} 
+                handleAnswerPageIndex={handleAnswerPageIndex} 
+                isNoQuestionsFound={isNoQuestionsFound} 
+                questions={getSorted()} 
+              />
+            </div>
+          </div>
+        } />
+      )}
+    </Routes>
+  </Router>
+</div>
+
   );
 }
 

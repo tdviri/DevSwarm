@@ -1,11 +1,16 @@
 import React from 'react';
 import '../stylesheets/App.css';
-import axios from 'axios';
 import { useState } from 'react';
+import { useNavigate } from 'react-router-dom'; 
+import { useLocation } from 'react-router-dom';
 
 export default function Login(props) {
     const [unregisteredEmail, setUnregisteredEmail] = useState(false);
     const [incorrectPassword, setIncorrectPassword] = useState(false);
+    const navigate = useNavigate();
+    const location = useLocation();
+    let users;
+    location.state === null ? users = props.users : {users} = location.state;
 
     async function handleSubmit(e) {
         e.preventDefault();
@@ -15,11 +20,11 @@ export default function Login(props) {
         setUnregisteredEmail(false);
         setIncorrectPassword(false);
         let valid = true;
-        let usernameNotFound = false;
-        const users = await axios.get('http://localhost:8000/retrieveusers');
+        let usernameNotFound = true;
 
         for (const user of users){
             if (username === user.username){
+                usernameNotFound = false;
                 if (password !== user.password){
                     setIncorrectPassword(true);
                     valid = false;
@@ -36,6 +41,9 @@ export default function Login(props) {
         if (!valid){
             return;
         }
+        props.setIsLoggedIn(true);
+        props.setLoggedInUser({username: username, password: password});
+        navigate('/home');
         // let newUser = {
         //     firstName: firstName,
         //     lastName: lastName,

@@ -13,13 +13,13 @@ import PropTypes from 'prop-types';
 
 export default function Forum(props) {
   function displayQuestionCount(){
-    return props.questions.length;
+      return props.questions.length;
   }
 
   return (
     <div id="forum" className="forum">
         {!props.displayTagsPage && props.displayAnswers && !props.displayAnswerForm && <Answers handleAskQuestionBtn={props.handleAskQuestionBtn} ansArray={props.ansArray} showAnswerForm={props.showAnswerForm} index={props.answerPageIndex} questions={props.questions} /> }
-        {props.isAskQuestionBtnClicked && <AskQuestionForm addNewQuestion={props.addNewQuestion} handleAskQuestionBtn={props.handleAskQuestionBtn} fetchData={props.fetchData} tags={props.tags} questions={props.questions} />} 
+        {props.isAskQuestionBtnClicked && <AskQuestionForm loggedInUser={props.loggedInUser} addNewQuestion={props.addNewQuestion} handleAskQuestionBtn={props.handleAskQuestionBtn} fetchData={props.fetchData} tags={props.tags} questions={props.questions} />} 
         {!props.displayTagsPage && !props.displayAnswers && props.displayAnswerForm && <AnswerQuestionForm ansArray={props.ansArray} handleAnswerPageIndex={props.handleAnswerPageIndex} questions={props.questions} index={props.answerPageIndex} />}
         {!props.displayTagsPage && !props.displayAnswers && !props.displayAnswerForm && !props.isAskQuestionBtnClicked &&
         <div>
@@ -27,7 +27,7 @@ export default function Forum(props) {
             <div className="forum-1">
                 <h1 id="forum-title" className="forum-title">All Questions</h1>
                 <div>
-                  <button className="ask-question-btn" onClick={()=>props.handleAskQuestionBtn(true)}>Ask Question</button>
+                  {props.isLoggedIn && <button className="ask-question-btn" onClick={()=>props.handleAskQuestionBtn(true)}>Ask Question</button>}
                 </div>
             </div>
             <div className="forum-2">
