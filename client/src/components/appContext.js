@@ -1,4 +1,6 @@
 import React, { createContext, useState, useContext } from 'react';
+import { useEffect } from 'react';
+import axios from 'axios';
 
 const AppContext = createContext();
 
@@ -21,6 +23,27 @@ export const AppProvider = ({ children }) => {
   const [isShowingTaggedQuestions, setIsShowingTaggedQuestions] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isGuest, setIsGuest] = useState(false);
+  const [showRegisterPage, setShowRegisterPage] = useState(false);
+
+
+  useEffect(()=> {
+    fetchData();
+  }, [])
+
+  async function fetchData() {
+    console.log("Hi")
+    console.log("fetch data")
+    let response;
+    response = await axios.get('http://localhost:8000/retrievequestions'); 
+    setQuestions(response.data);
+    response = await axios.get('http://localhost:8000/retrieveanswers');
+    setAnswers(response.data);
+    response = await axios.get('http://localhost:8000/retrievetags');
+    setTags(response.data);
+    // response = await axios.get('http://localhost:8000/retrieveusers');
+    // setUsers(response.data);
+ }
+
 
   return (
     <AppContext.Provider
@@ -61,6 +84,9 @@ export const AppProvider = ({ children }) => {
         setIsLoggedIn,
         isGuest,
         setIsGuest,
+        showRegisterPage, 
+        setShowRegisterPage, 
+        fetchData
       }}
     >
       {children}

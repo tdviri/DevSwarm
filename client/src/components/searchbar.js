@@ -1,17 +1,16 @@
 import React from 'react';
 import '../stylesheets/App.css';
-import PropTypes from 'prop-types';
 import { useState } from 'react';
-import { useAppContext } from './appContext';
+import { useAppContext } from './appContext.js';
 
 export default function Searchbar() {
-  const [setSortField, setCurrentTag, onSearch, setIsNoQuestionsFound, handleIsNoQuestionsFound, setQuestions, questions, tags] = useAppContext();
+  const {setSortField, setCurrentTag, setSearch} = useAppContext();
 
 function handleSearch(e) {
   if (e.key === 'Enter') {
     setCurrentTag(null);
     setSortField('ask_date_time');
-    onSearch(e.target.value);
+    setSearch(e.target.value);
   }
 }
 
@@ -21,8 +20,3 @@ function handleSearch(e) {
     </div>    
   );
 }
-
-Searchbar.propTypes = {
-    onSearch: PropTypes.func.isRequired,
-    setCurrentTag: PropTypes.func.isRequired
-};

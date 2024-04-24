@@ -8,11 +8,12 @@ import { useAppContext } from './appContext';
 export default function Login(props) {
     const [unregisteredEmail, setUnregisteredEmail] = useState(false);
     const [incorrectPassword, setIncorrectPassword] = useState(false);
+    const {users} = useAppContext();
     const navigate = useNavigate();
     const location = useLocation();
-    let users;
-    location.state === null ? users = props.users : {users} = location.state;
-
+    // let users;
+    // location.state === null ? users = props.users : {users} = location.state;
+    console.log(users)
     async function handleSubmit(e) {
         e.preventDefault();
         const formValues = new FormData(e.target);

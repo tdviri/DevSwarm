@@ -6,7 +6,7 @@ import { Navigate, useNavigate } from 'react-router-dom';
 import { useAppContext } from './appContext.js';
 
 export default function Navbar() {
-  const [setSortField, isLoggedIn, setIsLoggedIn, setCurrentTag, setSearch, setIsNoQuestionsFound, questions, tags ] = useAppContext();
+  const {isLoggedIn, setIsLoggedIn } = useAppContext();
   const navigate = useNavigate();
 
   function logOut(){
@@ -24,13 +24,3 @@ export default function Navbar() {
       </div>
   );
 }
-
-Navbar.propTypes = {
-    onSearch: PropTypes.func.isRequired,
-    setIsNoQuestionsFound: PropTypes.func.isRequired,
-    handleIsNoQuestionsFound: PropTypes.func.isRequired,
-    setQuestions: PropTypes.func.isRequired,
-    questions: PropTypes.array.isRequired,
-    tags: PropTypes.array.isRequired,
-    setCurrentTag: PropTypes.func.isRequired
-};

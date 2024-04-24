@@ -12,7 +12,3 @@ export default function ActiveBtn(props) {
         <button id="active-btn" onClick={sortActive}>Active</button>
   );
 }
-
-ActiveBtn.propTypes = {
-  setSortField: PropTypes.func.isRequired
-};

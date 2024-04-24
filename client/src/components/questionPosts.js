@@ -1,8 +1,10 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useState } from 'react';
+import { useAppContext } from './appContext';
 
 export default function QuestionPosts(props) {
+    const {tags, answers} = useAppContext();
     const [startIndex, setStartIndex] = useState(0);
 
     const questionData = props.questions.slice(startIndex, startIndex + 5).map(question => {
@@ -68,11 +70,11 @@ export default function QuestionPosts(props) {
               <span className="views-count">{question.views} views</span>
             </div>
             <div id={`post-title${index}`} className='title-and-tags'>
-              <span onClick={() =>  props.handleAnswerPageIndex(index, props.questions, props.ansArray, true)} className='post-title'>{question.title}</span>
+              <span onClick={() =>  props.handleAnswerPageIndex(index, props.questions, answers, true)} className='post-title'>{question.title}</span>
               <div className='tags'>
                 {question.tags.map((tagId, tagIndex) => (
                   <span className="tag" key={tagIndex}>
-                    {props.tags.find(tag => tag._id === tagId)?.name}
+                    {tags.find(tag => tag._id === tagId)?.name}
                   </span>
                 ))}
               </div>

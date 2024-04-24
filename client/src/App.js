@@ -11,8 +11,8 @@ import Login from './components/login.js';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
-import { useAppContext } from './AppContext';
-import { AppProvider } from './AppContext';
+import { useAppContext } from './components/appContext.js';
+import { AppProvider } from './components/appContext.js';
 
 function getMostRecentAnswerTime(question, answers) {
     let mostRecentAnswerTime = 0;
@@ -63,25 +63,28 @@ function App() {
     setIsLoggedIn,
     isGuest,
     setIsGuest,
+    showRegisterPage, 
+    setShowRegisterPage,
+    fetchData
    } = useAppContext();
   let response;
 
-  useEffect(()=> {
-    fetchData();
-  }, [])
+//   useEffect(()=> {
+//     fetchData();
+//   }, [])
 
-  async function fetchData() {
-    console.log("Hi")
-    console.log("fetch data")
-    response = await axios.get('http://localhost:8000/retrievequestions'); 
-    setQuestions(response.data);
-    response = await axios.get('http://localhost:8000/retrieveanswers');
-    setAnswers(response.data);
-    response = await axios.get('http://localhost:8000/retrievetags');
-    setTags(response.data);
-    // response = await axios.get('http://localhost:8000/retrieveusers');
-    // setUsers(response.data);
- }
+//   async function fetchData() {
+//     console.log("Hi")
+//     console.log("fetch data")
+//     response = await axios.get('http://localhost:8000/retrievequestions'); 
+//     setQuestions(response.data);
+//     response = await axios.get('http://localhost:8000/retrieveanswers');
+//     setAnswers(response.data);
+//     response = await axios.get('http://localhost:8000/retrievetags');
+//     setTags(response.data);
+//     // response = await axios.get('http://localhost:8000/retrieveusers');
+//     // setUsers(response.data);
+//  }
 
   async function handleAnswerPageIndex(index, questionsArr, answerArr, showAnswers){
     setIsDisplayAnswerForm(false);
@@ -241,40 +244,26 @@ function App() {
       )}
       <Route path="/login" element={<Login setLoggedInUser={setLoggedInUser} users={users} setIsLoggedIn={setIsLoggedIn} />} />
       <Route path="/register" element={<Register setUsers={setUsers}/>} />
-      {questions && answers && tags && (
         <Route path="/home" element={
           <div> 
-            <Navbar setSortField={setSortField} isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} setCurrentTag={setCurrentTag} onSearch={setSearch} setIsNoQuestionsFound={setIsNoQuestionsFound} questions={questions} tags={tags} />
+            <Navbar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
             <div id="main" className="main">
               <Sidebar toggleDisplayTagsPage={toggleDisplayTagsPage} />
               <Forum 
-                loggedInUser={loggedInUser}
-                isLoggedIn={isLoggedIn}
-                setSearch={setSearch} 
-                displayTagsPage={displayTagsPage} 
-                setCurrentTag={setCurrentTag} 
                 toggleUnansweredBtnClicked={toggleUnansweredBtnClicked} 
-                setSortField={handleSort} 
+                handleSort={handleSort} 
                 addNewQuestion={addNewQuestion} 
                 fetchData={fetchData} 
-                answerPageIndex={answerPageIndex} 
-                displayAnswerForm={displayAnswerForm} 
-                displayAnswers={displayAnswers} 
                 showAnswerForm={showAnswerForm} 
                 handleAskQuestionBtn={handleAskQuestionBtn} 
-                isAskQuestionBtnClicked={isAskQuestionBtnClicked} 
-                setDisplayTagsPage={setDisplayTagsPage} 
                 tags={mapTags} 
-                ansArray={answers} 
-                setQuestions={setQuestions} 
                 handleAnswerPageIndex={handleAnswerPageIndex} 
-                isNoQuestionsFound={isNoQuestionsFound} 
                 questions={getSorted()} 
               />
             </div>
           </div>
         } />
-      )}
+     
     </Routes>
   </Router>
 </div>
