@@ -1,7 +1,6 @@
 import React from 'react';
 import '../stylesheets/App.css';
 import PropTypes from 'prop-types';
-import { useAppContext } from './appContext';
 
 export default function UnansweredBtn(props) {
     function sortUnanswered(){
@@ -12,7 +11,3 @@ export default function UnansweredBtn(props) {
     <button id="unanswered-btn" onClick={sortUnanswered}>Unanswered</button>
   );
 }
-
-UnansweredBtn.propTypes = {
-  toggleUnansweredBtnClicked: PropTypes.func.isRequired
-};

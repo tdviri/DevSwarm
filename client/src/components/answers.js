@@ -1,19 +1,17 @@
 import React from 'react';
 import '../stylesheets/App.css';
 import PropTypes from 'prop-types';
-import { useAppContext } from './appContext';
 
 export default function Answers(props) {
-  const [answers, answerPageIndex] = useAppContext();
     let currTime = new Date();
-    let elapsedTime = currTime.getTime() - new Date(props.questions[answerPageIndex].ask_date_time).getTime();
+    let elapsedTime = currTime.getTime() - new Date(props.questions[props.answerPageIndex].ask_date_time).getTime();
     let answerPosts = [];
     let answerPage;
-    let startYear = new Date(props.questions[answerPageIndex].ask_date_time).getFullYear();
+    let startYear = new Date(props.questions[props.answerPageIndex].ask_date_time).getFullYear();
     let endYear = currTime.getFullYear();
 
     let years = Math.abs(Math.floor(endYear - startYear));
-    if (currTime.getMonth() < new Date(props.questions[answerPageIndex].ask_date_time).getMonth() || (currTime.getMonth() === new Date(props.questions[props.index].ask_date_time).getMonth() && currTime.getDate() < new Date(props.questions[props.index].ask_date_time).getDate())) {
+    if (currTime.getMonth() < new Date(props.questions[props.answerPageIndex].ask_date_time).getMonth() || (currTime.getMonth() === new Date(props.questions[props.index].ask_date_time).getMonth() && currTime.getDate() < new Date(props.questions[props.index].ask_date_time).getDate())) {
         years--;
     }
     
@@ -24,15 +22,15 @@ export default function Answers(props) {
     if (seconds < 60){
       answerPage  = 
       <div> <div className="answers-header">
-      <span className="answer-count-answers-page"> {props.questions[answerPageIndex].answers.length} answers </span>
-      <div className="question-title-answers-page"> {props.questions[answerPageIndex].title} </div>
+      <span className="answer-count-answers-page"> {props.questions[props.answerPageIndex].answers.length} answers </span>
+      <div className="question-title-answers-page"> {props.questions[props.answerPageIndex].title} </div>
       <div><button onClick={()=>props.handleAskQuestionBtn(true)} className="ask-question-btn">Ask Question</button></div>
     </div>
     <div className="question-details-answers-page">
-        <span className="views-count-answers-page"> {props.questions[answerPageIndex].views} views</span>
-        <span className="question-text-answer-page"> {props.questions[answerPageIndex].text} </span>
+        <span className="views-count-answers-page"> {props.questions[props.answerPageIndex].views} views</span>
+        <span className="question-text-answer-page"> {props.questions[props.answerPageIndex].text} </span>
         <div className="answer-info">
-          <span className="post-username-question-answers-page"> {props.questions[answerPageIndex].asked_by} </span>
+          <span className="post-username-question-answers-page"> {props.questions[props.answerPageIndex].asked_by} </span>
           <span className="post-time-answers-page"> asked {seconds} seconds ago</span>Name
         </div>
     </div></div>
@@ -40,15 +38,15 @@ export default function Answers(props) {
     }
     else if (minutes < 60){
       answerPage = <div> <div className="answers-header">
-      <span className="answer-count-answers-page"> {props.questions[answerPageIndex].answers.length} answers </span>
-      <div className="question-title-answers-page"> {props.questions[answerPageIndex].title} </div>
+      <span className="answer-count-answers-page"> {props.questions[props.answerPageIndex].answers.length} answers </span>
+      <div className="question-title-answers-page"> {props.questions[props.answerPageIndex].title} </div>
       <div><button onClick={()=>props.handleAskQuestionBtn(true)} className="ask-question-btn">Ask Question</button></div>
     </div>
     <div className="question-details-answers-page">
-        <span className="views-count-answers-page"> {props.questions[answerPageIndex].views} views</span>
-        <span className="question-text-answer-page"> {props.questions[answerPageIndex].text} </span>
+        <span className="views-count-answers-page"> {props.questions[props.answerPageIndex].views} views</span>
+        <span className="question-text-answer-page"> {props.questions[props.answerPageIndex].text} </span>
         <div className="answer-info">
-          <span className="post-username-question-answers-page"> {props.questions[answerPageIndex].asked_by} </span>
+          <span className="post-username-question-answers-page"> {props.questions[props.answerPageIndex].asked_by} </span>
           <span className="post-time-answers-page"> asked {minutes} minutes ago</span>
         </div>
     </div></div>
@@ -56,15 +54,15 @@ export default function Answers(props) {
     else if (hours < 24){
       answerPage = <div>
          <div className="answers-header">
-        <span className="answer-count-answers-page"> {props.questions[answerPageIndex].answers.length} answers </span>
-        <div className="question-title-answers-page"> {props.questions[answerPageIndex].title} </div>
+        <span className="answer-count-answers-page"> {props.questions[props.answerPageIndex].answers.length} answers </span>
+        <div className="question-title-answers-page"> {props.questions[props.answerPageIndex].title} </div>
         <div><button onClick={()=>props.handleAskQuestionBtn(true)} className="ask-question-btn">Ask Question</button></div>
       </div>
       <div className="question-details-answers-page">
-          <span className="views-count-answers-page"> {props.questions[answerPageIndex].views} views</span>
-          <span className="question-text-answer-page"> {props.questions[answerPageIndex].text} </span>
+          <span className="views-count-answers-page"> {props.questions[props.answerPageIndex].views} views</span>
+          <span className="question-text-answer-page"> {props.questions[props.answerPageIndex].text} </span>
           <div className="answer-info">
-            <span className="post-username-question-answers-page"> {props.questions[answerPageIndex].asked_by} </span>
+            <span className="post-username-question-answers-page"> {props.questions[props.answerPageIndex].asked_by} </span>
             <span className="post-time-answers-page"> asked {hours} hours ago</span>
           </div>
       </div>
@@ -74,38 +72,38 @@ export default function Answers(props) {
     else if (years >= 0){
       answerPage = 
       <div> <div className="answers-header">
-      <span className="answer-count-answers-page"> {props.questions[answerPageIndex].answers.length} answers </span>
-      <div className="question-title-answers-page"> {props.questions[answerPageIndex].title} </div>
+      <span className="answer-count-answers-page"> {props.questions[props.answerPageIndex].answers.length} answers </span>
+      <div className="question-title-answers-page"> {props.questions[props.answerPageIndex].title} </div>
       <div><button onClick={()=>props.handleAskQuestionBtn(true)} className="ask-question-btn">Ask Question</button></div>
     </div>
     <div className="question-details-answers-page">
-        <span className="views-count-answers-page"> {props.questions[answerPageIndex].views} views</span>
-        <span className="question-text-answer-page"> {props.questions[answerPageIndex].text} </span>
+        <span className="views-count-answers-page"> {props.questions[props.answerPageIndex].views} views</span>
+        <span className="question-text-answer-page"> {props.questions[props.answerPageIndex].text} </span>
         <div className="answer-info">
-          <span className="post-username-question-answers-page"> {props.questions[answerPageIndex].asked_by} </span>
-          <span className="post-time-answers-page"> asked {monthArr[new Date(props.questions[answerPageIndex].ask_date_time).getMonth()]} {new Date(props.questions[props.index].ask_date_time).getDay()}, {new Date(props.questions[props.index].ask_date_time).getFullYear()} at {new Date(props.questions[props.index].ask_date_time).getHours()}:{String(new Date(props.questions[props.index].ask_date_time).getMinutes()).padStart(2, '0')}</span>
+          <span className="post-username-question-answers-page"> {props.questions[props.answerPageIndex].asked_by} </span>
+          <span className="post-time-answers-page"> asked {monthArr[new Date(props.questions[props.answerPageIndex].ask_date_time).getMonth()]} {new Date(props.questions[props.index].ask_date_time).getDay()}, {new Date(props.questions[props.index].ask_date_time).getFullYear()} at {new Date(props.questions[props.index].ask_date_time).getHours()}:{String(new Date(props.questions[props.index].ask_date_time).getMinutes()).padStart(2, '0')}</span>
         </div>
     </div></div>
     
     }
     else if (hours >= 24) {
       answerPage = <div> <div className="answers-header">
-      <span className="answer-count-answers-page"> {props.questions[answerPageIndex].answers.length} answers </span>
-      <div className="question-title-answers-page"> {props.questions[answerPageIndex].title} </div>
+      <span className="answer-count-answers-page"> {props.questions[props.answerPageIndex].answers.length} answers </span>
+      <div className="question-title-answers-page"> {props.questions[props.answerPageIndex].title} </div>
       <div><button onClick={()=>props.handleAskQuestionBtn(true)} className="ask-question-btn">Ask Question</button></div>
     </div>
     <div className="question-details-answers-page">
-        <span className="views-count-answers-page"> {props.questions[answerPageIndex].views} views</span>
-        <span className="question-text-answer-page"> {props.questions[answerPageIndex].text} </span>
+        <span className="views-count-answers-page"> {props.questions[props.answerPageIndex].views} views</span>
+        <span className="question-text-answer-page"> {props.questions[props.answerPageIndex].text} </span>
         <div className="answer-info">
-          <span className="post-username-question-answers-page"> {props.questions[answerPageIndex].asked_by} </span>
-          <span className="post-time-answers-page"> asked {monthArr[new Date(props.questions[answerPageIndex].ask_date_time).getMonth()]} {new Date(props.questions[props.index].ask_date_time).getDay()} at {new Date(props.questions[props.index].ask_date_time).getHours()}:{String(new Date(props.questions[props.index].ask_date_time).getMinutes()).padStart(2, '0')}</span>
+          <span className="post-username-question-answers-page"> {props.questions[props.answerPageIndex].asked_by} </span>
+          <span className="post-time-answers-page"> asked {monthArr[new Date(props.questions[props.answerPageIndex].ask_date_time).getMonth()]} {new Date(props.questions[props.index].ask_date_time).getDay()} at {new Date(props.questions[props.index].ask_date_time).getHours()}:{String(new Date(props.questions[props.index].ask_date_time).getMinutes()).padStart(2, '0')}</span>
         </div>
     </div></div>
   }
   let newAnsArray = [];
   props.questions[props.answerPageIndex].answers.forEach((ansIdForQuestion)=>{
-    answers.forEach((ans)=>{
+    props.answers.forEach((ans)=>{
       if (ansIdForQuestion === ans._id){
         newAnsArray.push(ans)
       }
@@ -116,8 +114,8 @@ export default function Answers(props) {
   })
 
   sortedAnsArray.forEach(a => {
-    if (props.questions[answerPageIndex].answers.includes(a._id)){
-      let ans = answers.find(answer => answer._id === a._id);
+    if (props.questions[props.answerPageIndex].answers.includes(a._id)){
+      let ans = props.answers.find(answer => answer._id === a._id);
       let answerPost;
       currTime = new Date();
       let elapsedTime = currTime.getTime() - new Date(ans.ans_date_time).getTime();

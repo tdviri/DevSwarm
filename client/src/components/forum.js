@@ -9,10 +9,8 @@ import NoQuestionsFound from './noQuestionsFound.js';
 import Answers from './answers.js';
 import Tags from './tags.js';
 import AnswerQuestionForm from './answerQuestionForm.js';
-import { useAppContext } from './appContext.js';
 
 export default function Forum(props) {
-  const {displayTagsPage , displayAnswerForm , displayAnswers ,isAskQuestionBtnClicked} = useAppContext();
 
   function displayQuestionCount(){
       return props.questions.length;
@@ -20,10 +18,10 @@ export default function Forum(props) {
 
   return (
     <div id="forum" className="forum">
-        {!displayTagsPage && displayAnswers && !displayAnswerForm && <Answers handleAskQuestionBtn={props.handleAskQuestionBtn} showAnswerForm={props.showAnswerForm} questions={props.questions} /> }
-        {isAskQuestionBtnClicked && <AskQuestionForm addNewQuestion={props.addNewQuestion} handleAskQuestionBtn={props.handleAskQuestionBtn} questions={props.questions} />} 
-        {!displayTagsPage && !displayAnswers && displayAnswerForm && <AnswerQuestionForm handleAnswerPageIndex={props.handleAnswerPageIndex} questions={props.questions} />}
-        {!displayTagsPage && !displayAnswers && !displayAnswerForm && !isAskQuestionBtnClicked &&
+        {!props.displayTagsPage && props.displayAnswers && !props.displayAnswerForm && <Answers answers={props.answers} answerPageIndex={props.answerPageIndex} handleAskQuestionBtn={props.handleAskQuestionBtn} showAnswerForm={props.showAnswerForm} questions={props.questions} /> }
+        {props.isAskQuestionBtnClicked && <AskQuestionForm addNewQuestion={props.addNewQuestion} handleAskQuestionBtn={props.handleAskQuestionBtn} questions={props.questions} tags={props.tags} loggedInUser={props.loggedInUser} />} 
+        {!props.displayTagsPage && !props.displayAnswers && props.displayAnswerForm && <AnswerQuestionForm answers={props.answers} answerPageIndex={props.answerPageIndex} handleAnswerPageIndex={props.handleAnswerPageIndex} questions={props.questions} />}
+        {!props.displayTagsPage && !props.displayAnswers && !props.displayAnswerForm && !props.isAskQuestionBtnClicked &&
         <div>
           {!props.displayTagsPage && (<div id="forum-headers">
             <div className="forum-1">
@@ -35,16 +33,16 @@ export default function Forum(props) {
             <div className="forum-2">
               <h2 id="num-of-questions-header" className="num-of-questions-header">{displayQuestionCount()} Questions</h2>
               <div className="question-btn-container">
-                <NewestBtn handleSort={props.handleSort} />
-                <ActiveBtn handleSort={props.setSortField} />
+                <NewestBtn setSortField={props.setSortField} />
+                <ActiveBtn setSortField={props.setSortField} />
                 <UnansweredBtn toggleUnansweredBtnClicked={props.toggleUnansweredBtnClicked} questions={props.questions} />
               </div>
             </div>
           </div>)}
         {props.questions.length === 0 && <NoQuestionsFound/>}
-        {props.questions.length !== 0 && !props.displayTagsPage && <QuestionPosts setIsDisplayAnswerForm={props.setIsDisplayAnswerForm} handleAnswerPageIndex={props.handleAnswerPageIndex} answerPageIndex={props.answerPageIndex} questions={props.questions}/>}
+        {props.questions.length !== 0 && !props.displayTagsPage && <QuestionPosts tags={props.tags} answers={props.answers} setIsDisplayAnswerForm={props.setIsDisplayAnswerForm} handleAnswerPageIndex={props.handleAnswerPageIndex} answerPageIndex={props.answerPageIndex} questions={props.questions}/>}
         </div>}
-        {displayTagsPage && <Tags handleAskQuestionBtn={props.handleAskQuestionBtn} />}
+        {props.displayTagsPage && <Tags setSearch={props.setSearch} setCurrentTag={props.setCurrentTag} setDisplayTagsPage={props.setDisplayTagsPage} tags={props.tags} handleAskQuestionBtn={props.handleAskQuestionBtn} />}
   </div>
   );
 }

@@ -1,16 +1,13 @@
 import React from 'react';
 import '../stylesheets/App.css';
-import { useState } from 'react';
-import { useAppContext } from './appContext.js';
 
-export default function Searchbar() {
-  const {setSortField, setCurrentTag, setSearch} = useAppContext();
+export default function Searchbar(props) {
 
 function handleSearch(e) {
   if (e.key === 'Enter') {
-    setCurrentTag(null);
-    setSortField('ask_date_time');
-    setSearch(e.target.value);
+    props.setCurrentTag(null);
+    props.setSortField('ask_date_time');
+    props.setSearch(e.target.value);
   }
 }
 

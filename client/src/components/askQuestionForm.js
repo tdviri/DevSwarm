@@ -3,13 +3,11 @@ import '../stylesheets/App.css';
 import { useState } from 'react';
 import axios from 'axios';
 import PropTypes from 'prop-types';
-import { useAppContext } from './appContext';
 
 export default function AskQuestionForm(props) {
     const [formTitleError, setFormTitleError] = useState(false);
     const [tagLengthError, setTagLengthError] = useState(false);
     const [tagCountError, setTagCountError] = useState(false);
-    const [tags, loggedInUser] = useAppContext();
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -44,7 +42,7 @@ export default function AskQuestionForm(props) {
     if (!valid){
         return;
     }
-        const tagsArr = [...tags];
+        const tagsArr = [...props.tags];
         let tagIdsArr = [];
         for (const userTag of questionTags) {
           let matchedTag = false;
@@ -69,7 +67,7 @@ export default function AskQuestionForm(props) {
           text: questionText,
           tags: tagIdsArr,
           answers: [],
-          asked_by: loggedInUser.username, 
+          asked_by: props.loggedInUser.username, 
           ask_date_time: new Date(),
           views: 0,
         };

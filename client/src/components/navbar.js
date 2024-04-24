@@ -1,23 +1,21 @@
 import React from 'react';
 import '../stylesheets/App.css';
 import Searchbar from './searchbar.js';
-import { useAppContext } from './appContext.js';
 
-export default function Navbar() {
-  const {setIsGuest, isLoggedIn, setIsLoggedIn } = useAppContext();
+export default function Navbar(props) {
 
   function logOut(){
-    setIsLoggedIn(false);
-    setIsGuest(false);
+    props.setIsLoggedIn(false);
+    props.setIsGuest(false);
   }
 
   return (
       <div id="header" className="header">
-        {isLoggedIn && <btn className="log-out-btn" onClick={logOut}>Log Out</btn>}
+        {props.isLoggedIn && <btn className="log-out-btn" onClick={logOut}>Log Out</btn>}
         <div className="title">
           Fake Stack Overflow
         </div>
-        <Searchbar/>
+        <Searchbar setSortField={props.setSortField} setCurrentTag={props.setCurrentTag} setSearch={props.setSearch}/>
       </div>
   );
 }

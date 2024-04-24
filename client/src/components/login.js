@@ -1,15 +1,9 @@
 import React, { useState, useEffect } from 'react';
 import '../stylesheets/App.css';
-import { useAppContext } from './appContext';
 
 export default function Login(props) {
     const [unregisteredEmail, setUnregisteredEmail] = useState(false);
     const [incorrectPassword, setIncorrectPassword] = useState(false);
-    const { users, fetchData, setShowLoginPage, setIsLoggedIn, setLoggedInUser } = useAppContext();
-
-    useEffect(() => {
-        fetchData(); // Fetch data when the component mounts
-    }, [fetchData]);
 
     async function handleSubmit(e) {
         e.preventDefault();
@@ -18,16 +12,19 @@ export default function Login(props) {
         const password = formValues.get('password');
         setUnregisteredEmail(false);
         setIncorrectPassword(false);
-        let valid = true;
+        let valid = false;
         let usernameNotFound = true;
 
-        if (users) {
-            for (const user of users){
+        if (props.users) {
+            for (const user of props.users){
                 if (username === user.username){
                     usernameNotFound = false;
-                    if (password !== user.password){
-                        setIncorrectPassword(true);
+                    if (password === user.password){
+                        valid = true;
+                    }
+                    else{
                         valid = false;
+                        setIncorrectPassword(true);
                     }
                     break;
                 }
@@ -42,11 +39,12 @@ export default function Login(props) {
         }
 
         if (!valid){
+            console.log("invalid form")
             return;
         }
-        setIsLoggedIn(true);
-        setLoggedInUser({username: username, password: password});
-        setShowLoginPage(false);
+        props.setIsLoggedIn(true);
+        props.setLoggedInUser({username: username, password: password});
+        props.setShowLoginPage(false);
     }
 
     return (

@@ -10,7 +10,6 @@ import Register from './components/register.js';
 import Login from './components/login.js';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-import { BrowserRouter as Router, Route, Routes } from 'react-router-dom';
 
 function getMostRecentAnswerTime(question, answers) {
     let mostRecentAnswerTime = 0;
@@ -42,6 +41,8 @@ function App() {
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isGuest, setIsGuest] = useState(false);
   const [loggedInUser, setLoggedInUser] = useState(null);
+  const [showLoginPage, setShowLoginPage] = useState(false);
+  const [showRegisterPage, setShowRegisterPage] = useState(false);
   let response;
 
   useEffect(()=> {
@@ -143,7 +144,7 @@ function App() {
     return filteredQuestions;
   }
 
-  function getSorted(){
+  function getSorted(value){
     const filtered = getFilteredQuestions();
     if (sortField === null){
       return filtered;
@@ -178,17 +179,17 @@ function App() {
   return (
   <div className="body">
     {!isLoggedIn && !isGuest && !showLoginPage && !showRegisterPage && (
-      <Welcome setIsGuest={setIsGuest} setIsLoggedIn={setIsLoggedIn} users={users} />
+      <Welcome setIsGuest={setIsGuest} setShowLoginPage={setShowLoginPage} setShowRegisterPage={setShowRegisterPage} />
     )}
-    {showLoginPage && <Login setLoggedInUser={setLoggedInUser} users={users} setIsLoggedIn={setIsLoggedIn} />}
-    {showRegisterPage && <Register setUsers={setUsers}/>}
+    {showLoginPage && <Login users={users} setShowLoginPage={setShowLoginPage} setIsLoggedIn={setIsLoggedIn} setLoggedInUser={setLoggedInUser} />}
+    {showRegisterPage && <Register setUsers={setUsers} setShowRegisterPage={setShowRegisterPage} setShowLoginPage={setShowLoginPage}/>}
       {questions && answers && tags && (isLoggedIn || isGuest) &&
         <div> 
-          <Navbar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} />
+          <Navbar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} setIsGuest={setIsGuest} setSortField={setSortField} setCurrentTag={setCurrentTag} setSearch={setSearch} />
           <div id="main" className="main">
             <Sidebar toggleDisplayTagsPage={toggleDisplayTagsPage} />
-            <Forum 
-             setSearch={setSearch} displayTagsPage={displayTagsPage} setCurrentTag={setCurrentTag} toggleUnansweredBtnClicked={toggleUnansweredBtnClicked} setSortField={handleSort} addNewQuestion={addNewQuestion} fetchData={fetchData} answerPageIndex={answerPageIndex} displayAnswerForm={displayAnswerForm} displayAnswers={displayAnswers} showAnswerForm={showAnswerForm} handleAskQuestionBtn={handleAskQuestionBtn} isAskQuestionBtnClicked={isAskQuestionBtnClicked} setDisplayTagsPage={setDisplayTagsPage} tags={mapTags} ansArray={answers} setQuestions={setQuestions} handleAnswerPageIndex={handleAnswerPageIndex} isNoQuestionsFound={isNoQuestionsFound} questions={getSorted()}
+            <Forum answers={answers} displayTagsPage={displayTagsPage} displayAnswers={displayAnswers} loggedInUser={loggedInUser}
+             setSearch={setSearch} setCurrentTag={setCurrentTag} toggleUnansweredBtnClicked={toggleUnansweredBtnClicked} setSortField={handleSort} addNewQuestion={addNewQuestion} answerPageIndex={answerPageIndex} displayAnswerForm={displayAnswerForm} showAnswerForm={showAnswerForm} handleAskQuestionBtn={handleAskQuestionBtn} isAskQuestionBtnClicked={isAskQuestionBtnClicked} setDisplayTagsPage={setDisplayTagsPage} tags={mapTags} ansArray={answers} setQuestions={setQuestions} handleAnswerPageIndex={handleAnswerPageIndex} isNoQuestionsFound={isNoQuestionsFound} questions={getSorted()}
             />
           </div>
         </div>
@@ -196,7 +197,6 @@ function App() {
 </div>
   );
 }
-//comment
 
 export default App;
 
