@@ -414,3 +414,36 @@
 .tag-num-of-questions {
     font-size: 18px;
 }
+
+.upvote-downvote-arrows {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-right: 0;
+    margin-left: 2%; 
+    margin-bottom: 1%;
+}
+
+.upvote-arrow,
+.downvote-arrow {
+    width: 1; 
+    height: 1px;
+}
+
+.vote-count {
+    margin-top: 90%
+}
+
+.guest-upvote, .guest-downvote, .authenticated-downvote, .authenticated-upvote {
+    color: gray; 
+}
+  
+  .authenticated-upvote:hover {
+    color: green; 
+    cursor: pointer;
+  }
+
+  .authenticated-downvote:hover {
+    color: red; 
+    cursor: pointer;
+  }

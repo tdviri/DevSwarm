@@ -14,7 +14,7 @@ export default function Tags(props) {
         <div className="tags-page-header">
             <div id="num-of-tags-header">{props.tags.length} Tags</div>
             <div className="tags-page-title">All Tags</div>
-            <div id="tags-page-ask-question-btn"><button onClick={()=>props.handleAskQuestionBtn(true)} className="ask-question-btn">Ask Question</button></div>
+            {props.isLoggedIn && <div id="tags-page-ask-question-btn"><button onClick={()=>props.handleAskQuestionBtn(true)} className="ask-question-btn">Ask Question</button></div>}
         </div>
         <div id="tags-container"> {props.tags.map((tag)=>{
              if (tag.questionCount === 1){

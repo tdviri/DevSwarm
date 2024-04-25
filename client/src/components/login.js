@@ -14,13 +14,14 @@ export default function Login(props) {
         setIncorrectPassword(false);
         let valid = false;
         let usernameNotFound = true;
-
+        let loggedInUser;
         if (props.users) {
             for (const user of props.users){
                 if (username === user.username){
                     usernameNotFound = false;
                     if (password === user.password){
                         valid = true;
+                        loggedInUser = user;
                     }
                     else{
                         valid = false;
@@ -43,7 +44,7 @@ export default function Login(props) {
             return;
         }
         props.setIsLoggedIn(true);
-        props.setLoggedInUser({username: username, password: password});
+        props.setLoggedInUser(loggedInUser);
         props.setShowLoginPage(false);
     }
 

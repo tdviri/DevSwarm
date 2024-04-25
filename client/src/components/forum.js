@@ -18,7 +18,7 @@ export default function Forum(props) {
 
   return (
     <div id="forum" className="forum">
-        {!props.displayTagsPage && props.displayAnswers && !props.displayAnswerForm && <Answers answers={props.answers} answerPageIndex={props.answerPageIndex} handleAskQuestionBtn={props.handleAskQuestionBtn} showAnswerForm={props.showAnswerForm} questions={props.questions} /> }
+        {!props.displayTagsPage && props.displayAnswers && !props.displayAnswerForm && <Answers isLoggedIn={props.isLoggedIn} answers={props.answers} answerPageIndex={props.answerPageIndex} handleAskQuestionBtn={props.handleAskQuestionBtn} showAnswerForm={props.showAnswerForm} questions={props.questions} /> }
         {props.isAskQuestionBtnClicked && <AskQuestionForm addNewQuestion={props.addNewQuestion} handleAskQuestionBtn={props.handleAskQuestionBtn} questions={props.questions} tags={props.tags} loggedInUser={props.loggedInUser} />} 
         {!props.displayTagsPage && !props.displayAnswers && props.displayAnswerForm && <AnswerQuestionForm answers={props.answers} answerPageIndex={props.answerPageIndex} handleAnswerPageIndex={props.handleAnswerPageIndex} questions={props.questions} />}
         {!props.displayTagsPage && !props.displayAnswers && !props.displayAnswerForm && !props.isAskQuestionBtnClicked &&
@@ -40,9 +40,9 @@ export default function Forum(props) {
             </div>
           </div>)}
         {props.questions.length === 0 && <NoQuestionsFound/>}
-        {props.questions.length !== 0 && !props.displayTagsPage && <QuestionPosts tags={props.tags} answers={props.answers} setIsDisplayAnswerForm={props.setIsDisplayAnswerForm} handleAnswerPageIndex={props.handleAnswerPageIndex} answerPageIndex={props.answerPageIndex} questions={props.questions}/>}
+        {props.questions.length !== 0 && !props.displayTagsPage && <QuestionPosts isGuest={props.isGuest} loggedInuser={props.loggedInUser} tags={props.tags} answers={props.answers} setIsDisplayAnswerForm={props.setIsDisplayAnswerForm} handleAnswerPageIndex={props.handleAnswerPageIndex} answerPageIndex={props.answerPageIndex} questions={props.questions}/>}
         </div>}
-        {props.displayTagsPage && <Tags setSearch={props.setSearch} setCurrentTag={props.setCurrentTag} setDisplayTagsPage={props.setDisplayTagsPage} tags={props.tags} handleAskQuestionBtn={props.handleAskQuestionBtn} />}
+        {props.displayTagsPage && <Tags isLoggedIn={props.isLoggedIn} setSearch={props.setSearch} setCurrentTag={props.setCurrentTag} setDisplayTagsPage={props.setDisplayTagsPage} tags={props.tags} handleAskQuestionBtn={props.handleAskQuestionBtn} />}
   </div>
   );
 }

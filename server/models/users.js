@@ -7,6 +7,7 @@ var UserSchema = new Schema({
     lastName: {type: String, required: true},
     username: {type: String, required: true},
     password: {type: String, required: true},
+    reputation: {type: Number, required: true}
 });
 
 UserSchema

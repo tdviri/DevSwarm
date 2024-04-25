@@ -1,6 +1,7 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import { useState } from 'react';
+import { FaArrowUp, FaArrowDown } from 'react-icons/fa';
 
 export default function QuestionPosts(props) {
     const [startIndex, setStartIndex] = useState(0);
@@ -59,10 +60,29 @@ export default function QuestionPosts(props) {
       }
     };
 
+    function handleVote(upvote, question){
+      if (props.isGuest){
+        return;
+      }
+      if (upvote){
+        props.loggedInUser.reputation += 5;
+        question.votes += 1;
+      }
+      else{
+        props.loggedInUser.reputation -= 10;
+        question.votes -= 1;
+      }
+    }
+
   return (
       <div className="posts-container">
         {questionData.map((question, index) => (
           <div key={index} id={`post${index}`} className='post'>
+            <div className="upvote-downvote-arrows"> 
+              <div className="upvote-arrow" disabled={props.isGuest || props.loggedInUser.reputation < 50} onClick={()=>handleVote(true, question)}><FaArrowUp className={props.isGuest ? 'guest-upvote' : 'authenticated-upvote'} /></div>
+              <div className="vote-count">{question.votes}</div>
+              <div className="downvote-arrow" disabled={props.isGuest || props.loggedInUser.reputation < 50} onClick={()=>handleVote(false, question)}><FaArrowDown className={props.isGuest ? 'guest-downvote' : 'authenticated-downvote'} /></div>
+            </div>
             <div className='view-and-answer-count'>
               <span className="answer-count">{question.answers.length} answers</span>
               <span className="views-count">{question.views} views</span>
@@ -88,10 +108,3 @@ export default function QuestionPosts(props) {
       </div>
   );
 }
-
-QuestionPosts.propTypes = {
-    tags: PropTypes.array.isRequired,
-    questions: PropTypes.array.isRequired,
-    ansArray: PropTypes.array.isRequired,
-    handleAnswerPageIndex: PropTypes.func.isRequired
-};

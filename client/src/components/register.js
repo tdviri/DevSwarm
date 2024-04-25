@@ -41,7 +41,8 @@ export default function Register(props) {
             firstName: firstName,
             lastName: lastName,
             username: username,
-            password: password
+            password: password,
+            reputation: 0
         }
         await axios.put('http://localhost:8000/addUser', newUser);
         props.setShowRegisterPage(false);

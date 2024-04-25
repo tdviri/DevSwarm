@@ -26,7 +26,7 @@ export default function Answers(props) {
       <div> <div className="answers-header">
       <span className="answer-count-answers-page"> {props.questions[props.answerPageIndex].answers.length} answers </span>
       <div className="question-title-answers-page"> {props.questions[props.answerPageIndex].title} </div>
-      <div><button onClick={()=>props.handleAskQuestionBtn(true)} className="ask-question-btn">Ask Question</button></div>
+      {props.isLoggedIn && <div><button onClick={()=>props.handleAskQuestionBtn(true)} className="ask-question-btn">Ask Question</button></div>}
     </div>
     <div className="question-details-answers-page">
         <span className="views-count-answers-page"> {props.questions[props.answerPageIndex].views} views</span>
@@ -42,7 +42,7 @@ export default function Answers(props) {
       answerPage = <div> <div className="answers-header">
       <span className="answer-count-answers-page"> {props.questions[props.answerPageIndex].answers.length} answers </span>
       <div className="question-title-answers-page"> {props.questions[props.answerPageIndex].title} </div>
-      <div><button onClick={()=>props.handleAskQuestionBtn(true)} className="ask-question-btn">Ask Question</button></div>
+      {props.isLoggedIn && <div><button onClick={()=>props.handleAskQuestionBtn(true)} className="ask-question-btn">Ask Question</button></div>}
     </div>
     <div className="question-details-answers-page">
         <span className="views-count-answers-page"> {props.questions[props.answerPageIndex].views} views</span>
@@ -58,7 +58,7 @@ export default function Answers(props) {
          <div className="answers-header">
         <span className="answer-count-answers-page"> {props.questions[props.answerPageIndex].answers.length} answers </span>
         <div className="question-title-answers-page"> {props.questions[props.answerPageIndex].title} </div>
-        <div><button onClick={()=>props.handleAskQuestionBtn(true)} className="ask-question-btn">Ask Question</button></div>
+        {props.isLoggedIn && <div><button onClick={()=>props.handleAskQuestionBtn(true)} className="ask-question-btn">Ask Question</button></div>}
       </div>
       <div className="question-details-answers-page">
           <span className="views-count-answers-page"> {props.questions[props.answerPageIndex].views} views</span>
@@ -76,7 +76,7 @@ export default function Answers(props) {
       <div> <div className="answers-header">
       <span className="answer-count-answers-page"> {props.questions[props.answerPageIndex].answers.length} answers </span>
       <div className="question-title-answers-page"> {props.questions[props.answerPageIndex].title} </div>
-      <div><button onClick={()=>props.handleAskQuestionBtn(true)} className="ask-question-btn">Ask Question</button></div>
+      {props.isLoggedIn && <div><button onClick={()=>props.handleAskQuestionBtn(true)} className="ask-question-btn">Ask Question</button></div>}
     </div>
     <div className="question-details-answers-page">
         <span className="views-count-answers-page"> {props.questions[props.answerPageIndex].views} views</span>
@@ -92,7 +92,7 @@ export default function Answers(props) {
       answerPage = <div> <div className="answers-header">
       <span className="answer-count-answers-page"> {props.questions[props.answerPageIndex].answers.length} answers </span>
       <div className="question-title-answers-page"> {props.questions[props.answerPageIndex].title} </div>
-      <div><button onClick={()=>props.handleAskQuestionBtn(true)} className="ask-question-btn">Ask Question</button></div>
+      {props.isLoggedIn && <div><button onClick={()=>props.handleAskQuestionBtn(true)} className="ask-question-btn">Ask Question</button></div>}
     </div>
     <div className="question-details-answers-page">
         <span className="views-count-answers-page"> {props.questions[props.answerPageIndex].views} views</span>
@@ -182,11 +182,11 @@ export default function Answers(props) {
     <>
         <div>{answerPage}</div>
         <div className="answer-posts">{answerPosts.slice(startIndex, startIndex + 5)}</div>
-        <div className="pagination-buttons">
+        {answerPosts.length > 5 && <div className="pagination-buttons">
             <button disabled={startIndex === 0} onClick={() => setStartIndex(startIndex - 5)}>Prev</button>
             <button disabled={startIndex + 5 >= answerPosts.length} onClick={() => setStartIndex(startIndex + 5)}>Next</button>
-        </div>
-        <button onClick={() => props.showAnswerForm(true)} id="answer-question-btn">Answer Question</button>
+        </div>}
+        {props.isLoggedIn && <button onClick={() => props.showAnswerForm(true)} id="answer-question-btn">Answer Question</button>}
     </>
   );
 }

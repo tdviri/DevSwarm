@@ -70,6 +70,7 @@ export default function AskQuestionForm(props) {
           asked_by: props.loggedInUser.username, 
           ask_date_time: new Date(),
           views: 0,
+          votes: 0
         };
         props.addNewQuestion(newQuestion);
         props.handleAskQuestionBtn(false);
