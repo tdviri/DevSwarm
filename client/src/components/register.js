@@ -7,12 +7,16 @@ export default function Register(props) {
     const [differentPasswords, setDifferentPasswords] = useState(false);
     const [passwordContainsName, setPasswordContainsName] = useState(false);
     const [passwordContainsEmail, setPasswordContainsEmail] = useState(false);
+    const [passwordContainsUsername, setPasswordContainsUsername] = useState(false);
+    const [emailExists, setEmailExists] = useState(false);
+    const [isInvalidEmail, setIsInvalidEmail] = useState(false);
 
     async function handleSubmit(e) {
         e.preventDefault();
         const formValues = new FormData(e.target);
         const firstName = formValues.get('firstName');
         const lastName = formValues.get('lastName');
+        const email = formValues.get('email');
         const username = formValues.get('username')
         const password = formValues.get('password');
         const verifyPassword = formValues.get('verifyPassword');
@@ -20,18 +24,40 @@ export default function Register(props) {
         setPasswordContainsName(false);
         setPasswordContainsEmail(false);
         let valid = true;
+        const emailID = email.match(/^([^@]*)@/)[1];
+
+        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  
+        if (!emailRegex.test(email)){
+            setIsInvalidEmail(true);
+            valid = false;
+        }
 
         if (password !== verifyPassword){
             setDifferentPasswords(true);
             valid = false;
         }
-        if (password.includes(username)){
+        if (password.indexOf(emailID) !== -1){
             setPasswordContainsEmail(true);
             valid = false;
         }
-        if (password.includes(firstName) || password.includes(lastName)){
+        if (password.indexOf(username) !== -1){
+            setPasswordContainsUsername(true);
+            valid = false;
+        }
+        
+        if (password.indexOf(firstName) !== -1 || password.indexOf(lastName) !== -1){
             setPasswordContainsEmail(true);
             valid = false;
+        }
+
+        if (props.users){
+            for (const user of props.users){
+                if (user.email === email){
+                    setEmailExists(true);
+                    valid = false;
+                }
+            }
         }
 
         if (!valid){
@@ -40,6 +66,7 @@ export default function Register(props) {
         let newUser = {
             firstName: firstName,
             lastName: lastName,
+            email: email,
             username: username,
             password: password,
             reputation: 0
@@ -63,7 +90,12 @@ export default function Register(props) {
         </div>
         <br /><br />
         <div className="register-form-email-input-container">
-            <label className="register-form-input-header">Email/Username</label>
+            <label className="register-form-input-header">Email</label>
+            <input className="register-form-input" type="text" required name="email" />
+        </div>
+        <br /><br />
+        <div className="register-form-username-input-container">
+            <label className="register-form-input-header">Username</label>
             <input className="register-form-input" type="text" required name="username" />
         </div>
         <br /><br />
@@ -81,7 +113,10 @@ export default function Register(props) {
         <div className="register-form-error-messages">
             {differentPasswords && <div className="register-error-message">Passwords do not match.</div>}
             {passwordContainsName && <div className="register-error-message">Password cannot contain your name.</div>}
-            {passwordContainsEmail && <div className="register-error-message">Password cannot contain your email/username.</div>}
+            {passwordContainsEmail && <div className="register-error-message">Password cannot contain your email.</div>}
+            {passwordContainsUsername && <div className="register-error-message">Password cannot contain your username.</div>}
+            {emailExists && <div className="register-error-message">Email is already registered.</div>}
+            {isInvalidEmail && <div className="register-error-message">Email is invalid.</div>}
       </div>
     </form>
   );

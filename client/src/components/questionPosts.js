@@ -79,9 +79,9 @@ export default function QuestionPosts(props) {
         {questionData.map((question, index) => (
           <div key={index} id={`post${index}`} className='post'>
             <div className="upvote-downvote-arrows"> 
-              <div className="upvote-arrow" disabled={props.isGuest || props.loggedInUser.reputation < 50} onClick={()=>handleVote(true, question)}><FaArrowUp className={props.isGuest ? 'guest-upvote' : 'authenticated-upvote'} /></div>
+              <div className="upvote-arrow" disabled={props.loggedInUser && props.loggedInUser.reputation < 50} onClick={()=>handleVote(true, question)}><FaArrowUp className={props.isGuest ? 'guest-upvote' : 'authenticated-upvote'} /></div>
               <div className="vote-count">{question.votes}</div>
-              <div className="downvote-arrow" disabled={props.isGuest || props.loggedInUser.reputation < 50} onClick={()=>handleVote(false, question)}><FaArrowDown className={props.isGuest ? 'guest-downvote' : 'authenticated-downvote'} /></div>
+              <div className="downvote-arrow" disabled={props.loggedInUser && props.loggedInUser.reputation < 50} onClick={()=>handleVote(false, question)}><FaArrowDown className={props.isGuest ? 'guest-downvote' : 'authenticated-downvote'} /></div>
             </div>
             <div className='view-and-answer-count'>
               <span className="answer-count">{question.answers.length} answers</span>

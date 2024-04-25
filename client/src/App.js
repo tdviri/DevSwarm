@@ -182,7 +182,7 @@ function App() {
       <Welcome setIsGuest={setIsGuest} setShowLoginPage={setShowLoginPage} setShowRegisterPage={setShowRegisterPage} />
     )}
     {showLoginPage && <Login users={users} setShowLoginPage={setShowLoginPage} setIsLoggedIn={setIsLoggedIn} setLoggedInUser={setLoggedInUser} />}
-    {showRegisterPage && <Register setUsers={setUsers} setShowRegisterPage={setShowRegisterPage} setShowLoginPage={setShowLoginPage}/>}
+    {showRegisterPage && <Register users={users} setUsers={setUsers} setShowRegisterPage={setShowRegisterPage} setShowLoginPage={setShowLoginPage}/>}
       {questions && answers && tags && (isLoggedIn || isGuest) &&
         <div> 
           <Navbar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} setIsGuest={setIsGuest} setSortField={setSortField} setCurrentTag={setCurrentTag} setSearch={setSearch} />
