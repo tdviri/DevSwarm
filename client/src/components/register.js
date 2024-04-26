@@ -24,54 +24,52 @@ export default function Register(props) {
         setPasswordContainsName(false);
         setPasswordContainsEmail(false);
         let valid = true;
-        const emailID = email.split("@")[0];
 
-        const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-  
-        if (!emailRegex.test(email)){
-            setIsInvalidEmail(true);
-            valid = false;
-        }
-
-        if (password !== verifyPassword){
-            setDifferentPasswords(true);
-            valid = false;
-        }
-        if (password.indexOf(emailID) !== -1){
-            setPasswordContainsEmail(true);
-            valid = false;
-        }
-        if (password.indexOf(username) !== -1){
-            setPasswordContainsUsername(true);
-            valid = false;
-        }
-        
-        if (password.indexOf(firstName) !== -1 || password.indexOf(lastName) !== -1){
-            setPasswordContainsEmail(true);
-            valid = false;
-        }
-
-        if (props.users){
-            for (const user of props.users){
-                if (user.email === email){
-                    setEmailExists(true);
-                    valid = false;
-                }
-            }
-        }
-
-        if (!valid){
-            return;
-        }
         let newUser = {
             firstName: firstName,
             lastName: lastName,
             email: email,
             username: username,
             password: password,
+            verifyPassword: verifyPassword,
             reputation: 0
         }
-        await axios.put('http://localhost:8000/addUser', newUser);
+        try {
+            await axios.post('/api/register', newUser);
+        }
+        catch(error){
+            if (error.response.data.errorMessage === 'Email is invalid.') {
+                setIsInvalidEmail(true);
+                valid = false;
+            }
+            if (error.response.data.errorMessage === "Email is already registered."){
+                setEmailExists(true);
+                valid = false;
+            }
+            if (error.response.data.errorMessage === "Passwords do not match."){
+                setDifferentPasswords(true);
+                valid = false;
+            }
+            if (error.response.data.errorMessage === "Password cannot contain your email."){
+                setPasswordContainsEmail(true);
+                valid = false;
+            }
+            if (error.response.data.errorMessage === "Password cannot contain your username."){
+                setPasswordContainsUsername(true);
+                valid = false;
+            }
+            if (error.response.data.errorMessage === "Password cannot contain your name."){
+                setPasswordContainsName(true);
+                valid = false;
+            }
+            else{
+                console.error('Registration failed:', error.message);
+            }
+        }
+
+        if (!valid){
+            return;
+        }
         props.setShowRegisterPage(false);
         props.setShowLoginPage(true);
       }
