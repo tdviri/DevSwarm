@@ -1,7 +1,7 @@
 const express = require('express');
 const router = express.Router();
 const QuestionController = require('./controllers/questionController');
-const auth = require('./auth');
+const auth = require('../middleware/auth');
 
 router.get('/retrievequestions', auth.verify, QuestionController.retrieveQuestions)
 router.put('/addquestion', auth.verify, QuestionController.addQuestion)
