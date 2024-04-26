@@ -5,6 +5,7 @@
 require('dotenv').config();
 const express = require('express');
 const cors = require('cors'); 
+const cookieParser = require('cookie-parser');
 const mongoose = require('mongoose');
 const userRoutes = require('./routes/userRoutes');
 const answerRoutes = require('./routes/answerRoutes');
@@ -14,6 +15,7 @@ const questionRoutes = require('./routes/questionRoutes');
 const app = express();
 app.use(cors());
 app.use(express.json());
+app.use(cookieParser());
 
 app.get("/", function (req, res) {
     res.send("Hello World!");
@@ -51,7 +53,7 @@ process.on('SIGINT', () => {
     });
 });
 
-app.use('/api/users', userRoutes);
-app.use('/api/answers', answerRoutes);
-app.use('/api/tags', tagRoutes);
-app.use('/api/questions', questionRoutes);
+app.use('/', userRoutes);
+app.use('/', answerRoutes);
+app.use('/', tagRoutes);
+app.use('/', questionRoutes);

@@ -1,11 +1,11 @@
 const express = require('express');
 const router = express.Router();
-const QuestionController = require('./controllers/questionController');
+const QuestionController = require('../controllers/questionController');
 const auth = require('../middleware/auth');
 
-router.get('/retrievequestions', auth.verify, QuestionController.retrieveQuestions)
-router.put('/addquestion', auth.verify, QuestionController.addQuestion)
-router.put('/updatequestions', auth.verify, QuestionController.updateQuestions)
-route.post('/handlevote', auth.verify, QuestionController.handleVote);
+router.get('/api/retrievequestions', auth, QuestionController.retrieveQuestions)
+router.put('/api/addquestion', auth, QuestionController.addQuestion)
+router.put('/api/updatequestions', auth, QuestionController.updateQuestions)
+router.post('/api/handlevote', auth, QuestionController.handleVote);
 
 module.exports = router;

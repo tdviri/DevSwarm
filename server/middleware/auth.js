@@ -1,7 +1,7 @@
 const jwt = require("jsonwebtoken");
 require('dotenv').config();
 
-function authManager() {
+function authManager(req, res, next) {
     try {
         const token = req.cookies.token; 
         if (!token) {
@@ -17,5 +17,4 @@ function authManager() {
     }
 }
 
-const auth = authManager();
-module.exports = auth;
+module.exports = authManager; 

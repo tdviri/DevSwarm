@@ -1,4 +1,4 @@
-const Answer = require('./models/answers');
+const Answer = require('../models/answers');
 
 const AnswerController = {
   async retrieveAnswers(req, res) {

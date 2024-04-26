@@ -57,7 +57,7 @@ export default function AskQuestionForm(props) {
           if (!matchedTag) { 
             let newTag = {name: userTag};
             tagsArr.push(newTag)
-            const resp = await axios.put('http://localhost:8000/updatetags', newTag);
+            const resp = await axios.put('/api/updatetags', newTag);
             tagIdsArr.push(resp.data._id);
           }
         }

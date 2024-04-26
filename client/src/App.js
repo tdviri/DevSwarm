@@ -50,13 +50,13 @@ function App() {
   }, [])
 
   async function fetchData() {
-    response = await axios.get('http://localhost:8000/retrievequestions'); 
+    response = await axios.get('/api/retrievequestions'); 
     setQuestions(response.data);
-    response = await axios.get('http://localhost:8000/retrieveanswers');
+    response = await axios.get('/api/retrieveanswers');
     setAnswers(response.data);
-    response = await axios.get('http://localhost:8000/retrievetags');
+    response = await axios.get('/api/retrievetags');
     setTags(response.data);
-    response = await axios.get('http://localhost:8000/retrieveusers');
+    response = await axios.get('/api/retrieveusers');
     setUsers(response.data);
  }
 
@@ -65,7 +65,7 @@ function App() {
     setDisplayAnswers(showAnswers);
     setAnswerPageIndex(index);
     questionsArr[index].views++;
-    await axios.put('http://localhost:8000/updatequestions', questionsArr);
+    await axios.put('/api/updatequestions', questionsArr);
     fetchData();
   }
 
@@ -98,7 +98,7 @@ function App() {
   }
 
   async function addNewQuestion(newQuestion){
-    await axios.put('http://localhost:8000/addquestion', newQuestion);
+    await axios.put('/api/addquestion', newQuestion);
     fetchData();
   }
 

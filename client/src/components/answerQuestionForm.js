@@ -15,7 +15,7 @@ export default function AnswerQuestionForm(props) {
     const ansArr = [...props.answers];
     const questionsArr = [...props.questions];
     ansArr.push(newAnswer);
-    const resp = await axios.put('http://localhost:8000/updateanswers', newAnswer);
+    const resp = await axios.put('/api/updateanswers', newAnswer);
     questionsArr[props.answerPageIndex].answers.push(resp.data._id);
     ansArr.sort(function(a, b){
       return b.ans_date_time - a.ans_date_time;

@@ -1,9 +1,9 @@
 const express = require('express');
 const router = express.Router();
-const TagController = require('./controllers/tagController');
+const TagController = require('../controllers/tagController');
 const auth = require('../middleware/auth');
 
-router.get('/retrievetags', auth.verify, TagController.retrieveTags)
-router.put('/updatetags', auth.verify, TagController.updateTags)
+router.get('/api/retrievetags', auth, TagController.retrieveTags)
+router.put('/api/updatetags', auth, TagController.updateTags)
 
 module.exports = router;
