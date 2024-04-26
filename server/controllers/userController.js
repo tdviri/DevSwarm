@@ -33,7 +33,7 @@ const UserController = {
   },
 
   async logoutUser(req, res) {
-    
+    await res.cookie().status(200).json({success: true}).send();
   },
 
   async getLoggedIn(req, res) {
