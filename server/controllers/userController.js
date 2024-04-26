@@ -15,10 +15,10 @@ const UserController = {
     }
   },
 
-  async loginUser(req, res) {
+  loginUser(req, res) {
     const savedUser = req.body
     const token = jwt.sign({ userId: savedUser._id }, process.env.JWT_SECRET);
-    await res.cookie("token", token, {
+    res.cookie("token", token, {
         httpOnly: true, secure: true, sameSite: "none"
     }).status(200).json({
     success: true,
@@ -32,8 +32,9 @@ const UserController = {
     }}).send();
   },
 
-  async logoutUser(req, res) {
-    await res.cookie().status(200).json({success: true}).send();
+  logoutUser(req, res) {
+    res.cookie('token', '', { expires: new Date(0), httpOnly: true, secure: true, sameSite: 'none' });
+    res.status(200).json({ success: true }).send();
   },
 
   async getLoggedIn(req, res) {
@@ -50,7 +51,6 @@ const UserController = {
     await User.create(newData);
     res.send();
   }
-
 };
 
 module.exports = UserController;
