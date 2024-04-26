@@ -3,6 +3,7 @@ import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { FaArrowUp, FaArrowDown } from 'react-icons/fa';
 import axios from 'axios';
+// axios.defaults.withCredentials = true;
 
 export default function QuestionPosts(props) {
     const [startIndex, setStartIndex] = useState(0);
@@ -66,7 +67,7 @@ export default function QuestionPosts(props) {
         return;
       }
       try {
-        await axios.post('/api/handlevote', upvote, question);
+        await axios.post('http://localhost:8000/api/handlevote', upvote, question);
       } catch(error){
         if (error.response.data.errorMessage === "Must have at least 50 reputation points to vote."){
           alert("Must have at least 50 reputation points to vote.");

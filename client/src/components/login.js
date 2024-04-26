@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import '../stylesheets/App.css';
 import axios from 'axios';
+// axios.defaults.withCredentials = true;
 
 export default function Login(props) {
     const [unregisteredEmail, setUnregisteredEmail] = useState(false);

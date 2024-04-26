@@ -2,6 +2,7 @@ import React from 'react';
 import '../stylesheets/App.css';
 import Searchbar from './searchbar.js';
 import axios from 'axios';
+// axios.defaults.withCredentials = true;
 
 export default function Navbar(props) {
 

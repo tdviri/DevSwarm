@@ -63,13 +63,12 @@ const UserController = {
     const savedUser = await User.findOne({email: req.body.email});
     const token = jwt.sign({ userId: savedUser._id }, 'JWT$3cr3tKey!#2024');
     res.cookie("token", token, {
-        httpOnly: true, secure: true, sameSite: "none"
+        httpOnly: true, secure: false, sameSite: "none"
     }).status(200).json({success: true}).send();
-
   },
 
   logoutUser(req, res) {
-    res.cookie('token', '', { expires: new Date(0), httpOnly: true, secure: true, sameSite: 'none' });
+    res.cookie('token', '', { expires: new Date(0), httpOnly: true, secure: false, sameSite: 'none' });
     res.status(200).json({ success: true }).send();
   },
 

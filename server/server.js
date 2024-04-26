@@ -13,7 +13,14 @@ const tagRoutes = require('./routes/tagRoutes');
 const questionRoutes = require('./routes/questionRoutes');
 
 const app = express();
-app.use(cors());
+const corsOptions = {
+    origin: 'http://localhost:3000', 
+    credentials: true, 
+    optionsSuccessStatus: 200 
+};
+  
+app.use(cors(corsOptions));
+// app.use(cors());
 app.use(express.json());
 app.use(cookieParser());
 

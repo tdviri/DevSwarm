@@ -10,6 +10,7 @@ import Register from './components/register.js';
 import Login from './components/login.js';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
+// axios.defaults.withCredentials = true;
 
 function getMostRecentAnswerTime(question, answers) {
     let mostRecentAnswerTime = 0;

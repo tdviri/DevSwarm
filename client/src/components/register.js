@@ -2,6 +2,7 @@ import React from 'react';
 import '../stylesheets/App.css';
 import axios from 'axios';
 import { useState } from 'react';
+// axios.defaults.withCredentials = true;
 
 export default function Register(props) {
     const [differentPasswords, setDifferentPasswords] = useState(false);
