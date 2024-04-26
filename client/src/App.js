@@ -49,10 +49,6 @@ function App() {
     fetchData();
   }, [])
 
-  // useEffect(()=> {
-  //   fetchData();
-  // }, [isLoggedIn])
-
   async function fetchData() {
     // if (isLoggedIn){
       response = await axios.get('http://localhost:8000/api/retrievequestions'); 
