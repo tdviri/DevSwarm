@@ -2,35 +2,18 @@
 // Run this script to launch the server.
 // The server should run on localhost port 8000.
 // This is where you should start writing server-side code for this application.
+require('dotenv').config();
 const express = require('express');
 const cors = require('cors'); 
 const mongoose = require('mongoose');
-const bcrypt = require('bcryptjs'); 
-const jwt = require('jsonwebtoken');
-const Question = require('./models/questions');
-const Answer = require('./models/answers');
-const Tag = require('./models/tags');
-const User = require('./models/users');
+const userRoutes = require('./routes/userRoutes');
+const answerRoutes = require('./routes/answerRoutes');
+const tagRoutes = require('./routes/tagRoutes');
+const questionRoutes = require('./routes/questionRoutes');
 
 const app = express();
-const router = express.Router(); 
 app.use(cors());
-app.use(express.json()); 
-
-const JWT_SECRET = 'your_secret_key';
-
-const verifyToken = (req, res, next) => {
-    try {
-        const token = req.cookies.token; 
-        if (!token) {
-            return res.status(401).json({ errorMessage: "Unauthorized" });
-        }
-        const verified = jwt.verify(token, process.env.JWT_SECRET);
-        next();
-    } catch (err) {
-        return res.status(401).json({ errorMessage: "Unauthorized" });
-    }
-};
+app.use(express.json());
 
 app.get("/", function (req, res) {
     res.send("Hello World!");
@@ -68,58 +51,7 @@ process.on('SIGINT', () => {
     });
 });
 
-router.post('/register', UserController.registerUser)
-router.post('/login', UserController.loginUser)
-router.get('/logout', UserController.logoutUser)
-router.get('/loggedIn', UserController.getLoggedIn)
-
-app.get('/retrievequestions', async(req, res)=>{
-    const questions = await Question.find();
-    res.send(questions);
-})
-
-app.get('/retrieveanswers', async(req, res)=>{
-    const answers = await Answer.find();
-    res.send(answers);
-})
-
-app.get('/retrievetags', async(req, res)=>{
-    const tags = await Tag.find();
-    res.send(tags);
-})
-
-app.get('/retrieveusers', async(req, res)=>{
-    const users = await User.find();
-    res.send(users);
-})
-
-app.put('/updatequestions', async(req, res)=> {
-    const newData = req.body;
-    await Question.deleteMany({}); 
-    await Question.insertMany(newData); 
-    res.send();
-})
-
-app.put('/updateanswers', async(req, res)=> {
-    const newData = req.body;
-    const insertedAnswer = await Answer.create(newData);
-    res.send(insertedAnswer); 
-})
-
-app.put('/updatetags', async(req, res)=> {
-    const newData = req.body;
-    const insertedTag = await Tag.create(newData);
-    res.send(insertedTag); 
-})
-
-app.put('/addquestion', async(req, res)=>{
-    const newData = req.body;
-    const insertedQuestion = await Question.create(newData);
-    res.send(insertedQuestion); 
-})
-
-app.put('/addUser', async(req, res)=>{
-    const newData = req.body;
-    await User.create(newData);
-    res.send();
-})
+app.use('/api/users', userRoutes);
+app.use('/api/answers', answerRoutes);
+app.use('/api/tags', tagRoutes);
+app.use('/api/questions', questionRoutes);

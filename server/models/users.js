@@ -9,7 +9,7 @@ var UserSchema = new Schema({
     username: {type: String, required: true},
     passwordHash: {type: String, required: true},
     reputation: {type: Number, required: true}
-});
+}, { timestamps: true });
 
 UserSchema
 .virtual('url')

@@ -1,0 +1,1 @@
+const JWT_SECRET = 'JWT$3cr3tKey!#2024';

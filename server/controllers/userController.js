@@ -38,7 +38,19 @@ const UserController = {
 
   async getLoggedIn(req, res) {
     
+  },
+
+  async retrieveUsers(req, res) {
+    const users = await User.find();
+    res.send(users);
+  },
+
+  async addUser(req, res) {
+    const newData = req.body;
+    await User.create(newData);
+    res.send();
   }
+
 };
 
 module.exports = UserController;
