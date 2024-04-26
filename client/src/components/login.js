@@ -5,6 +5,7 @@ import axios from 'axios';
 export default function Login(props) {
     const [unregisteredEmail, setUnregisteredEmail] = useState(false);
     const [incorrectPassword, setIncorrectPassword] = useState(false);
+    const [accountNotFound, setAccountNotFound] = useState(false);
 
     async function handleSubmit(e) {
         e.preventDefault();
@@ -13,43 +14,37 @@ export default function Login(props) {
         const password = formValues.get('password');
         setUnregisteredEmail(false);
         setIncorrectPassword(false);
-        let valid = false;
-        let emailNotFound = true;
-        let loggedInUser;
+        setAccountNotFound(false);
+        let valid = true;
 
-        // await axios.post('/api/login', {email, password});
-
-        if (props.users) {
-            for (const user of props.users){
-                if (email === user.email){
-                    emailNotFound = false;
-                    if (password === user.password){
-                        valid = true;
-                        loggedInUser = user;
-                    }
-                    else{
-                        valid = false;
-                        setIncorrectPassword(true);
-                    }
-                    break;
-                }
-            }
-
-            if (emailNotFound){
+        try {
+            await axios.post('/api/login', {email, password});
+        }
+        catch(error){
+            if (error.response.data.errorMessage === 'Email is not registered.') {
                 setUnregisteredEmail(true);
                 valid = false;
             }
-        } 
-        else {
-            valid = false;
+            if (error.response.data.errorMessage === 'Password is incorrect.') {
+                setIncorrectPassword(true);
+                valid = false;
+            }
+            if (error.response.data.errorMessage === 'Account not found.') {
+                setAccountNotFound(true);
+                valid = false;
+            }
+            else if (error.request) {
+                alert('Communication error: Unable to connect to the server. Please try again later.');
+            } 
+            else {
+                alert('System error: Login failed');
+            }
         }
 
         if (!valid){
-            console.log("invalid form")
             return;
         }
         props.setIsLoggedIn(true);
-        props.setLoggedInUser(loggedInUser);
         props.setShowLoginPage(false);
     }
 
@@ -70,6 +65,7 @@ export default function Login(props) {
                 <div className="register-form-error-messages">
                     {unregisteredEmail && <div className="register-error-message">Email is not registered.</div>}
                     {incorrectPassword && <div className="register-error-message">Password is incorrect.</div>}
+                    {accountNotFound && <div className="register-error-message">Account not found.</div>}
                 </div>
             </form>
     );

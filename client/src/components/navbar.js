@@ -1,12 +1,22 @@
 import React from 'react';
 import '../stylesheets/App.css';
 import Searchbar from './searchbar.js';
+import axios from 'axios';
 
 export default function Navbar(props) {
 
-  function logOut(){
-    props.setIsLoggedIn(false);
-    props.setIsGuest(false);
+  async function logOut(){
+    try {
+      await axios.post('/api/logout');
+    } catch (error){
+      if (error.request) {
+        alert('Communication error: Unable to connect to the server. Please try again later.');
+      } 
+      else {
+        alert('System error: Registration failed');
+      }
+    }
+    props.goToWelcomePage();
   }
 
   return (

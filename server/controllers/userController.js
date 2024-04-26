@@ -48,8 +48,18 @@ const UserController = {
     res.send();
   },
 
-  loginUser(req, res) {
-    const savedUser = req.body
+  async loginUser(req, res) {
+    try {
+      await User.findOne({ email: req.body.email });
+    } catch(error){return res.status(401).json({errorMessage: "Email is not registered."})}
+    try {
+      await User.findOne({password: req.body.password})
+    } catch(error){return res.status(401).json({errorMessage: "Password is incorrect."})}
+    try {
+      await User.findOne({email: req.body.email, password: req.body.password})
+    } catch(error){return res.status(401).json({errorMessage: "Account not found."})}
+
+    const savedUser = await User.findOne({email: req.body.email});
     const token = jwt.sign({ userId: savedUser._id }, process.env.JWT_SECRET);
     res.cookie("token", token, {
         httpOnly: true, secure: true, sameSite: "none"

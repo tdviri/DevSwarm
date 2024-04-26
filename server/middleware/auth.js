@@ -7,8 +7,9 @@ function authManager() {
         if (!token) {
             return res.status(401).json({ errorMessage: "Unauthorized" });
         }
-        const verified = jwt.verify(token, process.env.JWT_SECRET);
-        req.userId = verified.userId; // SEND ON THE USER INFO
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
+        req.user = decoded;
+        req.userId = decoded.userId; // SEND ON THE USER INFO
         next(); // NOW EXCECUTE CONTROLLER CODE (OR THE NEXT MIDDLEWARE)
     } 
     catch (err) {

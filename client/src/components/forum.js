@@ -40,7 +40,7 @@ export default function Forum(props) {
             </div>
           </div>)}
         {props.questions.length === 0 && <NoQuestionsFound/>}
-        {props.questions.length !== 0 && !props.displayTagsPage && <QuestionPosts isGuest={props.isGuest} loggedInuser={props.loggedInUser} tags={props.tags} answers={props.answers} setIsDisplayAnswerForm={props.setIsDisplayAnswerForm} handleAnswerPageIndex={props.handleAnswerPageIndex} answerPageIndex={props.answerPageIndex} questions={props.questions}/>}
+        {props.questions.length !== 0 && !props.displayTagsPage && <QuestionPosts goToWelcomePage={props.goToWelcomePage} isGuest={props.isGuest} loggedInuser={props.loggedInUser} tags={props.tags} answers={props.answers} setIsDisplayAnswerForm={props.setIsDisplayAnswerForm} handleAnswerPageIndex={props.handleAnswerPageIndex} answerPageIndex={props.answerPageIndex} questions={props.questions}/>}
         </div>}
         {props.displayTagsPage && <Tags isLoggedIn={props.isLoggedIn} setSearch={props.setSearch} setCurrentTag={props.setCurrentTag} setDisplayTagsPage={props.setDisplayTagsPage} tags={props.tags} handleAskQuestionBtn={props.handleAskQuestionBtn} />}
   </div>

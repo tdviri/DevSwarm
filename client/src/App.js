@@ -176,6 +176,17 @@ function App() {
     setIsUnansweredBtnClick(false);
   }
 
+  function goToLoginPage(){
+    setShowLoginPage(true);
+  }
+
+  function goToWelcomePage(){
+    setIsLoggedIn(false);
+    setIsGuest(false);
+    setShowLoginPage(false);
+    setShowRegisterPage(false);
+  }
+
   return (
   <div className="body">
     {!isLoggedIn && !isGuest && !showLoginPage && !showRegisterPage && (
@@ -185,10 +196,10 @@ function App() {
     {showRegisterPage && <Register users={users} setUsers={setUsers} setShowRegisterPage={setShowRegisterPage} setShowLoginPage={setShowLoginPage}/>}
       {questions && answers && tags && (isLoggedIn || isGuest) &&
         <div> 
-          <Navbar isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} setIsGuest={setIsGuest} setSortField={setSortField} setCurrentTag={setCurrentTag} setSearch={setSearch} />
+          <Navbar goToWelcomePage={goToWelcomePage} isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} setIsGuest={setIsGuest} setSortField={setSortField} setCurrentTag={setCurrentTag} setSearch={setSearch} />
           <div id="main" className="main">
             <Sidebar toggleDisplayTagsPage={toggleDisplayTagsPage} />
-            <Forum isGuest={isGuest} isLoggedIn={isLoggedIn} answers={answers} displayTagsPage={displayTagsPage} displayAnswers={displayAnswers} loggedInUser={loggedInUser}
+            <Forum goToWelcomePage={goToWelcomePage} isGuest={isGuest} isLoggedIn={isLoggedIn} answers={answers} displayTagsPage={displayTagsPage} displayAnswers={displayAnswers} loggedInUser={loggedInUser}
              setSearch={setSearch} setCurrentTag={setCurrentTag} toggleUnansweredBtnClicked={toggleUnansweredBtnClicked} setSortField={handleSort} addNewQuestion={addNewQuestion} answerPageIndex={answerPageIndex} displayAnswerForm={displayAnswerForm} showAnswerForm={showAnswerForm} handleAskQuestionBtn={handleAskQuestionBtn} isAskQuestionBtnClicked={isAskQuestionBtnClicked} setDisplayTagsPage={setDisplayTagsPage} tags={mapTags} ansArray={answers} setQuestions={setQuestions} handleAnswerPageIndex={handleAnswerPageIndex} isNoQuestionsFound={isNoQuestionsFound} questions={getSorted()}
             />
           </div>

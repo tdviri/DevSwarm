@@ -23,6 +23,9 @@ export default function Register(props) {
         setDifferentPasswords(false);
         setPasswordContainsName(false);
         setPasswordContainsEmail(false);
+        setPasswordContainsUsername(false);
+        setEmailExists(false);
+        setIsInvalidEmail(false);
         let valid = true;
 
         let newUser = {
@@ -62,8 +65,11 @@ export default function Register(props) {
                 setPasswordContainsName(true);
                 valid = false;
             }
-            else{
-                console.error('Registration failed:', error.message);
+            else if (error.request) {
+                alert('Communication error: Unable to connect to the server. Please try again later.');
+            } 
+            else {
+                alert('System error: Registration failed');
             }
         }
 
