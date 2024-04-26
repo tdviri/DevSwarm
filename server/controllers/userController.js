@@ -1,4 +1,6 @@
 const User = require('../models/users');
+const jwt = require('jsonwebtoken'); 
+const bcrypt = require('bcrypt');
 
 const UserController = {
   async registerUser(req, res) {
@@ -13,7 +15,7 @@ const UserController = {
         email: req.body.email,
         username: req.body.username,
         passwordHash: passwordHash,
-        reputation: 0
+        reputation: 50
     });
     const emailID = newUser.email.split("@")[0];
     const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -23,9 +25,8 @@ const UserController = {
     const isPasswordContainsEmail = (password.indexOf(emailID) !== -1);
     const isPasswordContainsUsername = (password.indexOf(username) !== -1);
     const isPasswordContainsName = (password.indexOf(newUser.firstName) !== -1 || password.indexOf(newUser.lastName) !== -1);
-    try {
-      await User.findOne({ email: newUser.email });
-    } catch (error) {
+    let user = User.findOne({ email: newUser.email });
+    if (!user){
       return res.status(401).json({errorMessage: "Email is already registered."})
     }
 
@@ -49,18 +50,21 @@ const UserController = {
   },
 
   async loginUser(req, res) {
-    try {
-      await User.findOne({ email: req.body.email });
-    } catch(error){return res.status(401).json({errorMessage: "Email is not registered."})}
-    try {
-      await User.findOne({password: req.body.password})
-    } catch(error){return res.status(401).json({errorMessage: "Password is incorrect."})}
-    try {
-      await User.findOne({email: req.body.email, password: req.body.password})
-    } catch(error){return res.status(401).json({errorMessage: "Account not found."})}
+      let user = await User.findOne({ email: req.body.email });
+      if (!user){
+        return res.status(401).json({errorMessage: "Email is not registered."})
+      }
+      user = await User.findOne({password: req.body.password});
+      if (!user){
+        return res.status(401).json({errorMessage: "Password is incorrect."})
+      }
+      user = await User.findOne({email: req.body.email});
+      if (!user){
+        return res.status(401).json({errorMessage: "Account not found."})
+      }
 
     const savedUser = await User.findOne({email: req.body.email});
-    const token = jwt.sign({ userId: savedUser._id }, process.env.JWT_SECRET);
+    const token = jwt.sign({ userId: savedUser._id }, 'JWT$3cr3tKey!#2024');
     res.cookie("token", token, {
         httpOnly: true, secure: true, sameSite: "none"
     }).status(200).json({success: true}).send();

@@ -35,41 +35,43 @@ export default function Register(props) {
             username: username,
             password: password,
             verifyPassword: verifyPassword,
-            reputation: 0
+            reputation: 50
         }
         try {
             await axios.post('http://localhost:8000/api/register', newUser);
         }
         catch(error){
-            if (error.response.data.errorMessage === 'Email is invalid.') {
+            if (error.response && error.response.data.errorMessage === 'Email is invalid.') {
                 setIsInvalidEmail(true);
                 valid = false;
             }
-            if (error.response.data.errorMessage === "Email is already registered."){
+            if (error.response && error.response.data.errorMessage === "Email is already registered."){
                 setEmailExists(true);
                 valid = false;
             }
-            if (error.response.data.errorMessage === "Passwords do not match."){
+            if (error.response && error.response.data.errorMessage === "Passwords do not match."){
                 setDifferentPasswords(true);
                 valid = false;
             }
-            if (error.response.data.errorMessage === "Password cannot contain your email."){
+            if (error.response && error.response.data.errorMessage === "Password cannot contain your email."){
                 setPasswordContainsEmail(true);
                 valid = false;
             }
-            if (error.response.data.errorMessage === "Password cannot contain your username."){
+            if (error.response && error.response.data.errorMessage === "Password cannot contain your username."){
                 setPasswordContainsUsername(true);
                 valid = false;
             }
-            if (error.response.data.errorMessage === "Password cannot contain your name."){
+            if (error.response && error.response.data.errorMessage === "Password cannot contain your name."){
                 setPasswordContainsName(true);
                 valid = false;
             }
             else if (error.request) {
                 alert('Communication error: Unable to connect to the server. Please try again later.');
+                valid = false;
             } 
             else {
                 alert('System error: Registration failed');
+                valid = false;
             }
         }
 

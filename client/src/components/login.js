@@ -21,23 +21,25 @@ export default function Login(props) {
             await axios.post('http://localhost:8000/api/login', {email, password});
         }
         catch(error){
-            if (error.response.data.errorMessage === 'Email is not registered.') {
+            if (error.response && error.response.data.errorMessage === 'Email is not registered.') {
                 setUnregisteredEmail(true);
                 valid = false;
             }
-            if (error.response.data.errorMessage === 'Password is incorrect.') {
+            if (error.response && error.response.data.errorMessage === 'Password is incorrect.') {
                 setIncorrectPassword(true);
                 valid = false;
             }
-            if (error.response.data.errorMessage === 'Account not found.') {
+            if (error.response && error.response.data.errorMessage === 'Account not found.') {
                 setAccountNotFound(true);
                 valid = false;
             }
             else if (error.request) {
                 alert('Communication error: Unable to connect to the server. Please try again later.');
+                valid = false;
             } 
             else {
                 alert('System error: Login failed');
+                valid = false;
             }
         }
 

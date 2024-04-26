@@ -6,7 +6,6 @@ export default function Answers(props) {
     const [startIndex, setStartIndex] = useState(0);
     let currTime = new Date();
     let elapsedTime = currTime.getTime() - new Date(props.questions[props.answerPageIndex].ask_date_time).getTime();
-    console.log(elapsedTime)
     let answerPosts = [];
     let answerPage;
     let startYear = new Date(props.questions[props.answerPageIndex].ask_date_time).getFullYear();
