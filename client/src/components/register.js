@@ -24,7 +24,7 @@ export default function Register(props) {
         setPasswordContainsName(false);
         setPasswordContainsEmail(false);
         let valid = true;
-        const emailID = email.match(/^([^@]*)@/)[1];
+        const emailID = email.split("@")[0];
 
         const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
   

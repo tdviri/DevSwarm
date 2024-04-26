@@ -5,14 +5,32 @@
 const express = require('express');
 const cors = require('cors'); 
 const mongoose = require('mongoose');
+const bcrypt = require('bcryptjs'); 
+const jwt = require('jsonwebtoken');
 const Question = require('./models/questions');
 const Answer = require('./models/answers');
 const Tag = require('./models/tags');
 const User = require('./models/users');
 
 const app = express();
+const router = express.Router(); 
 app.use(cors());
 app.use(express.json()); 
+
+const JWT_SECRET = 'your_secret_key';
+
+const verifyToken = (req, res, next) => {
+    try {
+        const token = req.cookies.token; 
+        if (!token) {
+            return res.status(401).json({ errorMessage: "Unauthorized" });
+        }
+        const verified = jwt.verify(token, process.env.JWT_SECRET);
+        next();
+    } catch (err) {
+        return res.status(401).json({ errorMessage: "Unauthorized" });
+    }
+};
 
 app.get("/", function (req, res) {
     res.send("Hello World!");
@@ -22,7 +40,7 @@ const PORT = 8000;
 
 const server = app.listen(PORT, () => {
     console.log(`Example app listening on port ${PORT}`)
-    })
+})
     
 
 // Connect to MongoDB
@@ -50,6 +68,10 @@ process.on('SIGINT', () => {
     });
 });
 
+router.post('/register', UserController.registerUser)
+router.post('/login', UserController.loginUser)
+router.get('/logout', UserController.logoutUser)
+router.get('/loggedIn', UserController.getLoggedIn)
 
 app.get('/retrievequestions', async(req, res)=>{
     const questions = await Question.find();
