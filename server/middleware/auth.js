@@ -3,9 +3,9 @@ require('dotenv').config();
 
 function authManager(req, res, next) {
     console.log("authorizing...")
+    console.log("req: ", req.cookies.token);
     try {
         const token = req.cookies.token; 
-        console.log(token)
         if (!token) {
             return res.status(401).json({ errorMessage: "Unauthorized" });
         }

@@ -4,8 +4,8 @@ const bcrypt = require('bcrypt');
 
 const UserController = {
   async registerUser(req, res) {
-    const password = req.body.newUser.password;
-    const verifyPassword = req.body.newUser.verifyPassword;
+    const password = req.body.password;
+    const verifyPassword = req.body.verifyPassword;
     const saltRounds = 10;
     const salt = await bcrypt.genSalt(saltRounds);
     const passwordHash = await bcrypt.hash(password, salt);
@@ -23,7 +23,7 @@ const UserController = {
     const isInvalidEmail = !emailRegex.test(newUser.email);
     const isDifferentPasswords = (password !== verifyPassword);
     const isPasswordContainsEmail = (password.indexOf(emailID) !== -1);
-    const isPasswordContainsUsername = (password.indexOf(username) !== -1);
+    const isPasswordContainsUsername = (password.indexOf(newUser.username) !== -1);
     const isPasswordContainsName = (password.indexOf(newUser.firstName) !== -1 || password.indexOf(newUser.lastName) !== -1);
     let user = User.findOne({ email: newUser.email });
     if (!user){
@@ -54,13 +54,10 @@ const UserController = {
       if (!user){
         return res.status(401).json({errorMessage: "Email is not registered."})
       }
-      user = await User.findOne({password: req.body.password});
-      if (!user){
+      
+      const passwordMatch = await bcrypt.compare(req.body.password, user.passwordHash);
+      if (!passwordMatch){
         return res.status(401).json({errorMessage: "Password is incorrect."})
-      }
-      user = await User.findOne({email: req.body.email});
-      if (!user){
-        return res.status(401).json({errorMessage: "Account not found."})
       }
 
     const savedUser = await User.findOne({email: req.body.email});
