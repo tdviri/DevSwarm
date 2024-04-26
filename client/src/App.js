@@ -49,8 +49,12 @@ function App() {
     fetchData();
   }, [])
 
+  // useEffect(()=> {
+  //   fetchData();
+  // }, [isLoggedIn])
+
   async function fetchData() {
-    if (isGuest || (isLoggedIn && !isGuest)){
+    // if (isLoggedIn){
       response = await axios.get('http://localhost:8000/api/retrievequestions'); 
       setQuestions(response.data);
       response = await axios.get('http://localhost:8000/api/retrieveanswers');
@@ -59,7 +63,7 @@ function App() {
       setTags(response.data);
       // response = await axios.get('http://localhost:8000/api/retrieveusers');
       // setUsers(response.data);
-    }
+    // }
  }
 
   async function handleAnswerPageIndex(index, questionsArr, answerArr, showAnswers){

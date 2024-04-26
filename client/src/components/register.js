@@ -38,7 +38,7 @@ export default function Register(props) {
             reputation: 0
         }
         try {
-            await axios.post('/api/register', newUser);
+            await axios.post('http://localhost:8000/api/register', newUser);
         }
         catch(error){
             if (error.response.data.errorMessage === 'Email is invalid.') {

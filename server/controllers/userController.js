@@ -76,10 +76,10 @@ const UserController = {
     
   },
 
-  async retrieveUsers(req, res) {
-    const users = await User.find();
-    res.send(users);
-  },
+  // async retrieveUsers(req, res) {
+  //   const users = await User.find();
+  //   res.send(users);
+  // },
 
   async addUser(req, res) {
     const newData = req.body;

@@ -18,7 +18,7 @@ export default function Login(props) {
         let valid = true;
 
         try {
-            await axios.post('/api/login', {email, password});
+            await axios.post('http://localhost:8000/api/login', {email, password});
         }
         catch(error){
             if (error.response.data.errorMessage === 'Email is not registered.') {
