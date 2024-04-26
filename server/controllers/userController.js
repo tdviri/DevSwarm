@@ -4,9 +4,14 @@ const UserController = {
   async registerUser(req, res) {
     const saltRounds = 10;
     const salt = await bcrypt.genSalt(saltRounds);
-    const passwordHash = await bcrypt.hash(password, salt);
+    const passwordHash = await bcrypt.hash(req.body.password, salt);
     const newUser = new User({
-        firstName, lastName, email, username, passwordHash, reputation
+        firstName: req.body.firstName, 
+        lastName: req.body.lastName,
+        email: req.body.email,
+        username: req.body.username,
+        passwordHash: passwordHash,
+        reputation: 0
     });
     const savedUser = await newUser.save();
     const passwordCorrect = await bcrypt.compare(password, existingUser.passwordHash);
@@ -22,12 +27,8 @@ const UserController = {
         httpOnly: true, secure: true, sameSite: "none"
     }).status(200).json({
     success: true,
-    user: {
-        firstName: savedUser.firstName,
-        lastName: savedUser.lastName,
-        email: savedUser.email,
+    userInfo: {
         username: savedUser.username,
-        passwordHash: savedUser.passwordHash,
         reputation: savedUser.reputation
     }}).send();
   },
