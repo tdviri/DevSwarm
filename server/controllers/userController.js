@@ -25,12 +25,7 @@ const UserController = {
     const token = jwt.sign({ userId: savedUser._id }, process.env.JWT_SECRET);
     res.cookie("token", token, {
         httpOnly: true, secure: true, sameSite: "none"
-    }).status(200).json({
-    success: true,
-    userInfo: {
-        username: savedUser.username,
-        reputation: savedUser.reputation
-    }}).send();
+    }).status(200).json({success: true}).send();
   },
 
   logoutUser(req, res) {
