@@ -50,14 +50,16 @@ function App() {
   }, [])
 
   async function fetchData() {
-    response = await axios.get('/api/retrievequestions'); 
-    setQuestions(response.data);
-    response = await axios.get('/api/retrieveanswers');
-    setAnswers(response.data);
-    response = await axios.get('/api/retrievetags');
-    setTags(response.data);
-    response = await axios.get('/api/retrieveusers');
-    setUsers(response.data);
+    if (isGuest || (isLoggedIn && !isGuest)){
+      response = await axios.get('http://localhost:8000/api/retrievequestions'); 
+      setQuestions(response.data);
+      response = await axios.get('http://localhost:8000/api/retrieveanswers');
+      setAnswers(response.data);
+      response = await axios.get('http://localhost:8000/api/retrievetags');
+      setTags(response.data);
+      // response = await axios.get('http://localhost:8000/api/retrieveusers');
+      // setUsers(response.data);
+    }
  }
 
   async function handleAnswerPageIndex(index, questionsArr, answerArr, showAnswers){

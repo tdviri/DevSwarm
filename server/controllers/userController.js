@@ -49,7 +49,6 @@ const UserController = {
   },
 
   async loginUser(req, res) {
-    console.log("hello")
     try {
       await User.findOne({ email: req.body.email });
     } catch(error){return res.status(401).json({errorMessage: "Email is not registered."})}
