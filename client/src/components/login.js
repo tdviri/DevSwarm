@@ -19,7 +19,7 @@ export default function Login(props) {
         let valid = true;
 
         try {
-            await axios.post('http://localhost:8000/api/login', {email, password});
+            await axios.post('http://localhost:8000/api/login', {email, password}, {withCredentials: true});
         }
         catch(error){
             if (error.response && error.response.data.errorMessage === 'Email is not registered.') {
@@ -43,7 +43,6 @@ export default function Login(props) {
                 valid = false;
             }
         }
-
         if (!valid){
             return;
         }

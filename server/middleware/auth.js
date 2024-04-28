@@ -3,7 +3,7 @@ require('dotenv').config();
 
 function authManager(req, res, next) {
     console.log("authorizing...")
-    console.log("req: ", req);
+    console.log("req: ", req.headers);
     try {
         const token = req.cookies.token; 
         if (!token) {
