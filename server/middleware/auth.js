@@ -3,8 +3,9 @@ const User = require('../models/users');
 require('dotenv').config();
 
 async function authManager(req, res, next) {
-    console.log("authorizing...")
-    console.log("req: ", req.cookies.token);
+    console.log("authorizing...");
+    console.log("req token: ", req.cookies.token);
+    console.log("req body: ", req.body);
     try {
         const token = req.cookies.token; 
         if (!token) {

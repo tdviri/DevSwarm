@@ -56,12 +56,12 @@ export default function AskQuestionForm(props) {
           }
     
           if (!matchedTag) { 
-            let newTag = {name: userTag};
+            const newTag = {name: userTag};
             tagsArr.push(newTag)
             try{ 
-              const resp = await axios.post('http://localhost:8000/api/updatetags', {newTag}, { withCredentials: true,
+              const resp = await axios.post('http://localhost:8000/api/updatetags', newTag, { withCredentials: true,
               headers: {
-              'Content-Type': 'text/html; charset=utf-8',
+              'Content-Type': 'application/json',
               }})
               tagIdsArr.push(resp.data._id);
             } catch (error){
@@ -73,17 +73,17 @@ export default function AskQuestionForm(props) {
               }
             }
           }
-        }
+        } 
         let newQuestion = {
           title: questionTitle,
           summary: questionSummary,
           text: questionText,
           tags: tagIdsArr,
           answers: [],
-          asked_by: await axios.get('http://localhost:8000/api/getLoggedInUser', {withCredentials: true,
+          asked_by: (await axios.get('http://localhost:8000/api/getLoggedInUser', {withCredentials: true,
           headers: {
-            'Content-Type': 'application/json; charset=utf-8',
-          }}), 
+            'Content-Type': 'application/json',
+          }})).data,
           ask_date_time: new Date(),
           views: 0,
           votes: 0

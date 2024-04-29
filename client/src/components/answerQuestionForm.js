@@ -10,7 +10,10 @@ export default function AnswerQuestionForm(props) {
     const answerText = formValues.get('text');
     let newAnswer = {
       text: answerText,
-      ans_by: await axios.get('http://localhost:8000/api/getLoggedInUser'),
+      ans_by: (await axios.get('http://localhost:8000/api/getLoggedInUser', {withCredentials: true,
+      headers: {
+        'Content-Type': 'application/json',
+      }})).data,
       ans_date_time: new Date(),
     }
     const ansArr = [...props.answers];

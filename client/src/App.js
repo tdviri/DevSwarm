@@ -100,8 +100,10 @@ function App() {
   }
 
   async function addNewQuestion(newQuestion){
-    await axios.post('http://localhost:8000/api/addquestion', {newQuestion, headers: {
-      'Content-Type': 'application/json; charset=utf-8',
+    console.log(newQuestion)
+    await axios.post('http://localhost:8000/api/addquestion', newQuestion, {withCredentials: true, 
+    headers: {
+      'Content-Type': 'application/json',
     }});
     fetchData();
   }
