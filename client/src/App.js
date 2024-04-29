@@ -67,7 +67,10 @@ function App() {
     setDisplayAnswers(showAnswers);
     setAnswerPageIndex(index);
     questionsArr[index].views++;
-    await axios.put('http://localhost:8000/api/updatequestions', questionsArr);
+    await axios.put('http://localhost:8000/api/updatequestions', questionsArr, {withCredentials: true,
+    headers: {
+      'Content-Type': 'application/json',
+    }});
     fetchData();
   }
 
