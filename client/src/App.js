@@ -208,7 +208,7 @@ function App() {
           <Navbar goToWelcomePage={goToWelcomePage} isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} setIsGuest={setIsGuest} setSortField={setSortField} setCurrentTag={setCurrentTag} setSearch={setSearch} />
           <div id="main" className="main">
             <Sidebar toggleDisplayTagsPage={toggleDisplayTagsPage} />
-            <Forum goToWelcomePage={goToWelcomePage} isGuest={isGuest} isLoggedIn={isLoggedIn} answers={answers} displayTagsPage={displayTagsPage} displayAnswers={displayAnswers}
+            <Forum fetchData={fetchData} goToWelcomePage={goToWelcomePage} isGuest={isGuest} isLoggedIn={isLoggedIn} answers={answers} displayTagsPage={displayTagsPage} displayAnswers={displayAnswers}
              setSearch={setSearch} setCurrentTag={setCurrentTag} toggleUnansweredBtnClicked={toggleUnansweredBtnClicked} setSortField={handleSort} addNewQuestion={addNewQuestion} answerPageIndex={answerPageIndex} displayAnswerForm={displayAnswerForm} showAnswerForm={showAnswerForm} handleAskQuestionBtn={handleAskQuestionBtn} isAskQuestionBtnClicked={isAskQuestionBtnClicked} setDisplayTagsPage={setDisplayTagsPage} tags={mapTags} ansArray={answers} setQuestions={setQuestions} handleAnswerPageIndex={handleAnswerPageIndex} isNoQuestionsFound={isNoQuestionsFound} questions={getSorted()}
             />
           </div>

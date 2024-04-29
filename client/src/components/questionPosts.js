@@ -67,9 +67,17 @@ export default function QuestionPosts(props) {
         return;
       }
       try {
-        await axios.post('http://localhost:8000/api/handlevote', upvote, question);
+        const data = new URLSearchParams();
+        data.append('upvote', upvote);
+        data.append('question', question._id);
+
+        await axios.post('http://localhost:8000/api/handlevote', data, {withCredentials: true,
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        }});
+        props.fetchData();
       } catch(error){
-        if (error.response.data.errorMessage === "Must have at least 50 reputation points to vote."){
+        if (error.response && error.response.data.errorMessage === "Must have at least 50 reputation points to vote."){
           alert("Must have at least 50 reputation points to vote.");
         }
         else if (error.request) {
