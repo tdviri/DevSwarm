@@ -50,7 +50,7 @@ const UserController = {
   },
 
   async loginUser(req, res) {
-      let user = await User.findOne({ email: req.body.email });
+      const user = await User.findOne({ email: req.body.email });
       if (!user){
         return res.status(401).json({errorMessage: "Email is not registered."})
       }
@@ -60,8 +60,8 @@ const UserController = {
         return res.status(401).json({errorMessage: "Password is incorrect."})
       }
 
-    const savedUser = await User.findOne({email: req.body.email});
-    const token = jwt.sign({ userId: savedUser._id }, 'JWT$3cr3tKey!#2024');
+    const token = jwt.sign({ userId: user._id }, 'JWT$3cr3tKey!#2024');
+    res.set("authorization", token)
     res.cookie("token", token, {httpOnly: true }).status(200).json({success: true}).send();
   },
 
@@ -70,8 +70,12 @@ const UserController = {
     res.status(200).json({ success: true }).send();
   },
 
-  async getLoggedIn(req, res) {
-    
+  async getLoggedInUser(req, res) {
+    try {
+      res.send(req.username);
+    } catch (error) {
+        res.status(500).json({ errorMessage: "Error getting logged in user" });
+    }
   },
 
   // async retrieveUsers(req, res) {

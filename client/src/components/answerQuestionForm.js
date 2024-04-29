@@ -10,13 +10,13 @@ export default function AnswerQuestionForm(props) {
     const answerText = formValues.get('text');
     let newAnswer = {
       text: answerText,
-      ans_by: props.loggedInUser.username, 
+      ans_by: await axios.get('http://localhost:8000/api/getLoggedInUser'),
       ans_date_time: new Date(),
     }
     const ansArr = [...props.answers];
     const questionsArr = [...props.questions];
     ansArr.push(newAnswer);
-    const resp = await axios.put('/api/updateanswers', newAnswer);
+    const resp = await axios.put('http://localhost:8000/api/updateanswers', newAnswer);
     questionsArr[props.answerPageIndex].answers.push(resp.data._id);
     ansArr.sort(function(a, b){
       return b.ans_date_time - a.ans_date_time;

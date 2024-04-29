@@ -58,8 +58,20 @@ export default function AskQuestionForm(props) {
           if (!matchedTag) { 
             let newTag = {name: userTag};
             tagsArr.push(newTag)
-            const resp = await axios.put('/api/updatetags', newTag);
-            tagIdsArr.push(resp.data._id);
+            try{ 
+              const resp = await axios.post('http://localhost:8000/api/updatetags', {newTag}, { withCredentials: true,
+              headers: {
+              'Content-Type': 'text/html; charset=utf-8',
+              }})
+              tagIdsArr.push(resp.data._id);
+            } catch (error){
+              if (error.request) {
+                alert('Communication error: Unable to connect to the server. Please try again later.');
+              } 
+              else {
+                alert('System error: Registration failed');
+              }
+            }
           }
         }
         let newQuestion = {
@@ -68,7 +80,10 @@ export default function AskQuestionForm(props) {
           text: questionText,
           tags: tagIdsArr,
           answers: [],
-          asked_by: props.loggedInUser.username, 
+          asked_by: await axios.get('http://localhost:8000/api/getLoggedInUser', {withCredentials: true,
+          headers: {
+            'Content-Type': 'application/json; charset=utf-8',
+          }}), 
           ask_date_time: new Date(),
           views: 0,
           votes: 0
@@ -115,9 +130,3 @@ export default function AskQuestionForm(props) {
     </form>
   );
 }
-
-AskQuestionForm.propTypes = {
-  tags: PropTypes.array.isRequired,
-  addNewQuestion: PropTypes.func.isRequired,
-  handleAskQuestionBtn: PropTypes.func.isRequired
-};

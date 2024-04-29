@@ -5,9 +5,9 @@ const auth = require('../middleware/auth');
 
 router.post('/api/register', UserController.registerUser);
 router.post('/api/login', UserController.loginUser);
-router.post('/api/logout', auth, UserController.logoutUser);
+router.get('/api/logout', auth, UserController.logoutUser);
+router.get('/api/getLoggedInUser', auth, UserController.getLoggedInUser);
 
-// router.get('/api/loggedIn', auth, UserController.getLoggedIn);
 // router.put('/api/addUser', auth, UserController.addUser);
 // router.get('/api/retrieveusers', UserController.retrieveUsers);
 

@@ -41,7 +41,6 @@ function App() {
   const [isShowingTaggedQuestions, setIsShowingTaggedQuestions] = useState(false);
   const [isLoggedIn, setIsLoggedIn] = useState(false);
   const [isGuest, setIsGuest] = useState(false);
-  const [loggedInUser, setLoggedInUser] = useState(null);
   const [showLoginPage, setShowLoginPage] = useState(false);
   const [showRegisterPage, setShowRegisterPage] = useState(false);
   let response;
@@ -68,7 +67,7 @@ function App() {
     setDisplayAnswers(showAnswers);
     setAnswerPageIndex(index);
     questionsArr[index].views++;
-    await axios.put('/api/updatequestions', questionsArr);
+    await axios.put('http://localhost:8000/api/updatequestions', questionsArr);
     fetchData();
   }
 
@@ -101,7 +100,9 @@ function App() {
   }
 
   async function addNewQuestion(newQuestion){
-    await axios.put('/api/addquestion', newQuestion);
+    await axios.post('http://localhost:8000/api/addquestion', {newQuestion, headers: {
+      'Content-Type': 'application/json; charset=utf-8',
+    }});
     fetchData();
   }
 
@@ -195,14 +196,14 @@ function App() {
     {!isLoggedIn && !isGuest && !showLoginPage && !showRegisterPage && (
       <Welcome setIsGuest={setIsGuest} setShowLoginPage={setShowLoginPage} setShowRegisterPage={setShowRegisterPage} />
     )}
-    {showLoginPage && <Login users={users} setShowLoginPage={setShowLoginPage} setIsLoggedIn={setIsLoggedIn} setLoggedInUser={setLoggedInUser} />}
+    {showLoginPage && <Login users={users} setShowLoginPage={setShowLoginPage} setIsLoggedIn={setIsLoggedIn}/>}
     {showRegisterPage && <Register users={users} setUsers={setUsers} setShowRegisterPage={setShowRegisterPage} setShowLoginPage={setShowLoginPage}/>}
       {questions && answers && tags && (isLoggedIn || isGuest) &&
         <div> 
           <Navbar goToWelcomePage={goToWelcomePage} isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} setIsGuest={setIsGuest} setSortField={setSortField} setCurrentTag={setCurrentTag} setSearch={setSearch} />
           <div id="main" className="main">
             <Sidebar toggleDisplayTagsPage={toggleDisplayTagsPage} />
-            <Forum goToWelcomePage={goToWelcomePage} isGuest={isGuest} isLoggedIn={isLoggedIn} answers={answers} displayTagsPage={displayTagsPage} displayAnswers={displayAnswers} loggedInUser={loggedInUser}
+            <Forum goToWelcomePage={goToWelcomePage} isGuest={isGuest} isLoggedIn={isLoggedIn} answers={answers} displayTagsPage={displayTagsPage} displayAnswers={displayAnswers}
              setSearch={setSearch} setCurrentTag={setCurrentTag} toggleUnansweredBtnClicked={toggleUnansweredBtnClicked} setSortField={handleSort} addNewQuestion={addNewQuestion} answerPageIndex={answerPageIndex} displayAnswerForm={displayAnswerForm} showAnswerForm={showAnswerForm} handleAskQuestionBtn={handleAskQuestionBtn} isAskQuestionBtnClicked={isAskQuestionBtnClicked} setDisplayTagsPage={setDisplayTagsPage} tags={mapTags} ansArray={answers} setQuestions={setQuestions} handleAnswerPageIndex={handleAnswerPageIndex} isNoQuestionsFound={isNoQuestionsFound} questions={getSorted()}
             />
           </div>

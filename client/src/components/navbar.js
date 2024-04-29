@@ -8,7 +8,12 @@ export default function Navbar(props) {
 
   async function logOut(){
     try {
-      await axios.post('http://localhost:8000/api/logout', {withCredentials: true});
+      await axios.get('http://localhost:8000/api/logout', {
+        withCredentials: true,
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
     } catch (error){
       if (error.request) {
         alert('Communication error: Unable to connect to the server. Please try again later.');
