@@ -16,13 +16,17 @@ export default function Answers(props) {
     };
 
     async function handleVote(comment) {
+      if (props.isGuest) {
+        return; 
+      }
       const commentIsVoted = (await axios.get(`http://localhost:8000/api/iscommentvoted/${comment._id}`, { withCredentials: true })).data;
-      if (props.isGuest || commentIsVoted){
+      if (commentIsVoted){
         return;
       }
       try {
         const data = new URLSearchParams();
-        await axios.put('http://localhost:8000/api/handlecommentvote', comment._id, {withCredentials: true,
+        data.append('comment', comment._id);
+        await axios.put('http://localhost:8000/api/handlecommentvote', data, {withCredentials: true,
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
         }});

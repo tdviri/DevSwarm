@@ -63,8 +63,11 @@ export default function QuestionPosts(props) {
     };
 
     async function handleVote(upvote, question){
+      if (props.isGuest){
+        return;
+      }
       const questionIsVoted = (await axios.get(`http://localhost:8000/api/isquestionvoted/${question._id}`, { withCredentials: true })).data;
-      if (props.isGuest || questionIsVoted){
+      if (questionIsVoted){
         return;
       }
       try {
