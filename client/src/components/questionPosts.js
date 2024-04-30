@@ -63,15 +63,15 @@ export default function QuestionPosts(props) {
     };
 
     async function handleVote(upvote, question){
-      if (props.isGuest){
+      const questionIsVoted = (await axios.get(`http://localhost:8000/api/isquestionvoted/${question._id}`, { withCredentials: true })).data;
+      if (props.isGuest || questionIsVoted){
         return;
       }
       try {
         const data = new URLSearchParams();
         data.append('upvote', upvote);
         data.append('question', question._id);
-
-        await axios.post('http://localhost:8000/api/handlevote', data, {withCredentials: true,
+        await axios.put('http://localhost:8000/api/handlevote', data, {withCredentials: true,
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
         }});

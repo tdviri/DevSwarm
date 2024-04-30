@@ -11,6 +11,7 @@ const userRoutes = require('./routes/userRoutes');
 const answerRoutes = require('./routes/answerRoutes');
 const tagRoutes = require('./routes/tagRoutes');
 const questionRoutes = require('./routes/questionRoutes');
+const commentRoutes = require('./routes/commentRoutes');
 
 const app = express();
 const corsOptions = {
@@ -66,3 +67,4 @@ app.use('/', userRoutes);
 app.use('/', answerRoutes);
 app.use('/', tagRoutes);
 app.use('/', questionRoutes);
+app.use('/', commentRoutes);

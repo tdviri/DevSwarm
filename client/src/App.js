@@ -28,6 +28,7 @@ function App() {
   const [search, setSearch] = useState('');
   const [answers, setAnswers] = useState(null);
   const [tags, setTags] = useState(null);
+  const [comments, setComments] = useState(null);
   const [users, setUsers] = useState(null);
   const [isNoQuestionsFound, setIsNoQuestionsFound] = useState(false);
   const [displayAnswers, setDisplayAnswers] = useState(false);
@@ -50,16 +51,14 @@ function App() {
   }, [])
 
   async function fetchData() {
-    // if (isLoggedIn){
       response = await axios.get('http://localhost:8000/api/retrievequestions'); 
       setQuestions(response.data);
       response = await axios.get('http://localhost:8000/api/retrieveanswers');
       setAnswers(response.data);
       response = await axios.get('http://localhost:8000/api/retrievetags');
       setTags(response.data);
-      // response = await axios.get('http://localhost:8000/api/retrieveusers');
-      // setUsers(response.data);
-    // }
+      response = await axios.get('http://localhost:8000/api/retrievecomments');
+      setComments(response.data);
  }
 
   async function handleAnswerPageIndex(index, questionsArr, answerArr, showAnswers){
@@ -208,7 +207,7 @@ function App() {
           <Navbar goToWelcomePage={goToWelcomePage} isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} setIsGuest={setIsGuest} setSortField={setSortField} setCurrentTag={setCurrentTag} setSearch={setSearch} />
           <div id="main" className="main">
             <Sidebar toggleDisplayTagsPage={toggleDisplayTagsPage} />
-            <Forum fetchData={fetchData} goToWelcomePage={goToWelcomePage} isGuest={isGuest} isLoggedIn={isLoggedIn} answers={answers} displayTagsPage={displayTagsPage} displayAnswers={displayAnswers}
+            <Forum fetchData={fetchData} comments={comments} goToWelcomePage={goToWelcomePage} isGuest={isGuest} isLoggedIn={isLoggedIn} answers={answers} displayTagsPage={displayTagsPage} displayAnswers={displayAnswers}
              setSearch={setSearch} setCurrentTag={setCurrentTag} toggleUnansweredBtnClicked={toggleUnansweredBtnClicked} setSortField={handleSort} addNewQuestion={addNewQuestion} answerPageIndex={answerPageIndex} displayAnswerForm={displayAnswerForm} showAnswerForm={showAnswerForm} handleAskQuestionBtn={handleAskQuestionBtn} isAskQuestionBtnClicked={isAskQuestionBtnClicked} setDisplayTagsPage={setDisplayTagsPage} tags={mapTags} ansArray={answers} setQuestions={setQuestions} handleAnswerPageIndex={handleAnswerPageIndex} isNoQuestionsFound={isNoQuestionsFound} questions={getSorted()}
             />
           </div>

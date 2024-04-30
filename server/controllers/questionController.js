@@ -34,10 +34,17 @@ const QuestionController = {
         user.reputation -= 10;
         question.votes -= 1;
       }
+      question.isVoted = true;
       user.save();
       question.save();
       res.send();
-  }
+  },
+
+  async isQuestionVoted(req, res){
+    console.log(req.params.id)
+    const question = await Question.findById(req.params.id);
+    res.send(question.isVoted);
+  },
 };
 
 module.exports = QuestionController;

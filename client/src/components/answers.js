@@ -1,9 +1,43 @@
 import React from 'react';
 import '../stylesheets/App.css';
+import { FaArrowUp } from 'react-icons/fa';
 import { useState } from 'react';
+import axios from 'axios';
 
 export default function Answers(props) {
     const [startIndex, setStartIndex] = useState(0);
+    const [openDropdowns, setOpenDropdowns] = useState({});
+    
+    const toggleDropdown = (index) => {
+      setOpenDropdowns((prevState) => ({
+        ...prevState,
+        [index]: !prevState[index],
+      }));
+    };
+
+    async function handleVote(comment) {
+      const commentIsVoted = (await axios.get(`http://localhost:8000/api/iscommentvoted/${comment._id}`, { withCredentials: true })).data;
+      if (props.isGuest || commentIsVoted){
+        return;
+      }
+      try {
+        const data = new URLSearchParams();
+        await axios.put('http://localhost:8000/api/handlecommentvote', comment._id, {withCredentials: true,
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        }});
+        props.fetchData();
+      } catch(error){
+        if (error.request) {
+          alert('Communication error: Unable to connect to the server. Please try again later.');
+        } 
+        else {
+          alert('System error: Login failed');
+        }
+        props.goToWelcomePage();
+      }
+    }
+
     let currTime = new Date();
     let elapsedTime = currTime.getTime() - new Date(props.questions[props.answerPageIndex].ask_date_time).getTime();
     let answerPosts = [];
@@ -117,7 +151,7 @@ export default function Answers(props) {
   sortedAnsArray.forEach(a => {
     if (props.questions[props.answerPageIndex].answers.includes(a._id)){
       let ans = props.answers.find(answer => answer._id === a._id);
-      let answerPost;
+      let answerPostTimeMessage;
       currTime = new Date();
       let elapsedTime = currTime.getTime() - new Date(ans.ans_date_time).getTime();
       let startYear = new Date(ans.ans_date_time).getFullYear();
@@ -134,45 +168,58 @@ export default function Answers(props) {
       const monthArr = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
   
       if (seconds < 60){
-        answerPost = <div className="answer-post"> <div className="answer-text">{ans.text}</div>
-        <div className="answer-info2">
-          <span className="post-username-answers-page"> {ans.ans_by} </span>
-          <span className="post-time-answers-page"> answered {seconds} seconds ago</span>
-        </div></div>
+        answerPostTimeMessage = `answered ${seconds} seconds ago`;
       }
       else if (minutes < 60){
-        answerPost = <div className="answer-post"> <div className="answer-text">{ans.text}</div>
-        <div className="answer-info2">
-          <span className="post-username-answers-page"> {ans.ans_by} </span>
-          <span className="post-time-answers-page"> answered {minutes} minutes ago</span>
-        </div></div>
-       
-        
+        answerPostTimeMessage = `answered ${minutes} minutes ago`;
       }
       else if (hours < 24){
-        answerPost = <div className="answer-post"> <div className="answer-text">{ans.text}</div>
-        <div className="answer-info2">
-          <span className="post-username-answers-page"> {ans.ans_by} </span>
-          <span className="post-time-answers-page"> answered {hours} hours ago</span>
-        </div></div>
+        answerPostTimeMessage = `answered ${hours} hours ago`;
       }
       else if (years >= 0){
-        answerPost = <div className="answer-post">  <div className="answer-text">{ans.text}</div>
-        <div className="answer-info2">
-          <span className="post-username-answers-page"> {ans.ans_by} </span>
-          <span className="post-time-answers-page"> answered {monthArr[new Date(ans.ans_date_time).getMonth()]} {new Date(ans.ans_date_time).getDay()}, {new Date(ans.ans_date_time).getFullYear()} at {new Date(ans.ans_date_time).getHours()}:{String(new Date(ans.ans_date_time).getMinutes()).padStart(2, '0')}</span>
-        </div></div>
-
-
+        answerPostTimeMessage = `answered ${monthArr[new Date(ans.ans_date_time).getMonth()]} ${new Date(ans.ans_date_time).getDay()}, ${new Date(ans.ans_date_time).getFullYear()} at ${new Date(ans.ans_date_time).getHours()}:${String(new Date(ans.ans_date_time).getMinutes()).padStart(2, '0')}`;
       }
       else if (hours >= 24) {
-        answerPost = <div className="answer-post">  <div className="answer-text">{ans.text}</div>
-        <div className="answer-info2">
-          <span className="post-username-answers-page"> {ans.ans_by} </span>
-          <span className="post-time-answers-page"> answered {monthArr[new Date(ans.ans_date_time).getMonth()]} {new Date(ans.ans_date_time).getDay()} at {new Date(ans.ans_date_time).getHours()}:{String(new Date(ans.ans_date_time).getMinutes()).padStart(2, '0')}</span>
-        </div>
-        </div>
+        answerPostTimeMessage = `answered ${monthArr[new Date(ans.ans_date_time).getMonth()]} ${new Date(ans.ans_date_time).getDay()} at ${new Date(ans.ans_date_time).getHours()}:${String(new Date(ans.ans_date_time).getMinutes()).padStart(2, '0')}`;
       }
+
+
+      const answerPost = (
+        <div className="answer-post">
+          <div className="answer-text">{ans.text}</div>
+          <div className="answer-info2">
+            <span className="post-username-answers-page">{ans.ans_by}</span>
+            <span className="post-time-answers-page">answered {seconds} seconds ago</span>
+          </div>
+          {ans.comments && (
+            <div className="comments-dropdown">
+              <div className="comments-dropdown-header" onClick={() => toggleDropdown(props.answerPageIndex)}>
+                Show Comments
+              </div>
+              {openDropdowns[props.answerPageIndex] && ans.comments.map((commentId, commentIndex) => {
+                const comment = props.comments.find(comment => comment._id === commentId);
+                if (comment) {
+                  return (
+                    <div className="comment-post" key={commentIndex}>
+                      <div className="comment-upvote-arrow">
+                        <div className="comment-upvote-arrow" onClick={() => handleVote(comment)}>
+                          <FaArrowUp className={props.isGuest ? 'guest-upvote' : 'authenticated-upvote'} />
+                        </div>
+                        <div className="vote-count">{comment.votes}</div>
+                      </div>
+                      <span className="comment-post-text">{comment.text}</span>
+                      <span className="comment-post-time-message">{answerPostTimeMessage}</span>
+                    </div>
+                  );
+                } else {
+                  return null; 
+                }
+              })}
+            </div>
+          )}
+        </div>
+      );
+      
       answerPosts.push(answerPost);
     }
   });
