@@ -66,7 +66,9 @@ export default function QuestionPosts(props) {
       if (props.isGuest){
         return;
       }
-      const questionIsVoted = (await axios.get(`http://localhost:8000/api/isquestionvoted/${question._id}`, { withCredentials: true })).data;
+      const questionIsVoted = (await axios.get(`http://localhost:8000/api/isquestionvoted/${question._id}`, { withCredentials: true,
+      })).data;
+      console.log(questionIsVoted)
       if (questionIsVoted){
         return;
       }
@@ -74,7 +76,7 @@ export default function QuestionPosts(props) {
         const data = new URLSearchParams();
         data.append('upvote', upvote);
         data.append('question', question._id);
-        await axios.put('http://localhost:8000/api/handlevote', data, {withCredentials: true,
+        await axios.put('http://localhost:8000/api/addvotedquestion', data, {withCredentials: true,
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
         }});

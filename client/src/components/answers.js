@@ -20,6 +20,10 @@ export default function Answers(props) {
       if (props.isGuest) {
         return; 
       }
+      // const loggedInUser = (await axios.get('http://localhost:8000/api/getLoggedInUser', {withCredentials: true,
+      // headers: {
+      //   'Content-Type': 'application/json',
+      // }})).data;
       const commentIsVoted = (await axios.get(`http://localhost:8000/api/iscommentvoted/${comment._id}`, { withCredentials: true })).data;
       if (commentIsVoted){
         return;

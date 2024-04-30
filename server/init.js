@@ -42,7 +42,7 @@ function answerCreate(text, ans_by, ans_date_time, comments) {
   return answer.save();
 }
 
-function questionCreate(title, summary, text, tags, answers, asked_by, ask_date_time, views, votes, isVoted) {
+function questionCreate(title, summary, text, tags, answers, asked_by, ask_date_time, views, votes) {
   qstndetail = {
     title: title,
     summary: summary,
@@ -54,7 +54,6 @@ function questionCreate(title, summary, text, tags, answers, asked_by, ask_date_
   if (ask_date_time != false) qstndetail.ask_date_time = ask_date_time;
   if (views != false) qstndetail.views = views;
   if (votes != false) qstndetail.votes = votes;
-  if (isVoted != false) qstndetail.isVoted = isVoted;
 
   let qstn = new Question(qstndetail);
   return qstn.save();

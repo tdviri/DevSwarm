@@ -8,7 +8,8 @@ var UserSchema = new Schema({
     email: {type: String, required: true},
     username: {type: String, required: true},
     passwordHash: {type: String, required: true},
-    reputation: {type: Number, required: true}
+    reputation: {type: Number, required: true},
+    votedQuestions: [{type: Schema.Types.ObjectId}]
 }, { timestamps: true });
 
 UserSchema

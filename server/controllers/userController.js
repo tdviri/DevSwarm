@@ -1,4 +1,5 @@
 const User = require('../models/users');
+const Question = require('../models/questions')
 const jwt = require('jsonwebtoken'); 
 const bcrypt = require('bcrypt');
 
@@ -87,6 +88,41 @@ const UserController = {
     const newData = req.body;
     await User.create(newData);
     res.send();
+  },
+
+  async addVotedQuestion(req, res){
+    const question = await Question.findById(req.body.question);
+    const user = await User.findById(req.userId);
+    if (user.reputation < 50){
+      return res.status(401).json({errorMessage: "Must have at least 50 reputation points to vote."});
+    }
+    if (req.body.upvote === true){
+      user.reputation += 5;
+      question.votes += 1;
+    }
+    else{
+      user.reputation -= 10;
+      question.votes -= 1;
+    }
+    user.votedQuestions.push(question._id);
+    user.save();
+    question.save();
+    res.send();
+  },
+
+  async isQuestionVoted(req, res){
+    const loggedInUser = req.user;
+    if (loggedInUser.votedQuestions) {
+        if (loggedInUser.votedQuestions.includes(req.params.question._id)) {
+            res.send(true);
+        } 
+        else {
+          res.send(false);
+        }
+    } 
+    else {
+      res.send(false);
+    }
   }
 };
 
