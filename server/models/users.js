@@ -9,7 +9,9 @@ var UserSchema = new Schema({
     username: {type: String, required: true},
     passwordHash: {type: String, required: true},
     reputation: {type: Number, required: true},
-    votedQuestions: [{type: Schema.Types.ObjectId}]
+    votedQuestions: [{type: Schema.Types.ObjectId}],
+    votedAnswers: [{type: Schema.Types.ObjectId}],
+    votedComments: [{type: Schema.Types.ObjectId}],
 }, { timestamps: true });
 
 UserSchema

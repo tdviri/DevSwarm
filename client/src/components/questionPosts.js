@@ -68,7 +68,6 @@ export default function QuestionPosts(props) {
       }
       const questionIsVoted = (await axios.get(`http://localhost:8000/api/isquestionvoted/${question._id}`, { withCredentials: true,
       })).data;
-      console.log(questionIsVoted)
       if (questionIsVoted){
         return;
       }
@@ -89,7 +88,7 @@ export default function QuestionPosts(props) {
           alert('Communication error: Unable to connect to the server. Please try again later.');
         } 
         else {
-          alert('System error: Login failed');
+          alert('System error');
         }
         props.goToWelcomePage();
       }

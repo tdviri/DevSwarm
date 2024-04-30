@@ -6,8 +6,7 @@ var CommentSchema = new Schema({
     text: {type: String, required: true},
     comm_by: {type: String, required: true},
     comm_date_time: {type: Date, default: Date.now},
-    votes: {type: Number, default: 0},
-    isVoted: {type: Boolean, default: false}
+    votes: {type: Number, default: 0}
 });
 
 CommentSchema

@@ -16,14 +16,10 @@ export default function Answers(props) {
       }));
     };
 
-    async function handleVote(comment) {
+    async function handleCommentVote(comment) {
       if (props.isGuest) {
         return; 
       }
-      // const loggedInUser = (await axios.get('http://localhost:8000/api/getLoggedInUser', {withCredentials: true,
-      // headers: {
-      //   'Content-Type': 'application/json',
-      // }})).data;
       const commentIsVoted = (await axios.get(`http://localhost:8000/api/iscommentvoted/${comment._id}`, { withCredentials: true })).data;
       if (commentIsVoted){
         return;
@@ -31,7 +27,7 @@ export default function Answers(props) {
       try {
         const data = new URLSearchParams();
         data.append('comment', comment._id);
-        await axios.put('http://localhost:8000/api/handlecommentvote', data, {withCredentials: true,
+        await axios.put('http://localhost:8000/api/addvotedcomment', data, {withCredentials: true,
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
         }});
@@ -41,7 +37,7 @@ export default function Answers(props) {
           alert('Communication error: Unable to connect to the server. Please try again later.');
         } 
         else {
-          alert('System error: Login failed');
+          alert('System error');
         }
         props.goToWelcomePage();
       }
@@ -209,7 +205,7 @@ export default function Answers(props) {
                   return (
                     <div className="comment-post" key={commentIndex}>
                       <div className="comment-upvote-arrow">
-                        <div className="comment-upvote-arrow" onClick={() => handleVote(comment)}>
+                        <div className="comment-upvote-arrow" onClick={() => handleCommentVote(comment)}>
                           <FaArrowUp className={props.isGuest ? 'guest-upvote' : 'authenticated-upvote'} />
                         </div>
                         <div className="vote-count">{comment.votes}</div>

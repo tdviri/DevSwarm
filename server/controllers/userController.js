@@ -1,5 +1,7 @@
 const User = require('../models/users');
 const Question = require('../models/questions')
+const Answer = require('../models/answers');
+const Comment = require('../models/comments');
 const jwt = require('jsonwebtoken'); 
 const bcrypt = require('bcrypt');
 
@@ -91,12 +93,13 @@ const UserController = {
   },
 
   async addVotedQuestion(req, res){
+    const upvote = req.body.upvote === 'true'; 
     const question = await Question.findById(req.body.question);
     const user = await User.findById(req.userId);
     if (user.reputation < 50){
       return res.status(401).json({errorMessage: "Must have at least 50 reputation points to vote."});
     }
-    if (req.body.upvote === true){
+    if (upvote === true){
       user.reputation += 5;
       question.votes += 1;
     }
@@ -111,14 +114,37 @@ const UserController = {
   },
 
   async isQuestionVoted(req, res){
-    const loggedInUser = req.user;
-    if (loggedInUser.votedQuestions && loggedInUser.votedQuestions.includes(req.params.question._id)) {
+    const user = await User.findById(req.userId);
+    if (user.votedQuestions && user.votedQuestions.includes(req.params.id)) {
       res.send(true); 
     }
     else {
       res.send(false);
     }
-  } 
+  }, 
+
+  async addVotedComment(req, res) {
+    const comment = await Comment.findById(req.body.comment);
+    const user = await User.findById(req.userId);
+    if (user.reputation < 50){
+      return res.status(401).json({errorMessage: "Must have at least 50 reputation points to vote."});
+    }
+    comment.votes += 1;
+    user.votedComments.push(comment._id);
+    user.save();
+    comment.save();
+    res.send();
+},
+
+async isCommentVoted(req, res) {
+    const comment = await Comment.findById(req.userId);
+    if (user.votedComments && user.votedComments.includes(req.params.id)){
+      res.send(true);
+    }
+    else {
+      res.send(false);
+    }
+},
 };
 
 module.exports = UserController;
