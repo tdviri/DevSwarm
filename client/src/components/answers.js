@@ -123,14 +123,44 @@ export default function Answers(props) {
     return new Date(b.ans_date_time) - new Date(a.ans_date_time);
   })
 
-  sortedAnsArray.forEach(a => {
-    if (props.questions[props.answerPageIndex].answers.includes(a._id)){
-      let ans = props.answers.find(answer => answer._id === a._id);
+  sortedAnsArray.forEach(ans => {
+    if (props.questions[props.answerPageIndex].answers.includes(ans._id)){
+      const comment = props.comments.find(comment => props.questions[props.answerPageIndex].answers.comments && props.questions[props.answerPageIndex].answers.comments.includes(comment._id));
+      // let ans = props.answers.find(answer => answer._id === a._id);
+      let commAnswerPostTimeMessage;
+      let endYear = currTime.getFullYear();
+      const monthArr = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+
+      if (comment){
+        let commElapsedTime = currTime.getTime() - new Date(comment.comm_date_time).getTime();
+        let commStartYear = new Date(comment.comm_date_time).getFullYear();
+        let commYears = Math.abs(Math.floor(endYear - commStartYear));
+        if (currTime.getMonth() < new Date(comment.comm_date_time).getMonth() || (currTime.getMonth() === new Date(comment.comm_date_time).getMonth() && currTime.getDate() < new Date(comment.comm_date_time).getDate())){
+          commYears--;
+        }
+        let commHours = Math.abs(Math.floor(commElapsedTime / (1000 * 60 * 60)));
+        let commMinutes = Math.abs(Math.floor(commElapsedTime / (1000 * 60)));
+        let commSeconds = Math.abs(Math.floor(commElapsedTime / 1000));
+        if (commSeconds < 60){
+          commAnswerPostTimeMessage =  `commented ${commSeconds} seconds ago`;
+        }
+        else if (commMinutes < 60){
+          commAnswerPostTimeMessage = `commented ${commMinutes} minutes ago`;
+        }
+        else if (commHours < 24){
+          commAnswerPostTimeMessage = `commented ${commHours} hours ago`;
+        }
+        else if (commYears >= 0){
+          commAnswerPostTimeMessage = `commented ${monthArr[new Date(comment.comm_date_time).getMonth()]} ${new Date(comment.comm_date_time).getDay()}, ${new Date(comment.comm_date_time).getFullYear()} at ${new Date(comment.comm_date_time).getHours()}:${String(new Date(comment.comm_date_time).getMinutes()).padStart(2, '0')}`
+        }
+        else if (commHours >= 24) {
+          commAnswerPostTimeMessage = `commented ${monthArr[new Date(comment.comm_date_time).getMonth()]} ${new Date(comment.comm_date_time).getDay()} at ${new Date(comment.comm_date_time).getHours()}:${String(new Date(comment.comm_date_time).getMinutes()).padStart(2, '0')}`
+        }
+      }
       let answerPostTimeMessage;
       currTime = new Date();
       let elapsedTime = currTime.getTime() - new Date(ans.ans_date_time).getTime();
       let startYear = new Date(ans.ans_date_time).getFullYear();
-      let endYear = currTime.getFullYear();
 
       let years = Math.abs(Math.floor(endYear - startYear));
       if (currTime.getMonth() < new Date(ans.ans_date_time).getMonth() || (currTime.getMonth() === new Date(ans.ans_date_time).getMonth() && currTime.getDate() < new Date(ans.ans_date_time).getDate())) {
@@ -140,7 +170,6 @@ export default function Answers(props) {
       let hours = Math.abs(Math.floor(elapsedTime / (1000 * 60 * 60)));
       let minutes = Math.abs(Math.floor(elapsedTime / (1000 * 60)));
       let seconds = Math.abs(Math.floor(elapsedTime / 1000));
-      const monthArr = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
   
       if (seconds < 60){
         answerPostTimeMessage = `answered ${seconds} seconds ago`;
@@ -158,13 +187,12 @@ export default function Answers(props) {
         answerPostTimeMessage = `answered ${monthArr[new Date(ans.ans_date_time).getMonth()]} ${new Date(ans.ans_date_time).getDay()} at ${new Date(ans.ans_date_time).getHours()}:${String(new Date(ans.ans_date_time).getMinutes()).padStart(2, '0')}`;
       }
 
-
       const answerPost = (
         <div className="answer-post">
           <div className="answer-text">{ans.text}</div>
           <div className="answer-info2">
             <span className="post-username-answers-page">{ans.ans_by}</span>
-            <span className="post-time-answers-page">answered {seconds} seconds ago</span>
+            <span className="post-time-answers-page">{answerPostTimeMessage}</span>
           </div>
           {ans.comments && (
             <div className="comments-dropdown">
@@ -183,7 +211,10 @@ export default function Answers(props) {
                         <div className="vote-count">{comment.votes}</div>
                       </div>
                       <span className="comment-post-text">{comment.text}</span>
-                      <span className="comment-post-time-message">{answerPostTimeMessage}</span>
+                      <div className="comment-info">
+                        <span className="comment-post-username">{comment.comm_by}</span>
+                        <span className="comment-post-time-message">{commAnswerPostTimeMessage}</span>
+                      </div>
                     </div>
                   );
                 } else {

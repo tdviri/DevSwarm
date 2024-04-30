@@ -8,6 +8,7 @@ const QuestionController = {
   },
 
   async updateQuestions(req, res) {
+    console.log("update questions", req.body)
     const newData = req.body;
     await Question.deleteMany({}); 
     await Question.insertMany(newData); 
