@@ -7,6 +7,7 @@ import axios from 'axios';
 export default function Answers(props) {
     const [startIndex, setStartIndex] = useState(0);
     const [openDropdowns, setOpenDropdowns] = useState({});
+    const [commentText, setCommentText] = useState('');
     
     const toggleDropdown = (index) => {
       setOpenDropdowns((prevState) => ({
@@ -42,10 +43,31 @@ export default function Answers(props) {
       }
     }
 
+    async function postComment(ans){
+      try {
+        const resp = await axios.post('http://localhost:8000/api/addcomment', commentText, {withCredentials: true});
+        const comment = resp.data;
+        await axios.put('http://localhost:8000/api/updateanswercomments', ans._id, comment._id, {withCredentials: true});
+        props.fetchData();
+      } catch(error){
+        if (error.request) {
+          alert('Communication error: Unable to connect to the server. Please try again later.');
+        } 
+        else {
+          alert('System error: Login failed');
+        }
+      }
+      setCommentText('');
+    }
+
+    function handleCommentInput(event){
+      setCommentText(event.target.value);
+    }
+
     let currTime = new Date();
     let elapsedTime = currTime.getTime() - new Date(props.questions[props.answerPageIndex].ask_date_time).getTime();
     let answerPosts = [];
-    let answerPage;
+    let answerPageTimeMessage;
     let startYear = new Date(props.questions[props.answerPageIndex].ask_date_time).getFullYear();
     let endYear = currTime.getFullYear();
 
@@ -59,87 +81,36 @@ export default function Answers(props) {
     let seconds = Math.abs(Math.floor(elapsedTime / 1000));
     const monthArr = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
     if (seconds < 60){
-      answerPage  = 
-      <div> <div className="answers-header">
-      <span className="answer-count-answers-page"> {props.questions[props.answerPageIndex].answers.length} answers </span>
-      <div className="question-title-answers-page"> {props.questions[props.answerPageIndex].title} </div>
-      {props.isLoggedIn && <div><button onClick={()=>props.handleAskQuestionBtn(true)} className="ask-question-btn">Ask Question</button></div>}
-    </div>
-    <div className="question-details-answers-page">
-        <span className="views-count-answers-page"> {props.questions[props.answerPageIndex].views} views</span>
-        <span className="question-text-answer-page"> {props.questions[props.answerPageIndex].text} </span>
-        <div className="answer-info">
-          <span className="post-username-question-answers-page"> {props.questions[props.answerPageIndex].asked_by} </span>
-          <span className="post-time-answers-page"> asked {seconds} seconds ago</span>Name
-        </div>
-    </div></div>
-      
+      answerPageTimeMessage = `asked ${seconds} seconds ago`;
     }
     else if (minutes < 60){
-      answerPage = <div> <div className="answers-header">
-      <span className="answer-count-answers-page"> {props.questions[props.answerPageIndex].answers.length} answers </span>
-      <div className="question-title-answers-page"> {props.questions[props.answerPageIndex].title} </div>
-      {props.isLoggedIn && <div><button onClick={()=>props.handleAskQuestionBtn(true)} className="ask-question-btn">Ask Question</button></div>}
-    </div>
-    <div className="question-details-answers-page">
-        <span className="views-count-answers-page"> {props.questions[props.answerPageIndex].views} views</span>
-        <span className="question-text-answer-page"> {props.questions[props.answerPageIndex].text} </span>
-        <div className="answer-info">
-          <span className="post-username-question-answers-page"> {props.questions[props.answerPageIndex].asked_by} </span>
-          <span className="post-time-answers-page"> asked {minutes} minutes ago</span>
-        </div>
-    </div></div>
+      answerPageTimeMessage = `asked ${minutes} minutes ago`;
     }
     else if (hours < 24){
-      answerPage = <div>
-         <div className="answers-header">
-        <span className="answer-count-answers-page"> {props.questions[props.answerPageIndex].answers.length} answers </span>
-        <div className="question-title-answers-page"> {props.questions[props.answerPageIndex].title} </div>
-        {props.isLoggedIn && <div><button onClick={()=>props.handleAskQuestionBtn(true)} className="ask-question-btn">Ask Question</button></div>}
-      </div>
-      <div className="question-details-answers-page">
-          <span className="views-count-answers-page"> {props.questions[props.answerPageIndex].views} views</span>
-          <span className="question-text-answer-page"> {props.questions[props.answerPageIndex].text} </span>
-          <div className="answer-info">
-            <span className="post-username-question-answers-page"> {props.questions[props.answerPageIndex].asked_by} </span>
-            <span className="post-time-answers-page"> asked {hours} hours ago</span>
-          </div>
-      </div>
-      </div>
+      answerPageTimeMessage = `asked ${hours} hours ago`;
     }
-
     else if (years >= 0){
-      answerPage = 
-      <div> <div className="answers-header">
-      <span className="answer-count-answers-page"> {props.questions[props.answerPageIndex].answers.length} answers </span>
-      <div className="question-title-answers-page"> {props.questions[props.answerPageIndex].title} </div>
-      {props.isLoggedIn && <div><button onClick={()=>props.handleAskQuestionBtn(true)} className="ask-question-btn">Ask Question</button></div>}
-    </div>
-    <div className="question-details-answers-page">
-        <span className="views-count-answers-page"> {props.questions[props.answerPageIndex].views} views</span>
-        <span className="question-text-answer-page"> {props.questions[props.answerPageIndex].text} </span>
-        <div className="answer-info">
-          <span className="post-username-question-answers-page"> {props.questions[props.answerPageIndex].asked_by} </span>
-          <span className="post-time-answers-page"> asked {monthArr[new Date(props.questions[props.answerPageIndex].ask_date_time).getMonth()]} {new Date(props.questions[props.answerPageIndex].ask_date_time).getDay()}, {new Date(props.questions[props.answerPageIndex].ask_date_time).getFullYear()} at {new Date(props.questions[props.answerPageIndex].ask_date_time).getHours()}:{String(new Date(props.questions[props.answerPageIndex].ask_date_time).getMinutes()).padStart(2, '0')}</span>
-        </div>
-    </div></div>
-    
+      answerPageTimeMessage = `asked ${monthArr[new Date(props.questions[props.answerPageIndex].ask_date_time).getMonth()]} ${new Date(props.questions[props.answerPageIndex].ask_date_time).getDay()}, ${new Date(props.questions[props.answerPageIndex].ask_date_time).getFullYear()} at ${new Date(props.questions[props.answerPageIndex].ask_date_time).getHours()}:${String(new Date(props.questions[props.answerPageIndex].ask_date_time).getMinutes()).padStart(2, '0')}`;
     }
     else if (hours >= 24) {
-      answerPage = <div> <div className="answers-header">
-      <span className="answer-count-answers-page"> {props.questions[props.answerPageIndex].answers.length} answers </span>
-      <div className="question-title-answers-page"> {props.questions[props.answerPageIndex].title} </div>
-      {props.isLoggedIn && <div><button onClick={()=>props.handleAskQuestionBtn(true)} className="ask-question-btn">Ask Question</button></div>}
-    </div>
-    <div className="question-details-answers-page">
-        <span className="views-count-answers-page"> {props.questions[props.answerPageIndex].views} views</span>
-        <span className="question-text-answer-page"> {props.questions[props.answerPageIndex].text} </span>
-        <div className="answer-info">
-          <span className="post-username-question-answers-page"> {props.questions[props.answerPageIndex].asked_by} </span>
-          <span className="post-time-answers-page"> asked {monthArr[new Date(props.questions[props.answerPageIndex].ask_date_time).getMonth()]} {new Date(props.questions[props.answerPageIndex].ask_date_time).getDay()} at {new Date(props.questions[props.answerPageIndex].ask_date_time).getHours()}:{String(new Date(props.questions[props.answerPageIndex].ask_date_time).getMinutes()).padStart(2, '0')}</span>
-        </div>
-    </div></div>
+      answerPageTimeMessage = `asked ${monthArr[new Date(props.questions[props.answerPageIndex].ask_date_time).getMonth()]} ${new Date(props.questions[props.answerPageIndex].ask_date_time).getDay()} at ${new Date(props.questions[props.answerPageIndex].ask_date_time).getHours()}:${String(new Date(props.questions[props.answerPageIndex].ask_date_time).getMinutes()).padStart(2, '0')}`;
   }
+
+  const answerPage  = 
+  <div> <div className="answers-header">
+  <span className="answer-count-answers-page"> {props.questions[props.answerPageIndex].answers.length} answers </span>
+  <div className="question-title-answers-page"> {props.questions[props.answerPageIndex].title} </div>
+  {props.isLoggedIn && <div><button onClick={()=>props.handleAskQuestionBtn(true)} className="ask-question-btn">Ask Question</button></div>}
+</div>
+<div className="question-details-answers-page">
+    <span className="views-count-answers-page"> {props.questions[props.answerPageIndex].views} views</span>
+    <span className="question-text-answer-page"> {props.questions[props.answerPageIndex].text} </span>
+    <div className="answer-info">
+      <span className="post-username-question-answers-page"> {props.questions[props.answerPageIndex].asked_by} </span>
+      <span className="post-time-answers-page">{answerPageTimeMessage}</span>
+    </div>
+</div></div>
+
   let newAnsArray = [];
   props.questions[props.answerPageIndex].answers.forEach((ansIdForQuestion)=>{
     props.answers.forEach((ans)=>{
@@ -219,11 +190,16 @@ export default function Answers(props) {
                   return null; 
                 }
               })}
+              {props.isLoggedIn && (
+                <div>
+                  <input className="add-comment" placeholder="Add a comment..." onChange={handleCommentInput}/>
+                  <button className="post-comment-btn" onClick={()=>postComment()}>Post</button>
+                </div>
+              )}
             </div>
           )}
         </div>
       );
-      
       answerPosts.push(answerPost);
     }
   });

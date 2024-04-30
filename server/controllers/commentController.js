@@ -19,6 +19,12 @@ const CommentController = {
         console.log(req.params.id)
         const comment = await Comment.findById(req.params.id);
         res.send(comment.isVoted);
+    },
+
+    async addComment(req, res) {
+        const newData = req.body.commentText;
+        const insertedComment = await Comment.create(newData);
+        res.send(insertedComment); 
     }
 };
 

@@ -16,7 +16,7 @@ if (!userArgs[0].startsWith('mongodb')) {
 let Tag = require('./models/tags')
 let Answer = require('./models/answers')
 let Question = require('./models/questions')
-
+let Comment = require('.models/comments')
 
 let mongoose = require('mongoose');
 let mongoDB = userArgs[0];
@@ -32,8 +32,8 @@ function tagCreate(name) {
   return tag.save();
 }
 
-function answerCreate(text, ans_by, ans_date_time) {
-  answerdetail = {text:text};
+function answerCreate(text, ans_by, ans_date_time, comments) {
+  answerdetail = {text:text, comments: comments};
   if (ans_by != false) answerdetail.ans_by = ans_by;
   if (ans_date_time != false) answerdetail.ans_date_time = ans_date_time;
 
@@ -57,6 +57,18 @@ function questionCreate(title, summary, text, tags, answers, asked_by, ask_date_
   return qstn.save();
 }
 
+function commentCreate(text, comm_by, comm_date_time, votes, isVoted){
+  commentDetail = {
+    text: text,
+    comm_by,
+    comm_date_time,
+    votes: votes,
+    isVoted: isVoted
+  }
+  let comment = new Comment(commentDetail);
+  return comment.save();
+}
+
 const populate = async () => {
   let t1 = await tagCreate('react');
   let t2 = await tagCreate('javascript');
@@ -69,6 +81,8 @@ const populate = async () => {
   let a5 = await answerCreate('I just found all the above examples just too confusing, so I wrote my own. ', 'sana', false);
   await questionCreate('Programmatically navigate using React router', 'need to understand how React router works', 'the alert shows the proper index for the li clicked, and when I alert the variable within the last function I\'m calling, moveToNextImage(stepClicked), the same value shows but the animation isn\'t happening. This works many other ways, but I\'m trying to pass the index value of the list item clicked to use for the math to calculate.', [t1, t2], [a1, a2], 'Joji John', false, false);
   await questionCreate('android studio save string shared preference', 'having difficulty working with android studio', 'I am using bottom navigation view but am using custom navigation, so my fragments are not recreated every time i switch to a different view. I just hide/show my fragments depending on the icon selected. The problem i am facing is that whenever a config change happens (dark/light theme), my app crashes. I have 2 fragments in this activity and the below code is what i am using to refrain them from being recreated.', [t3, t4, t2], [a3, a4, a5], 'saltyPeter', false, 121);
+  await commentCreate('this is a comment', 'tdv');
+  await commentCreate('comment2', 'gd');
   if(db) db.close();
   console.log('done');
 }
