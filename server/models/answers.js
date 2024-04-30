@@ -7,6 +7,7 @@ var AnswerSchema = new Schema({
     ans_by: {type: String, required: true},
     ans_date_time: {type: Date, default: Date.now},
     comments: [{type: Schema.Types.ObjectId}],
+    votes: {type: Number, default: 0}
 });
 
 AnswerSchema

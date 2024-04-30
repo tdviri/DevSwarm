@@ -32,11 +32,12 @@ function tagCreate(name) {
   return tag.save();
 }
 
-function answerCreate(text, ans_by, ans_date_time, comments) {
+function answerCreate(text, ans_by, ans_date_time, comments, votes) {
   answerdetail = {text:text};
   if (comments != false) answerdetail.comments = comments;
   if (ans_by != false) answerdetail.ans_by = ans_by;
   if (ans_date_time != false) answerdetail.ans_date_time = ans_date_time;
+  if (votes != false) answerdetail.votes = votes;
 
   let answer = new Answer(answerdetail);
   return answer.save();

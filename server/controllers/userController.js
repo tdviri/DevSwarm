@@ -137,7 +137,7 @@ const UserController = {
 },
 
 async isCommentVoted(req, res) {
-    const comment = await Comment.findById(req.userId);
+    const user = await User.findById(req.userId);
     if (user.votedComments && user.votedComments.includes(req.params.id)){
       res.send(true);
     }
@@ -145,6 +145,37 @@ async isCommentVoted(req, res) {
       res.send(false);
     }
 },
+
+async addVotedAnswer(req, res){
+  const upvote = req.body.upvote === 'true'; 
+  const answer = await Answer.findById(req.body.answer);
+  const user = await User.findById(req.userId);
+  if (user.reputation < 50){
+    return res.status(401).json({errorMessage: "Must have at least 50 reputation points to vote."});
+  }
+  if (upvote === true){
+    user.reputation += 5;
+    answer.votes += 1;
+  }
+  else{
+    user.reputation -= 10;
+    answer.votes -= 1;
+  }
+  user.votedAnswers.push(answer._id);
+  user.save();
+  answer.save();
+  res.send();
+},
+
+async isAnswerVoted(req, res){
+  const user = await User.findById(req.userId);
+  if (user.votedAnswers && user.votedAnswers.includes(req.params.id)) {
+    res.send(true); 
+  }
+  else {
+    res.send(false);
+  }
+}
 };
 
 module.exports = UserController;

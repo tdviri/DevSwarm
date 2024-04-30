@@ -1,6 +1,6 @@
 import React from 'react';
 import '../stylesheets/App.css';
-import { FaArrowUp } from 'react-icons/fa';
+import { FaArrowUp, FaArrowDown } from 'react-icons/fa';
 import { useState } from 'react';
 import axios from 'axios';
 
@@ -15,6 +15,38 @@ export default function Answers(props) {
         [index]: !prevState[index],
       }));
     };
+
+    async function handleAnswerVote(upvote, answer){
+      if (props.isGuest){
+        return;
+      }
+      const questionIsVoted = (await axios.get(`http://localhost:8000/api/isanswervoted/${answer._id}`, { withCredentials: true,
+      })).data;
+      if (questionIsVoted){
+        return;
+      }
+      try {
+        const data = new URLSearchParams();
+        data.append('upvote', upvote);
+        data.append('answer', answer._id);
+        await axios.put('http://localhost:8000/api/addvotedanswer', data, {withCredentials: true,
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        }});
+        props.fetchData();
+      } catch(error){
+        if (error.response && error.response.data.errorMessage === "Must have at least 50 reputation points to vote."){
+          alert("Must have at least 50 reputation points to vote.");
+        }
+        else if (error.request) {
+          alert('Communication error: Unable to connect to the server. Please try again later.');
+        } 
+        else {
+          alert('System error');
+        }
+        props.goToWelcomePage();
+      }
+    }
 
     async function handleCommentVote(comment) {
       if (props.isGuest) {
@@ -189,6 +221,11 @@ export default function Answers(props) {
 
       const answerPost = (
         <div className="answer-post">
+          <div className="upvote-downvote-arrows"> 
+            <div className="upvote-arrow" onClick={()=>handleAnswerVote(true, ans)}><FaArrowUp className={props.isGuest ? 'guest-upvote' : 'authenticated-upvote'} /></div>
+            <div className="vote-count">{ans.votes}</div>
+            <div className="downvote-arrow" onClick={()=>handleAnswerVote(false, ans)}><FaArrowDown className={props.isGuest ? 'guest-downvote' : 'authenticated-downvote'} /></div>
+          </div>
           <div className="answer-text">{ans.text}</div>
           <div className="answer-info2">
             <span className="post-username-answers-page">{ans.ans_by}</span>
