@@ -112,18 +112,13 @@ const UserController = {
 
   async isQuestionVoted(req, res){
     const loggedInUser = req.user;
-    if (loggedInUser.votedQuestions) {
-        if (loggedInUser.votedQuestions.includes(req.params.question._id)) {
-            res.send(true);
-        } 
-        else {
-          res.send(false);
-        }
-    } 
+    if (loggedInUser.votedQuestions && loggedInUser.votedQuestions.includes(req.params.question._id)) {
+      res.send(true); 
+    }
     else {
       res.send(false);
     }
-  }
+  } 
 };
 
 module.exports = UserController;
