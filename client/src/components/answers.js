@@ -218,7 +218,6 @@ export default function Answers(props) {
       else if (hours >= 24) {
         answerPostTimeMessage = `answered ${monthArr[new Date(ans.ans_date_time).getMonth()]} ${new Date(ans.ans_date_time).getDay()} at ${new Date(ans.ans_date_time).getHours()}:${String(new Date(ans.ans_date_time).getMinutes()).padStart(2, '0')}`;
       }
-
       const answerPost = (
         <div className="answer-post">
           <div className="upvote-downvote-arrows"> 
@@ -231,7 +230,7 @@ export default function Answers(props) {
             <span className="post-username-answers-page">{ans.ans_by}</span>
             <span className="post-time-answers-page">{answerPostTimeMessage}</span>
           </div>
-          {ans.comments && (
+          {ans.comments.length > 0 && (
             <div className="comments-dropdown">
               <div className="comments-dropdown-header" onClick={() => toggleDropdown(props.answerPageIndex)}>
                 Show Comments

@@ -9,6 +9,7 @@ const Question = require('./models/questions');
 const Answer = require('./models/answers');
 const Tag = require('./models/tags');
 const User = require('./models/users');
+const Comment = require('./models/comments');
 
 async function deleteAllDocuments(model) {
     await model.deleteMany({});
@@ -19,6 +20,7 @@ async function deleteAllData() {
   await deleteAllDocuments(Answer);
   await deleteAllDocuments(Tag);
   await deleteAllDocuments(User);
+  await deleteAllDocuments(Comment);
 
   mongoose.disconnect();
 }
