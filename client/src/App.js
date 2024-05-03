@@ -8,6 +8,7 @@ import Forum from './components/forum.js';
 import Welcome from './components/welcome.js';
 import Register from './components/register.js';
 import Login from './components/login.js';
+import UserProfile from './components/userProfile.js';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
 // axios.defaults.withCredentials = true;
@@ -44,6 +45,7 @@ function App() {
   const [isGuest, setIsGuest] = useState(false);
   const [showLoginPage, setShowLoginPage] = useState(false);
   const [showRegisterPage, setShowRegisterPage] = useState(false);
+  const [showUserProfile, setShowUserProfile] = useState(false);
   let response;
 
   useEffect(()=> {
@@ -201,17 +203,24 @@ function App() {
     )}
     {showLoginPage && <Login users={users} setShowLoginPage={setShowLoginPage} setIsLoggedIn={setIsLoggedIn}/>}
     {showRegisterPage && <Register users={users} setUsers={setUsers} setShowRegisterPage={setShowRegisterPage} setShowLoginPage={setShowLoginPage}/>}
-      {questions && answers && tags && (isLoggedIn || isGuest) &&
+      {!showUserProfile && questions && answers && tags && (isLoggedIn || isGuest) &&
         <div> 
           <Navbar goToWelcomePage={goToWelcomePage} isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} setIsGuest={setIsGuest} setSortField={setSortField} setCurrentTag={setCurrentTag} setSearch={setSearch} />
           <div id="main" className="main">
-            <Sidebar toggleDisplayTagsPage={toggleDisplayTagsPage} isLoggedIn={isLoggedIn} />
+            <Sidebar toggleDisplayTagsPage={toggleDisplayTagsPage} isLoggedIn={isLoggedIn} setShowUserProfile={setShowUserProfile} />
             <Forum fetchData={fetchData} comments={comments} goToWelcomePage={goToWelcomePage} isGuest={isGuest} isLoggedIn={isLoggedIn} answers={answers} displayTagsPage={displayTagsPage} displayAnswers={displayAnswers}
              setSearch={setSearch} setCurrentTag={setCurrentTag} toggleUnansweredBtnClicked={toggleUnansweredBtnClicked} setSortField={handleSort} addNewQuestion={addNewQuestion} answerPageIndex={answerPageIndex} displayAnswerForm={displayAnswerForm} showAnswerForm={showAnswerForm} handleAskQuestionBtn={handleAskQuestionBtn} isAskQuestionBtnClicked={isAskQuestionBtnClicked} setDisplayTagsPage={setDisplayTagsPage} tags={mapTags} ansArray={answers} setQuestions={setQuestions} handleAnswerPageIndex={handleAnswerPageIndex} isNoQuestionsFound={isNoQuestionsFound} questions={getSorted()}
             />
           </div>
         </div>
       }
+      {showUserProfile &&  <div> 
+          <Navbar goToWelcomePage={goToWelcomePage} isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} setIsGuest={setIsGuest} setSortField={setSortField} setCurrentTag={setCurrentTag} setSearch={setSearch} />
+          <div id="main" className="main">
+            <Sidebar toggleDisplayTagsPage={toggleDisplayTagsPage} isLoggedIn={isLoggedIn} setShowUserProfile={setShowUserProfile} />
+            <UserProfile/>
+          </div>
+      </div>}
 </div>
   );
 }
