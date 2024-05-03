@@ -240,7 +240,7 @@ export default function Answers(props) {
                 if (comment) {
                   return (
                     <div className="comment-post" key={commentIndex}>
-                      <div className="comment-upvote-arrow">
+                      <div className="comment-upvote-arrow"> 
                         <div className="comment-upvote-arrow" onClick={() => handleCommentVote(comment)}>
                           <FaArrowUp className={props.isGuest ? 'guest-upvote' : 'authenticated-upvote'} />
                         </div>

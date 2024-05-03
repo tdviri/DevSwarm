@@ -175,6 +175,11 @@ async isAnswerVoted(req, res){
   else {
     res.send(false);
   }
+},
+
+async getUserQuestions(req, res){
+  const user = await User.findById(req.userId);
+  res.send(user.askedQuestions);
 }
 };
 

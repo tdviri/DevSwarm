@@ -13,6 +13,7 @@ router.put('/api/addvotedcomment', auth, UserController.addVotedComment);
 router.get('/api/iscommentvoted/:id', auth, UserController.isCommentVoted);
 router.put('/api/addvotedanswer', auth, UserController.addVotedAnswer);
 router.get('/api/isanswervoted/:id', auth, UserController.isAnswerVoted);
+router.get('/api/getuserquestions', auth, UserController.getUserQuestions);
 
 // router.put('/api/addUser', auth, UserController.addUser);
 // router.get('/api/retrieveusers', UserController.retrieveUsers);

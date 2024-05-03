@@ -12,6 +12,7 @@ var UserSchema = new Schema({
     votedQuestions: [{type: Schema.Types.ObjectId}],
     votedAnswers: [{type: Schema.Types.ObjectId}],
     votedComments: [{type: Schema.Types.ObjectId}],
+    askedQuestions: [{type: Schema.Types.ObjectId}],
 }, { timestamps: true });
 
 UserSchema

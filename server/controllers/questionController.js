@@ -17,7 +17,10 @@ const QuestionController = {
   async addQuestion(req, res) {
     const newData = req.body;
     const insertedQuestion = await Question.create(newData);
-    res.send(insertedQuestion); 
+    const user = await User.findById(req.userId);
+    user.askedQuestions.push(insertedQuestion);
+    user.save();
+    res.send(insertedQuestion._id); 
   }
 };
 
