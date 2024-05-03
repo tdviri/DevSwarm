@@ -9,6 +9,8 @@ import NoQuestionsFound from './noQuestionsFound.js';
 import Answers from './answers.js';
 import Tags from './tags.js';
 import AnswerQuestionForm from './answerQuestionForm.js';
+import UserTags from './userTags.js'
+import UserAnsweredQuestions from './userAnsweredQuestions.js';
 
 export default function Forum(props) {
 
