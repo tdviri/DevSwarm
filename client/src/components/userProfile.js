@@ -15,12 +15,21 @@ export default async function UserProfile(props) {
     const userReputation = loggedInUser.reputation;
     const userRegistrationDate = loggedInUser.createdAt;
     const userAccountDuration = moment().diff(userRegistrationDate, 'days'); 
+
+    // function viewUserTagsPage(){
+
+    // }
+
+    // function viewUserAnsweredQuestionsPage(){
+
+    // }
+
   return (
     <div>
         <h1>Profile</h1>
         <div>{userQuestions.map(userQuestion =>{return <div>{userQuestion}</div>})}</div>
-        <div>View Your Tags</div>
-        <div>View Your Answers</div>
+        <div onClick={()=>viewUserTagsPage()}>View Your Tags</div>
+        <div onClick={()=>viewUserAnsweredQuestionsPage()}>View Your Answered Questions</div>
     </div>
   );
 }
