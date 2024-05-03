@@ -75,7 +75,7 @@ const UserController = {
 
   async getLoggedInUser(req, res) {
     try {
-      res.send(req.username);
+      res.send(req.user);
     } catch (error) {
         res.status(500).json({ errorMessage: "Error getting logged in user" });
     }
@@ -179,7 +179,9 @@ async isAnswerVoted(req, res){
 
 async getUserQuestions(req, res){
   const user = await User.findById(req.userId);
-  res.send(user.askedQuestions);
+  const userQuestions = user.askedQuestions;
+  const userTags = user.askedQuestions.flatMap(question => question.tags);
+  res.status(200).json({ questions, userTags });
 }
 };
 

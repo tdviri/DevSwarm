@@ -74,16 +74,17 @@ export default function AskQuestionForm(props) {
             }
           }
         } 
+        const loggedInUser = (await axios.get('http://localhost:8000/api/getLoggedInUser', {withCredentials: true,
+        headers: {
+          'Content-Type': 'application/json',
+        }})).data;
         let newQuestion = {
           title: questionTitle,
           summary: questionSummary,
           text: questionText,
           tags: tagIdsArr,
           answers: [],
-          asked_by: (await axios.get('http://localhost:8000/api/getLoggedInUser', {withCredentials: true,
-          headers: {
-            'Content-Type': 'application/json',
-          }})).data,
+          asked_by: loggedInUser.username,
           ask_date_time: new Date(),
           views: 0,
           votes: 0,

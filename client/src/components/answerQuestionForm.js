@@ -8,12 +8,13 @@ export default function AnswerQuestionForm(props) {
     e.preventDefault();
     const formValues = new FormData(e.target);
     const answerText = formValues.get('text');
+    const loggedInUser = await axios.get('http://localhost:8000/api/getLoggedInUser', {withCredentials: true,
+    headers: {
+      'Content-Type': 'application/json',
+    }}).data;
     let newAnswer = {
       text: answerText,
-      ans_by: (await axios.get('http://localhost:8000/api/getLoggedInUser', {withCredentials: true,
-      headers: {
-        'Content-Type': 'application/json',
-      }})).data,
+      ans_by: loggedInUser.username,
       ans_date_time: new Date(),
     }
     const ansArr = [...props.answers];

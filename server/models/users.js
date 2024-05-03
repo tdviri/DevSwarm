@@ -1,4 +1,4 @@
-// Tag Document Schema
+//User Document Schema
 var mongoose = require('mongoose');
 var Schema = mongoose.Schema;
 
