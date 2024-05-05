@@ -23,12 +23,27 @@ export default function UserProfile(props) {
     }, []);
 
     async function fetchData(){
-        let resp = await axios.get('http://localhost:8000/api/getuserquestions');
-        setUserQuestions(resp.data.userQuestions);
-        resp = await axios.get('http://localhost:8000/api/getusertags');
-        setUserTags(resp.data.userTags);
-        resp = await axios.get('http://localhost:8000/api/getuseransweredquestions');
-        setUserAnsweredQuestions(resp.data.userAnswers);
+        let resp = await axios.get('http://localhost:8000/api/getuserquestions',  {
+            withCredentials: true,
+            headers: {
+            'Content-Type': 'application/json',
+            }
+        });
+        setUserQuestions(resp.data);
+        resp = await axios.get('http://localhost:8000/api/getusertags',  {
+            withCredentials: true,
+            headers: {
+            'Content-Type': 'application/json',
+            }
+        }); 
+        setUserTags(resp.data);
+        resp = await axios.get('http://localhost:8000/api/getuseransweredquestions',  {
+            withCredentials: true,
+            headers: {
+            'Content-Type': 'application/json',
+            }
+        });
+        setUserAnsweredQuestions(resp.data);
 
         const loggedInUserResponse = await axios.get('http://localhost:8000/api/getLoggedInUser', {
             withCredentials: true,
@@ -42,34 +57,38 @@ export default function UserProfile(props) {
         setUserAccountDuration(moment().diff(userRegistrationDate, 'days'));
     }
 
-    // function viewUserTagsPage(){
-    //     setShowUserAnsweredQuestionsPage(false);
-    //     setShowUserTagsPage(true);
-    //     //re-render by calling fetchData?
-    // }
+    function viewUserTagsPage(){
+        setShowUserAnsweredQuestionsPage(false);
+        setShowUserTagsPage(true);
+        setShowNewQuestionForm(false);
+        //re-render by calling fetchData?
+    }
 
-    // function viewUserAnsweredQuestionsPage(){
-    //     setShowUserTagsPage(false);
-    //     setShowUserAnsweredQuestionsPage(true);
-    //     //re-render by calling fetchData?
-    // }
+    function viewUserAnsweredQuestionsPage(){
+        setShowUserAnsweredQuestionsPage(true);
+        setShowUserTagsPage(false);
+        setShowNewQuestionForm(false);
+        //re-render by calling fetchData?
+    }
 
     function viewNewQuestionForm(userQuestion){
         setQuestionToModify(userQuestion);
         setShowNewQuestionForm(true);
+        setShowUserAnsweredQuestionsPage(false);
+        setShowUserTagsPage(false);
     }
 
   return (
-    <div>
-        {!showNewQuestionForm && showUserTagsPage && <UserTags userTags={userTags}/>}
-        {!showNewQuestionForm && showUserAnsweredQuestionsPage && <UserAnsweredQuestions userAnswers={userAnsweredQuestions}/>}
+    <div className="user-profile">
+        {!showNewQuestionForm && showUserTagsPage && <UserTags setDisplayTagsPage={props.setDisplayTagsPage} setShowUserProfile={props.setShowUserProfile} setSearch={props.setSearch} setCurrentTag={props.setCurrentTag} userTags={userTags}/>}
+        {!showNewQuestionForm && showUserAnsweredQuestionsPage && <UserAnsweredQuestions tags={props.tags} userAnsweredQuestions={userAnsweredQuestions}/>}
         {!showNewQuestionForm && !showUserTagsPage && !showUserAnsweredQuestionsPage && <div>
             <h1>Profile</h1>
             <div>{userReputation}</div>
             <div>{userAccountDuration}</div>
-            <div>{userQuestions.map(userQuestion =>{return <div onClick={()=>viewNewQuestionForm(userQuestion)}>{userQuestion}</div>})}</div>
-            <div onClick={()=>setShowUserTagsPage(true)}>View Your Tags</div>
-            <div onClick={()=>setShowUserAnsweredQuestionsPage(true)}>View Your Answered Questions</div>
+            <div>{userQuestions && userQuestions.map(userQuestion =>{return <div onClick={()=>viewNewQuestionForm(userQuestion)}>{userQuestion.title}</div>})}</div>
+            <div onClick={()=>viewUserTagsPage()}>View Your Tags</div>
+            <div onClick={()=>viewUserAnsweredQuestionsPage()}>View Your Answered Questions</div>
         </div>}
         {showNewQuestionForm && <NewQuestion handleAnswerPageIndex={props.handleAnswerPageIndex} userQuestions={questionToModify} userTags={userTags}/>}
     </div>

@@ -11,11 +11,13 @@ export default function AnswerQuestionForm(props) {
     const loggedInUser = await axios.get('http://localhost:8000/api/getLoggedInUser', {withCredentials: true,
     headers: {
       'Content-Type': 'application/json',
-    }}).data;
+    }});
     let newAnswer = {
       text: answerText,
-      ans_by: loggedInUser.username,
+      ans_by: loggedInUser.data,
       ans_date_time: new Date(),
+      comments: [],
+      votes: 0
     }
     const ansArr = [...props.answers];
     const questionsArr = [...props.questions];
@@ -28,7 +30,7 @@ export default function AnswerQuestionForm(props) {
     ansArr.sort(function(a, b){
       return b.ans_date_time - a.ans_date_time;
     })
-    props.handleAnswerPageIndex(props.answerPageIndex, questionsArr, ansArr, false);
+    props.handleAnswerPageIndex(props.answerPageIndex, questionsArr, false);
   }
 
 

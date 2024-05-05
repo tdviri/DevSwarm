@@ -9,6 +9,8 @@ export default function UserTags(props) {
     function showTaggedQuestions(tagId){
         props.setSearch('');
         props.setCurrentTag(tagId);
+        props.setShowUserProfile(false);
+        props.setDisplayTagsPage(false);
     }
 
     async function editTag(tag){
@@ -18,7 +20,7 @@ export default function UserTags(props) {
             setIsTagInUse(true);
             return;
         }
-        await axios.put('http://localhost:8000/api/edittag');
+        await axios.put('http://localhost:8000/api/edittag', {withCredentials: true});
     }
 
     async function deleteTag(tag){
@@ -34,10 +36,10 @@ export default function UserTags(props) {
   return (
     <div>
         <div className="tags-page-header">
-            <div id="num-of-tags-header">{props.userTags.length} Your Tags</div>
+            <div id="num-of-tags-header">{props.userTags && props.userTags.length} Tags</div>
             {/* {props.isLoggedIn && <div id="tags-page-ask-question-btn"><button onClick={()=>props.handleAskQuestionBtn(true)} className="ask-question-btn">Ask Question</button></div>} */}
         </div>
-        <div id="tags-container"> {props.userTags.map((tag)=>{
+        <div id="tags-container"> {props.userTags && props.userTags.map((tag)=>{
              if (tag.questionCount === 1){
                 return <div key={tag._id} id="tag-container" className="tag-container">
                 <div onClick={()=>showTaggedQuestions(tag._id)} id="tag-name" className="tag-name">{tag.name}</div>

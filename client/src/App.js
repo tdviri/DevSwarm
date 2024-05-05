@@ -53,6 +53,7 @@ function App() {
   }, [])
 
   async function fetchData() {
+      console.log("hi")
       response = await axios.get('http://localhost:8000/api/retrievequestions'); 
       setQuestions(response.data);
       response = await axios.get('http://localhost:8000/api/retrieveanswers');
@@ -63,7 +64,7 @@ function App() {
       setComments(response.data);
  }
 
-  async function handleAnswerPageIndex(index, questionsArr, answerArr, showAnswers){
+  async function handleAnswerPageIndex(index, questionsArr, showAnswers){
     setIsDisplayAnswerForm(false);
     setDisplayAnswers(showAnswers);
     setAnswerPageIndex(index);
@@ -91,6 +92,7 @@ function App() {
     else{
       setIsShowingTaggedQuestions(false);
     }
+    setShowUserProfile(false);
     setCurrentTag(null);
     setIsUnansweredBtnClick(false);
     setSortField('ask_date_time');
@@ -218,7 +220,7 @@ function App() {
           <Navbar goToWelcomePage={goToWelcomePage} isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} setIsGuest={setIsGuest} setSortField={setSortField} setCurrentTag={setCurrentTag} setSearch={setSearch} />
           <div id="main" className="main">
             <Sidebar toggleDisplayTagsPage={toggleDisplayTagsPage} isLoggedIn={isLoggedIn} setShowUserProfile={setShowUserProfile} />
-            <UserProfile handleAnswerPageIndex={handleAnswerPageIndex}/>
+            <UserProfile setDisplayTagsPage={setDisplayTagsPage} showUserProfile={showUserProfile} setShowUserProfile={setShowUserProfile} setSearch={setSearch} setCurrentTag={setCurrentTag} tags={tags} handleAnswerPageIndex={handleAnswerPageIndex}/>
           </div>
       </div>}
 </div>

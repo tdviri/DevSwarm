@@ -1,6 +1,7 @@
 const User = require('../models/users');
 const Question = require('../models/questions')
 const Answer = require('../models/answers');
+const Tag = require('../models/tags');
 const Comment = require('../models/comments');
 const jwt = require('jsonwebtoken'); 
 const bcrypt = require('bcrypt');
@@ -75,7 +76,8 @@ const UserController = {
 
   async getLoggedInUser(req, res) {
     try {
-      res.send(req.user);
+      const user = await User.findById(req.userId);
+      res.status(200).json(user.username);
     } catch (error) {
         res.status(500).json({ errorMessage: "Error getting logged in user" });
     }
@@ -178,35 +180,53 @@ async isAnswerVoted(req, res){
 },
 
 async getUserQuestions(req, res){
-  const user = await User.findById(req.userId).populate({
-    path: 'askedQuestions'
-  }).exec();
-
-  const userQuestions = user.askedQuestions.map(question => question.toObject());
-  res.status(200).json(userQuestions);
+  // const user = await User.findById(req.userId).populate({
+  //   path: 'askedQuestions'
+  // }).exec();
+  // console.log(user)
+  // const userQuestions = user.askedQuestions;
+  // res.status(200).json(userQuestions);
+  const user = await User.findById(req.userId);
+  let userQuestions = [];
+  for (const askedQuestion of user.askedQuestions) {
+    const question = await Question.findById(askedQuestion);
+    userQuestions.push(question);
+  }
+  res.send(userQuestions);
 },
 
 async getUserTags(req, res){
-  const user = await User.findById(req.userId).populate({
-    path: 'tags'
-  }).exec();
+    const user = await User.findById(req.userId);
+    let tags = [];
+    for (const askedQuestion of user.askedQuestions) {
+      const question = await Question.findById(askedQuestion);
+      tags.push([...question.tags]);
+    }
 
-  const userTags = user.tags.map(tag => tag.toObject());
-  res.status(200).json(userTags);
+    let userTags = [];
+    for (const tag of tags){
+      const t = await Tag.findById(tag);
+      userTags.push(t);
+    }
+    res.send(userTags)
 },
 
 async getUserAnsweredQuestions(req, res){
   const user = await User.findById(req.userId);
   const questions = await Question.find();
-  questions.filter(async question => {
-    for (const answer of question.answers){
+
+  const filteredQuestions = await Promise.all(questions.map(async question => {
+    for (const answer of question.answers) {
       const ans = await Answer.findById(answer);
-      if (ans.ans_by.equals(user)){
-        return true;
-      }}
-      return false;
-    })
-  res.status(200).json(questions);
+      if (ans.ans_by === user.username) {
+        return question;
+      }
+    }
+    return null;
+  }));
+
+  const answeredQuestions = filteredQuestions.filter(question => question !== null);
+  res.status(200).json(answeredQuestions);
 }
 };
 

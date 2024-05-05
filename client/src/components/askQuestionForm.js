@@ -84,11 +84,10 @@ export default function AskQuestionForm(props) {
           text: questionText,
           tags: tagIdsArr,
           answers: [],
-          asked_by: loggedInUser.username,
+          asked_by: loggedInUser,
           ask_date_time: new Date(),
           views: 0,
           votes: 0,
-          isVoted: false
         };
         props.addNewQuestion(newQuestion);
         props.handleAskQuestionBtn(false);
