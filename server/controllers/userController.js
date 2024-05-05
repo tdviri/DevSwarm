@@ -178,10 +178,35 @@ async isAnswerVoted(req, res){
 },
 
 async getUserQuestions(req, res){
+  const user = await User.findById(req.userId).populate({
+    path: 'askedQuestions'
+  }).exec();
+
+  const userQuestions = user.askedQuestions.map(question => question.toObject());
+  res.status(200).json(userQuestions);
+},
+
+async getUserTags(req, res){
+  const user = await User.findById(req.userId).populate({
+    path: 'tags'
+  }).exec();
+
+  const userTags = user.tags.map(tag => tag.toObject());
+  res.status(200).json(userTags);
+},
+
+async getUserAnsweredQuestions(req, res){
   const user = await User.findById(req.userId);
-  const userQuestions = user.askedQuestions;
-  const userTags = user.askedQuestions.flatMap(question => question.tags);
-  res.status(200).json({ questions, userTags });
+  const questions = await Question.find();
+  questions.filter(async question => {
+    for (const answer of question.answers){
+      const ans = await Answer.findById(answer);
+      if (ans.ans_by.equals(user)){
+        return true;
+      }}
+      return false;
+    })
+  res.status(200).json(questions);
 }
 };
 

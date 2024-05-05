@@ -11,6 +11,16 @@ const TagController = {
     const insertedTag = await Tag.create(newData);
     res.send(insertedTag); 
   },
-};
+
+  async editTag(req, res){
+
+  },
+
+  async deleteTag(req, res){
+    Tag.deleteOne({_id: ObjectId(req.body.tag._id)});
+    res.send();
+  }
+}
+
 
 module.exports = TagController;

@@ -218,7 +218,7 @@ function App() {
           <Navbar goToWelcomePage={goToWelcomePage} isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} setIsGuest={setIsGuest} setSortField={setSortField} setCurrentTag={setCurrentTag} setSearch={setSearch} />
           <div id="main" className="main">
             <Sidebar toggleDisplayTagsPage={toggleDisplayTagsPage} isLoggedIn={isLoggedIn} setShowUserProfile={setShowUserProfile} />
-            <UserProfile/>
+            <UserProfile handleAnswerPageIndex={handleAnswerPageIndex}/>
           </div>
       </div>}
 </div>

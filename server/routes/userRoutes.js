@@ -14,6 +14,9 @@ router.get('/api/iscommentvoted/:id', auth, UserController.isCommentVoted);
 router.put('/api/addvotedanswer', auth, UserController.addVotedAnswer);
 router.get('/api/isanswervoted/:id', auth, UserController.isAnswerVoted);
 router.get('/api/getuserquestions', auth, UserController.getUserQuestions);
+router.get('/api/getusertags', auth, UserController.getUserTags);
+router.get('/api/getuseransweredquestions', auth, UserController.getUserAnsweredQuestions);
+
 
 // router.put('/api/addUser', auth, UserController.addUser);
 // router.get('/api/retrieveusers', UserController.retrieveUsers);
