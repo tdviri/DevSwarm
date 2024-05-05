@@ -14,21 +14,38 @@ export default function UserTags(props) {
     }
 
     async function editTag(tag){
-        const resp = await axios.get('http://localhost:8000/api/retrievetags', {withCredentials: true});
+        const resp = await axios.get('http://localhost:8000/api/retrievetags', {withCredentials: true,
+        headers: {
+          'Content-Type': 'application/json',
+        }});
         const appTags = resp.data;
-        if (appTags.some(appTag => appTag.id === tag.id)){
-            setIsTagInUse(true);
-            return;
+        let count = 0;
+        if (appTags.some(appTag => appTag._id === tag._id)){
+            if (++count === 2){
+                setIsTagInUse(true);
+                return;
+            }
+            count++;
         }
-        await axios.put('http://localhost:8000/api/edittag', {withCredentials: true});
+        await axios.put('http://localhost:8000/api/edittag', {withCredentials: true,
+        headers: {
+          'Content-Type': 'application/json',
+        }});
     }
 
     async function deleteTag(tag){
-        const resp = await axios.get('http://localhost:8000/api/retrievetags', {withCredentials: true});
+        const resp = await axios.get('http://localhost:8000/api/retrievetags', {withCredentials: true,
+        headers: {
+          'Content-Type': 'application/json',
+        }});
         const appTags = resp.data;
-        if (appTags.some(appTag => appTag.id === tag.id)){
-            setIsTagInUse(true);
-            return;
+        let count = 0;
+        if (appTags.some(appTag => appTag._id === tag._id)){
+            if (++count === 2){
+                setIsTagInUse(true);
+                return;
+            }
+            count++;
         }
         await axios.delete('http://localhost:8000/api/deletetag', tag, {withCredentials: true});
     }

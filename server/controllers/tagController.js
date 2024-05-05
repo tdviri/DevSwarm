@@ -17,7 +17,7 @@ const TagController = {
   },
 
   async deleteTag(req, res){
-    Tag.deleteOne({_id: ObjectId(req.body.tag._id)});
+    await Tag.deleteOne({_id: ObjectId(req.body.tag._id)});
     res.send();
   }
 }

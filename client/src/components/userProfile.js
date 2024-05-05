@@ -23,34 +23,14 @@ export default function UserProfile(props) {
     }, []);
 
     async function fetchData(){
-        let resp = await axios.get('http://localhost:8000/api/getuserquestions',  {
-            withCredentials: true,
-            headers: {
-            'Content-Type': 'application/json',
-            }
-        });
+        let resp = await axios.get('http://localhost:8000/api/getuserquestions',  {withCredentials: true});
         setUserQuestions(resp.data);
-        resp = await axios.get('http://localhost:8000/api/getusertags',  {
-            withCredentials: true,
-            headers: {
-            'Content-Type': 'application/json',
-            }
-        }); 
+        resp = await axios.get('http://localhost:8000/api/getusertags',  {withCredentials: true}); 
         setUserTags(resp.data);
-        resp = await axios.get('http://localhost:8000/api/getuseransweredquestions',  {
-            withCredentials: true,
-            headers: {
-            'Content-Type': 'application/json',
-            }
-        });
+        resp = await axios.get('http://localhost:8000/api/getuseransweredquestions',  { withCredentials: true });
         setUserAnsweredQuestions(resp.data);
 
-        const loggedInUserResponse = await axios.get('http://localhost:8000/api/getLoggedInUser', {
-            withCredentials: true,
-            headers: {
-            'Content-Type': 'application/json',
-            }
-        });
+        const loggedInUserResponse = await axios.get('http://localhost:8000/api/getLoggedInUser', {withCredentials: true});
         const loggedInUser = loggedInUserResponse.data;
         const userRegistrationDate = loggedInUser.createdAt;
         setUserReputation(loggedInUser.reputation);
