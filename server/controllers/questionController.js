@@ -37,7 +37,7 @@ const QuestionController = {
 
 async deleteQuestion(req, res){
   console.log("deleting question")   
-  await Tag.findOneAndDelete({ _id: { $in: req.body.tags } });
+  await Tag.deleteMany({ _id: { $in: req.body.tags } });
   await User.findOneAndUpdate(
       { votedQuestions: req.body._id },
       { $pull: { votedQuestions: req.body._id } }, 
