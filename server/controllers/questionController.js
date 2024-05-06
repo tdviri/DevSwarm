@@ -2,6 +2,7 @@ const Question = require('../models/questions');
 const Answer = require('../models/answers');
 const Comment = require('../models/comments');
 const User = require('../models/users')
+const Tag = require('../models/tags');
 
 const QuestionController = {
   async retrieveQuestions(req, res) {
@@ -18,7 +19,6 @@ const QuestionController = {
 
   async addQuestion(req, res) {
     const newData = req.body;
-    console.log(newData)
     const insertedQuestion = await Question.create(newData);
     const user = await User.findById(req.userId);
     user.askedQuestions.push(insertedQuestion);
@@ -35,14 +35,20 @@ const QuestionController = {
     res.send();
   },
 
-  async deleteQuestion(req, res){
-    for (ansId of req.body.userQuestion.answers){
-      Answer.deleteOne({_id: ObjectId(ansId)});
-    }
-    for (commId of req.body.userQuestion.comments){
-      Comment.deleteOne({_id: ObjectId(commId)});
-    }
-    await Question.deleteOne({ _id: ObjectId(req.body.userQuestion._id) });
+async deleteQuestion(req, res){
+  console.log("deleting question")   
+  await Tag.findOneAndDelete({ _id: { $in: req.body.tags } });
+  await User.findOneAndUpdate(
+      { votedQuestions: req.body._id },
+      { $pull: { votedQuestions: req.body._id } }, 
+      { new: true } 
+    )
+  await User.findOneAndUpdate(
+      { askedQuestions: req.body._id },
+      { $pull: { askedQuestions: req.body._id } }, 
+      { new: true } 
+    )
+    await Question.deleteOne(req.body);
     res.send();
   }
 };

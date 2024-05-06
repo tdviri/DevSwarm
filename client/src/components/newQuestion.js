@@ -89,92 +89,9 @@ export default function NewQuestion(props) {
     }
 
     async function handleDeleteQuestion(formData){
-        await axios.delete('http://localhost:8000/api/replacequestion', {userQuestion: props.userQuestion}, {withCredentials: true});
+        await axios.delete('http://localhost:8000/api/deletequestion', {withCredentials: true, data: props.userQuestion});
+        props.fetchData();
     }
-
-//   async function handleSubmit(e) {
-//     e.preventDefault();
-//     const formValues = new FormData(e.target);
-//     const questionTitle = formValues.get('title');
-//     const questionSummary = formValues.get('summary');
-//     const questionText = formValues.get('text');
-//     const questionTags = formValues.get('tags').split(" ");
-//     setFormTitleError(false);
-//     setTagLengthError(false);
-//     setTagCountError(false);
-//     let valid = true;
-
-//     if (questionTitle.length > 100){
-//         setFormTitleError(true);
-//         valid = false;
-//     }
-    
-//     if (questionTags.length > 5){
-//         setTagCountError(true);
-//         valid = false;
-//     }
-    
-//     for (const tag of questionTags){
-//         if (tag.length > 20){
-//             setTagLengthError(true);
-//             valid = false;
-//             break;
-//         }
-//     }
-
-//     if (!valid){
-//         return;
-//     }
-//         const tagsArr = [...props.tags];
-//         let tagIdsArr = [];
-//         for (const userTag of questionTags) {
-//           let matchedTag = false;
-//           for (const tag of tagsArr) {
-//             if (userTag === tag.name) {
-//               tagIdsArr.push(tag._id);
-//               matchedTag = true;
-//               break;
-//             }
-//           }
-    
-//           if (!matchedTag) { 
-//             const newTag = {name: userTag};
-//             tagsArr.push(newTag)
-//             try{ 
-//               const resp = await axios.post('http://localhost:8000/api/updatetags', newTag, { withCredentials: true,
-//               headers: {
-//               'Content-Type': 'application/json',
-//               }})
-//               tagIdsArr.push(resp.data._id);
-//             } catch (error){
-//               if (error.request) {
-//                 alert('Communication error: Unable to connect to the server. Please try again later.');
-//               } 
-//               else {
-//                 alert('System error: Registration failed');
-//               }
-//             }
-//           }
-//         } 
-//         const loggedInUser = (await axios.get('http://localhost:8000/api/getLoggedInUser', {withCredentials: true,
-//         headers: {
-//           'Content-Type': 'application/json',
-//         }})).data;
-//         let newQuestion = {
-//           title: questionTitle,
-//           summary: questionSummary,
-//           text: questionText,
-//           tags: tagIdsArr,
-//           answers: [],
-//           asked_by: loggedInUser.username,
-//           ask_date_time: new Date(),
-//           views: 0,
-//           votes: 0,
-//           isVoted: false
-//         };
-//         props.addNewQuestion(newQuestion);
-//         props.handleAskQuestionBtn(false);
-//   }
 
   return (
     <form id="ask-question-form" className="ask-question-form">
