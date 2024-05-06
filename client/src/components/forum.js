@@ -20,8 +20,9 @@ export default function Forum(props) {
 
   return (
     <div id="forum" className="forum">
-        {!props.displayTagsPage && props.displayAnswers && !props.displayAnswerForm && <Answers goToWelcomePage={props.goToWelcomePage} isGuest={props.isGuest} fetchData={props.fetchData} comments={props.comments} isLoggedIn={props.isLoggedIn} answers={props.answers} answerPageIndex={props.answerPageIndex} handleAskQuestionBtn={props.handleAskQuestionBtn} showAnswerForm={props.showAnswerForm} questions={props.questions} /> }
+        {!props.displayTagsPage && props.displayAnswers && !props.displayAnswerForm && <Answers displayUserAnswers={props.displayUserAnswers} goToWelcomePage={props.goToWelcomePage} isGuest={props.isGuest} fetchData={props.fetchData} comments={props.comments} isLoggedIn={props.isLoggedIn} answers={props.answers} answerPageIndex={props.answerPageIndex} handleAskQuestionBtn={props.handleAskQuestionBtn} showAnswerForm={props.showAnswerForm} questions={props.questions} /> }
         {props.isAskQuestionBtnClicked && <AskQuestionForm addNewQuestion={props.addNewQuestion} handleAskQuestionBtn={props.handleAskQuestionBtn} questions={props.questions} tags={props.tags} loggedInUser={props.loggedInUser} />} 
+        {!props.displayTagsPage && !props.displayAnswers && props.displayEditAnswerForm && <editAnswerForm/>}
         {!props.displayTagsPage && !props.displayAnswers && props.displayAnswerForm && <AnswerQuestionForm answers={props.answers} answerPageIndex={props.answerPageIndex} handleAnswerPageIndex={props.handleAnswerPageIndex} questions={props.questions} />}
         {!props.displayTagsPage && !props.displayAnswers && !props.displayAnswerForm && !props.isAskQuestionBtnClicked &&
         <div>

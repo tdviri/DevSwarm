@@ -13,11 +13,14 @@ const TagController = {
   },
 
   async editTag(req, res){
-
+    const tag = await Tag.findById(req.body.id);
+    tag.name = req.body.name;
+    tag.save();
+    res.send();
   },
 
   async deleteTag(req, res){
-    await Tag.deleteOne({_id: ObjectId(req.body.tag._id)});
+    await Tag.deleteOne(req.body.tag);
     res.send();
   }
 }

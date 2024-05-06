@@ -19,10 +19,10 @@ export default function UserProfile(props) {
     const [showNewQuestionForm, setShowNewQuestionForm] = useState(false);
 
     useEffect(() => {
-        fetchData();
+        fetchUserData();
     }, []);
 
-    async function fetchData(){
+    async function fetchUserData(){
         let resp = await axios.get('http://localhost:8000/api/getuserquestions',  {withCredentials: true});
         setUserQuestions(resp.data);
         resp = await axios.get('http://localhost:8000/api/getusertags',  {withCredentials: true}); 
@@ -60,8 +60,8 @@ export default function UserProfile(props) {
 
   return (
     <div className="user-profile">
-        {!showNewQuestionForm && showUserTagsPage && <UserTags setDisplayTagsPage={props.setDisplayTagsPage} setShowUserProfile={props.setShowUserProfile} setSearch={props.setSearch} setCurrentTag={props.setCurrentTag} userTags={userTags}/>}
-        {!showNewQuestionForm && showUserAnsweredQuestionsPage && <UserAnsweredQuestions tags={props.tags} userAnsweredQuestions={userAnsweredQuestions}/>}
+        {!showNewQuestionForm && showUserTagsPage && <UserTags fetchData={props.fetchData} questions={props.questions} setDisplayTagsPage={props.setDisplayTagsPage} setShowUserProfile={props.setShowUserProfile} setSearch={props.setSearch} setCurrentTag={props.setCurrentTag} userTags={userTags}/>}
+        {!showNewQuestionForm && showUserAnsweredQuestionsPage && <UserAnsweredQuestions handleAnswerPageIndex={props.handleAnswerPageIndex} setDisplayUserAnswers={props.setDisplayUserAnswers} fetchUserData={fetchUserData} tags={props.tags} userAnsweredQuestions={userAnsweredQuestions}/>}
         {!showNewQuestionForm && !showUserTagsPage && !showUserAnsweredQuestionsPage && <div>
             <h1>Profile</h1>
             <div>{userReputation}</div>

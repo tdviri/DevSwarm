@@ -96,7 +96,7 @@ export default function UserAnsweredQuestions(props) {
       }
     }
 
-  return (
+    return (
       <div className="posts-container">
         {props.userAnsweredQuestions && questionData.map((question, index) => (
           <div key={index} id={`post${index}`} className='post'>
@@ -110,7 +110,7 @@ export default function UserAnsweredQuestions(props) {
               <span className="views-count">{question.views} views</span>
             </div>
             <div id={`post-title${index}`} className='title-and-tags'>
-              <span onClick={() =>  props.handleAnswerPageIndex(index, props.userAnsweredQuestions, true)} className='post-title'>{question.title}</span>
+              <span onClick={() => {props.setDisplayUserAnswers(true); props.handleAnswerPageIndex(index, props.userAnsweredQuestions, true)}} className='post-title'>{question.title}</span>
               <div className='tags'>
                 {question.tags.map((tagId, tagIndex) => (
                   <span className="tag" key={tagIndex}>

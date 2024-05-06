@@ -46,6 +46,7 @@ function App() {
   const [showLoginPage, setShowLoginPage] = useState(false);
   const [showRegisterPage, setShowRegisterPage] = useState(false);
   const [showUserProfile, setShowUserProfile] = useState(false);
+  const [displayUserAnswers, setDisplayUserAnswers] = useState(false);
   let response;
 
   useEffect(()=> {
@@ -53,7 +54,6 @@ function App() {
   }, [])
 
   async function fetchData() {
-      console.log("hi")
       response = await axios.get('http://localhost:8000/api/retrievequestions'); 
       setQuestions(response.data);
       response = await axios.get('http://localhost:8000/api/retrieveanswers');
@@ -65,6 +65,8 @@ function App() {
  }
 
   async function handleAnswerPageIndex(index, questionsArr, showAnswers){
+    setDisplayTagsPage(false);
+    setShowUserProfile(false);
     setIsDisplayAnswerForm(false);
     setDisplayAnswers(showAnswers);
     setAnswerPageIndex(index);
@@ -210,7 +212,7 @@ function App() {
           <Navbar goToWelcomePage={goToWelcomePage} isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} setIsGuest={setIsGuest} setSortField={setSortField} setCurrentTag={setCurrentTag} setSearch={setSearch} />
           <div id="main" className="main">
             <Sidebar toggleDisplayTagsPage={toggleDisplayTagsPage} isLoggedIn={isLoggedIn} setShowUserProfile={setShowUserProfile} />
-            <Forum fetchData={fetchData} comments={comments} goToWelcomePage={goToWelcomePage} isGuest={isGuest} isLoggedIn={isLoggedIn} answers={answers} displayTagsPage={displayTagsPage} displayAnswers={displayAnswers}
+            <Forum displayUserAnswers={displayUserAnswers} fetchData={fetchData} comments={comments} goToWelcomePage={goToWelcomePage} isGuest={isGuest} isLoggedIn={isLoggedIn} answers={answers} displayTagsPage={displayTagsPage} displayAnswers={displayAnswers}
              setSearch={setSearch} setCurrentTag={setCurrentTag} toggleUnansweredBtnClicked={toggleUnansweredBtnClicked} setSortField={handleSort} addNewQuestion={addNewQuestion} answerPageIndex={answerPageIndex} displayAnswerForm={displayAnswerForm} showAnswerForm={showAnswerForm} handleAskQuestionBtn={handleAskQuestionBtn} isAskQuestionBtnClicked={isAskQuestionBtnClicked} setDisplayTagsPage={setDisplayTagsPage} tags={mapTags} ansArray={answers} setQuestions={setQuestions} handleAnswerPageIndex={handleAnswerPageIndex} isNoQuestionsFound={isNoQuestionsFound} questions={getSorted()}
             />
           </div>
@@ -220,7 +222,7 @@ function App() {
           <Navbar goToWelcomePage={goToWelcomePage} isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} setIsGuest={setIsGuest} setSortField={setSortField} setCurrentTag={setCurrentTag} setSearch={setSearch} />
           <div id="main" className="main">
             <Sidebar toggleDisplayTagsPage={toggleDisplayTagsPage} isLoggedIn={isLoggedIn} setShowUserProfile={setShowUserProfile} />
-            <UserProfile setDisplayTagsPage={setDisplayTagsPage} showUserProfile={showUserProfile} setShowUserProfile={setShowUserProfile} setSearch={setSearch} setCurrentTag={setCurrentTag} tags={tags} handleAnswerPageIndex={handleAnswerPageIndex}/>
+            <UserProfile handleAnswerPageIndex={handleAnswerPageIndex} setDisplayUserAnswers={setDisplayUserAnswers} fetchData={fetchData} questions={getSorted()} setDisplayTagsPage={setDisplayTagsPage} showUserProfile={showUserProfile} setShowUserProfile={setShowUserProfile} setSearch={setSearch} setCurrentTag={setCurrentTag} tags={tags}/>
           </div>
       </div>}
 </div>

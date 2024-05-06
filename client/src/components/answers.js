@@ -2,12 +2,16 @@ import React from 'react';
 import '../stylesheets/App.css';
 import { FaArrowUp, FaArrowDown } from 'react-icons/fa';
 import { useState } from 'react';
+import EditAnswerForm from './editAnswerForm';
 import axios from 'axios';
 
 export default function Answers(props) {
     const [startIndex, setStartIndex] = useState(0);
     const [openDropdowns, setOpenDropdowns] = useState({});
     const [commentText, setCommentText] = useState('');
+    const [editingAnswerId, setEditingAnswerId] = useState(null);
+    const [displayEditAnswerForm, setDisplayEditAnswerForm] = useState(false);
+    const [answerToEdit, setAnswerToEdit] = useState(null);
     
     const toggleDropdown = (index) => {
       setOpenDropdowns((prevState) => ({
@@ -260,7 +264,9 @@ export default function Answers(props) {
               {props.isLoggedIn && (
                 <div>
                   <input className="add-comment" placeholder="Add a comment..." onChange={handleCommentInput}/>
-                  <button className="post-comment-btn" onClick={()=>postComment()}>Post</button>
+                  <button className="post-comment-btn" onClick={()=>postComment(ans)}>Post</button>
+                  <button className="edit-answer-btn" onClick={() => editingAnswerId === ans._id ? editAnswer(ans) : setEditingAnswerId(ans._id)}>Edit</button>
+                  <button className="delete-answer-btn" onClick={() => deleteAnswer(ans)}>Delete</button>
                 </div>
               )}
             </div>
@@ -271,16 +277,33 @@ export default function Answers(props) {
     }
   });
 
+//   <div className="tag-name" onClick={() => !editingTagId && showTaggedQuestions(tag._id)}>
+//   {editingTagId === tag._id  ? <input type="text" value={newTagName} onChange={(e) => setNewTagName(e.target.value)} /> : tag.name}
+// </div>
+
+  async function editAnswer(answer){
+    setAnswerToEdit(answer);
+    setDisplayEditAnswerForm(true);
+  }
+
+  async function deleteAnswer(answer){
+    await axios.delete('http://localhost:8000/api/deleteanswer', answer, {withCredentials: true});
+    props.fetchData();
+  }
+
   return (
-    <>
-        <div>{answerPage}</div>
-        <div className="answer-posts">{answerPosts.slice(startIndex, startIndex + 5)}</div>
-        {answerPosts.length > 5 && <div className="pagination-buttons">
-            <button disabled={startIndex === 0} onClick={() => setStartIndex(startIndex - 5)}>Prev</button>
-            <button disabled={startIndex + 5 >= answerPosts.length} onClick={() => setStartIndex(startIndex + 5)}>Next</button>
+    <div>
+        {displayEditAnswerForm && <EditAnswerForm  fetchData={props.fetchData} answerToEdit={answerToEdit} setDisplayEditAnswerForm={setDisplayEditAnswerForm}/>}
+        {!displayEditAnswerForm && <div>
+          <div>{answerPage}</div>
+          <div className="answer-posts">{answerPosts.slice(startIndex, startIndex + 5)}</div>
+          {answerPosts.length > 5 && <div className="pagination-buttons">
+              <button disabled={startIndex === 0} onClick={() => setStartIndex(startIndex - 5)}>Prev</button>
+              <button disabled={startIndex + 5 >= answerPosts.length} onClick={() => setStartIndex(startIndex + 5)}>Next</button>
+          </div>}
+          {props.isLoggedIn && <button onClick={() => props.showAnswerForm(true)} id="answer-question-btn">Answer Question</button>}
         </div>}
-        {props.isLoggedIn && <button onClick={() => props.showAnswerForm(true)} id="answer-question-btn">Answer Question</button>}
-    </>
+    </div>
   );
 }
 
