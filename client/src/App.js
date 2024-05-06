@@ -64,6 +64,16 @@ function App() {
       setComments(response.data);
  }
 
+ function handleAnswerPage(index, questionsArr, showAnswers){
+    setDisplayTagsPage(false);
+    setShowUserProfile(false);
+    setIsDisplayAnswerForm(false);
+    setDisplayAnswers(showAnswers);
+    setAnswerPageIndex(index);
+    questionsArr[index].views++;
+    fetchData();
+ }
+
   async function handleAnswerPageIndex(index, questionsArr, showAnswers){
     setDisplayTagsPage(false);
     setShowUserProfile(false);
@@ -222,7 +232,7 @@ function App() {
           <Navbar goToWelcomePage={goToWelcomePage} isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} setIsGuest={setIsGuest} setSortField={setSortField} setCurrentTag={setCurrentTag} setSearch={setSearch} />
           <div id="main" className="main">
             <Sidebar toggleDisplayTagsPage={toggleDisplayTagsPage} isLoggedIn={isLoggedIn} setShowUserProfile={setShowUserProfile} />
-            <UserProfile handleAnswerPageIndex={handleAnswerPageIndex} setDisplayUserAnswers={setDisplayUserAnswers} fetchData={fetchData} questions={getSorted()} setDisplayTagsPage={setDisplayTagsPage} showUserProfile={showUserProfile} setShowUserProfile={setShowUserProfile} setSearch={setSearch} setCurrentTag={setCurrentTag} tags={tags}/>
+            <UserProfile handleAnswerPage={handleAnswerPage} setDisplayUserAnswers={setDisplayUserAnswers} fetchData={fetchData} questions={getSorted()} setDisplayTagsPage={setDisplayTagsPage} showUserProfile={showUserProfile} setShowUserProfile={setShowUserProfile} setSearch={setSearch} setCurrentTag={setCurrentTag} tags={tags}/>
           </div>
       </div>}
 </div>

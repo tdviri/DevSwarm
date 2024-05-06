@@ -283,8 +283,10 @@ export default function Answers(props) {
   }
 
   async function deleteAnswer(answer){
-    await axios.delete('http://localhost:8000/api/deleteanswer', answer, {withCredentials: true});
-    props.fetchData();
+    await axios.delete('http://localhost:8000/api/deleteanswer', {withCredentials: true,
+    headers: {
+      'Content-Type': 'application/json',
+    }, data: answer});
   }
 
   return (

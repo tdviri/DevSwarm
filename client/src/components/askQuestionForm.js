@@ -84,7 +84,7 @@ export default function AskQuestionForm(props) {
           text: questionText,
           tags: tagIdsArr,
           answers: [],
-          asked_by: loggedInUser,
+          asked_by: loggedInUser.username,
           ask_date_time: new Date(),
           views: 0,
           votes: 0,

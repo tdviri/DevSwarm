@@ -20,7 +20,8 @@ const TagController = {
   },
 
   async deleteTag(req, res){
-    await Tag.deleteOne(req.body.tag);
+    const tag = await Tag.findById(req.body)
+    await Tag.deleteOne(tag);
     res.send();
   }
 }

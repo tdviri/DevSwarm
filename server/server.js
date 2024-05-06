@@ -6,6 +6,7 @@ require('dotenv').config();
 const express = require('express');
 const cors = require('cors'); 
 const cookieParser = require('cookie-parser');
+const bodyParser = require('body-parser');
 const mongoose = require('mongoose');
 const userRoutes = require('./routes/userRoutes');
 const answerRoutes = require('./routes/answerRoutes');
@@ -17,19 +18,33 @@ const app = express();
 const corsOptions = {
     origin: 'http://localhost:3000', 
     credentials: true, 
-    optionsSuccessStatus: 200
+    optionsSuccessStatus: 200,
 };
   
 app.use(cors(corsOptions));
-// app.use(cors());
+app.use(bodyParser.json());
 app.use(express.json());
 app.use(cookieParser());
 app.use(express.urlencoded({ extended: true }));
 
+const handlePreflight = (req, res, next) => {
+    res.header('Access-Control-Allow-Origin', req.headers.origin);
+    res.header('Access-Control-Allow-Headers', 'Origin, X-Requested-With, Content-Type, Accept, Authorization');
+    res.header('Access-Control-Allow-Methods', 'GET, POST, PUT, DELETE, OPTIONS');
+    res.header('Access-Control-Allow-Credentials', true);
+    if (req.method === 'OPTIONS') {
+      res.sendStatus(200);
+    } else {
+      next();
+    }
+  };
+  
+app.options('*', handlePreflight);
 
 app.get("/", function (req, res) {
     res.send("Hello World!");
 });
+
 // Define the port for the server to listen on
 const PORT = 8000;
 

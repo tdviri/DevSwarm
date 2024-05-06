@@ -30,22 +30,23 @@ const AnswerController = {
   },
 
   async deleteAnswer(req, res){
+    console.log("deleting answer")
     await Question.findOneAndUpdate(
-      { answers: req.body.answer._id },
-      { $pull: { answers: req.body.answer._id } }, 
+      { answers: req.body._id },
+      { $pull: { answers: req.body._id } }, 
       { new: true } 
     );    
     await Comment.findOneAndUpdate(
-      { answers: req.body.answer._id },
-      { $pull: { answers: req.body.answer._id } }, 
+      { answers: req.body._id },
+      { $pull: { answers: req.body._id } }, 
       { new: true } 
     )
     await User.findOneAndUpdate(
-      { votedAnswers: req.body.answer._id },
-      { $pull: { votedAnswers: req.body.answer._id } }, 
+      { votedAnswers: req.body._id },
+      { $pull: { votedAnswers: req.body._id } }, 
       { new: true } 
     )
-    await Answer.deleteOne(req.body.answer);
+    await Answer.deleteOne(req.body);
   }
 };
 

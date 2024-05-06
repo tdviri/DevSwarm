@@ -61,11 +61,11 @@ export default function UserProfile(props) {
   return (
     <div className="user-profile">
         {!showNewQuestionForm && showUserTagsPage && <UserTags fetchData={props.fetchData} questions={props.questions} setDisplayTagsPage={props.setDisplayTagsPage} setShowUserProfile={props.setShowUserProfile} setSearch={props.setSearch} setCurrentTag={props.setCurrentTag} userTags={userTags}/>}
-        {!showNewQuestionForm && showUserAnsweredQuestionsPage && <UserAnsweredQuestions handleAnswerPageIndex={props.handleAnswerPageIndex} setDisplayUserAnswers={props.setDisplayUserAnswers} fetchUserData={fetchUserData} tags={props.tags} userAnsweredQuestions={userAnsweredQuestions}/>}
+        {!showNewQuestionForm && showUserAnsweredQuestionsPage && <UserAnsweredQuestions handleAnswerPage={props.handleAnswerPage} setDisplayUserAnswers={props.setDisplayUserAnswers} fetchUserData={fetchUserData} tags={props.tags} userAnsweredQuestions={userAnsweredQuestions}/>}
         {!showNewQuestionForm && !showUserTagsPage && !showUserAnsweredQuestionsPage && <div>
             <h1>Profile</h1>
-            <div>{userReputation}</div>
-            <div>{userAccountDuration}</div>
+            <div>Reputation: {userReputation}</div>
+            <div>Account created {userAccountDuration} days ago</div>
             <div>{userQuestions && userQuestions.map(userQuestion =>{return <div onClick={()=>viewNewQuestionForm(userQuestion)}>{userQuestion.title}</div>})}</div>
             <div onClick={()=>viewUserTagsPage()}>View Your Tags</div>
             <div onClick={()=>viewUserAnsweredQuestionsPage()}>View Your Answered Questions</div>

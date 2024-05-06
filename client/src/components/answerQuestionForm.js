@@ -14,7 +14,7 @@ export default function AnswerQuestionForm(props) {
     }});
     let newAnswer = {
       text: answerText,
-      ans_by: loggedInUser.data,
+      ans_by: loggedInUser.data.username,
       ans_date_time: new Date(),
       comments: [],
       votes: 0

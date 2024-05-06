@@ -77,7 +77,7 @@ const UserController = {
   async getLoggedInUser(req, res) {
     try {
       const user = await User.findById(req.userId);
-      res.status(200).json(user.username);
+      res.status(200).json(user);
     } catch (error) {
         res.status(500).json({ errorMessage: "Error getting logged in user" });
     }
@@ -218,7 +218,7 @@ async getUserAnsweredQuestions(req, res){
   const filteredQuestions = await Promise.all(questions.map(async question => {
     for (const answer of question.answers) {
       const ans = await Answer.findById(answer);
-      if (ans.ans_by === user.username) {
+      if (ans?.ans_by === user.username) {
         return question;
       }
     }

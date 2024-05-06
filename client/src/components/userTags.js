@@ -76,7 +76,8 @@ export default function UserTags(props) {
                 return;
             }
             setIsTagInUse(false);
-            await axios.delete(`http://localhost:8000/api/deletetag/${tag._id}`, { withCredentials: true });
+            await axios.delete(`http://localhost:8000/api/deletetag`, { withCredentials: true, data: tag._id });
+            props.fetchData();
         } catch (error) {
             console.error('Error deleting tag:', error);
         }
