@@ -1,4 +1,5 @@
 const Tag = require('../models/tags');
+const Question = require('../models/questions');
 
 const TagController = {
   async retrieveTags(req, res) {
@@ -20,9 +21,10 @@ const TagController = {
   },
 
   async deleteTag(req, res){
-    const tag = await Tag.findById(req.body)
-    await Tag.deleteOne(tag);
-    res.send();
+    // const tag = await Tag.findById(req.body)
+    // // await Question.findOneAndDelete({ _id: { $in: req.body.tags } }); //incorrect, just change it
+    // await Tag.deleteOne(tag);
+    // res.send();
   }
 }
 
