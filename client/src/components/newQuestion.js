@@ -199,7 +199,7 @@ export default function NewQuestion(props) {
       <div className="form-question-subheader-container">
         <label className="form-label">Tags*</label>
         <span className="form-submessage">Add keywords separated by whitespace</span>
-        <input id="question-tags" className="form-input" type="text" required name="tags"  value={props.userTags.filter(userTag => props.userQuestions.includes(userTag)).join(" ")}/>
+        <input id="question-tags" className="form-input" type="text" required name="tags" value={props.userTags.filter(tag =>{return props.userQuestion.tags.includes(tag._id)}).map(tag => tag.name).join(" ")} />
       </div>
       <br /><br />
       <div className="submit-form">

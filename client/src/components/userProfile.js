@@ -70,7 +70,7 @@ export default function UserProfile(props) {
             <div onClick={()=>viewUserTagsPage()}>View Your Tags</div>
             <div onClick={()=>viewUserAnsweredQuestionsPage()}>View Your Answered Questions</div>
         </div>}
-        {showNewQuestionForm && <NewQuestion handleAnswerPageIndex={props.handleAnswerPageIndex} userQuestions={questionToModify} userTags={userTags}/>}
+        {showNewQuestionForm && <NewQuestion handleAnswerPageIndex={props.handleAnswerPageIndex} userQuestion={questionToModify} userTags={userTags}/>}
     </div>
   );
 }
