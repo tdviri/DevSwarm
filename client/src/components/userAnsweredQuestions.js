@@ -98,6 +98,7 @@ export default function UserAnsweredQuestions(props) {
 
     return (
       <div className="posts-container">
+        <h1 class="user-answered-questions-header">Answered Questions</h1>
         {props.userAnsweredQuestions && questionData.map((question, index) => (
           <div key={index} id={`post${index}`} className='post'>
             <div className="upvote-downvote-arrows"> 

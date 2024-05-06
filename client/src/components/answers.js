@@ -261,25 +261,21 @@ export default function Answers(props) {
                   return null; 
                 }
               })}
-              {props.isLoggedIn && (
+            </div>
+          )}
+          {props.isLoggedIn && (
                 <div>
                   <input className="add-comment" placeholder="Add a comment..." onChange={handleCommentInput}/>
-                  <button className="post-comment-btn" onClick={()=>postComment(ans)}>Post</button>
-                  <button className="edit-answer-btn" onClick={() => editingAnswerId === ans._id ? editAnswer(ans) : setEditingAnswerId(ans._id)}>Edit</button>
+                  <button className="post-comment-btn" onClick={()=> postComment(ans)}>Post</button>
+                  <button className="edit-answer-btn" onClick={() => editAnswer(ans)}>Edit</button>
                   <button className="delete-answer-btn" onClick={() => deleteAnswer(ans)}>Delete</button>
                 </div>
               )}
-            </div>
-          )}
         </div>
       );
       answerPosts.push(answerPost);
     }
   });
-
-//   <div className="tag-name" onClick={() => !editingTagId && showTaggedQuestions(tag._id)}>
-//   {editingTagId === tag._id  ? <input type="text" value={newTagName} onChange={(e) => setNewTagName(e.target.value)} /> : tag.name}
-// </div>
 
   async function editAnswer(answer){
     setAnswerToEdit(answer);
