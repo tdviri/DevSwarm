@@ -1,7 +1,7 @@
 import React from 'react';
 import '../stylesheets/App.css';
 import { FaArrowUp, FaArrowDown } from 'react-icons/fa';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import EditAnswerForm from './editAnswerForm';
 import axios from 'axios';
 
@@ -9,147 +9,66 @@ export default function Answers(props) {
     const [startIndex, setStartIndex] = useState(0);
     const [openDropdowns, setOpenDropdowns] = useState({});
     const [commentText, setCommentText] = useState('');
-    const [editingAnswerId, setEditingAnswerId] = useState(null);
     const [displayEditAnswerForm, setDisplayEditAnswerForm] = useState(false);
     const [answerToEdit, setAnswerToEdit] = useState(null);
-    
-    const toggleDropdown = (index) => {
-      setOpenDropdowns((prevState) => ({
-        ...prevState,
-        [index]: !prevState[index],
-      }));
-    };
+    const [answers, setAnswers] = useState(props.answers);
+    const [answerPosts, setAnswerPosts] = useState([]);
+    const [answerPage, setAnswerPage] = useState(null);
+    const [numOfAnswers, setNumOfAnswers] = useState(props.questions[props.answerPageIndex].answers.length);
 
-    async function handleAnswerVote(upvote, answer){
-      if (props.isGuest){
-        return;
+    useEffect(()=>{
+      let currTime = new Date();
+      let elapsedTime = currTime.getTime() - new Date(props.questions[props.answerPageIndex].ask_date_time).getTime();
+      let answerPageTimeMessage;
+      let startYear = new Date(props.questions[props.answerPageIndex].ask_date_time).getFullYear();
+      let endYear = currTime.getFullYear();
+  
+      let years = Math.abs(Math.floor(endYear - startYear));
+      if (currTime.getMonth() < new Date(props.questions[props.answerPageIndex].ask_date_time).getMonth() || (currTime.getMonth() === new Date(props.questions[props.answerPageIndex].ask_date_time).getMonth() && currTime.getDate() < new Date(props.questions[props.answerPageIndex].ask_date_time).getDate())) {
+          years--;
       }
-      const questionIsVoted = (await axios.get(`http://localhost:8000/api/isanswervoted/${answer._id}`, { withCredentials: true,
-      })).data;
-      if (questionIsVoted){
-        return;
+      
+      let hours = Math.abs(Math.floor(elapsedTime / (1000 * 60 * 60)));
+      let minutes = Math.abs(Math.floor(elapsedTime / (1000 * 60)));
+      let seconds = Math.abs(Math.floor(elapsedTime / 1000));
+      const monthArr = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
+      if (seconds < 60){
+        answerPageTimeMessage = `asked ${seconds} seconds ago`;
       }
-      try {
-        const data = new URLSearchParams();
-        data.append('upvote', upvote);
-        data.append('answer', answer._id);
-        await axios.put('http://localhost:8000/api/addvotedanswer', data, {withCredentials: true,
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        }});
-        props.fetchData();
-      } catch(error){
-        if (error.response && error.response.data.errorMessage === "Must have at least 50 reputation points to vote."){
-          alert("Must have at least 50 reputation points to vote.");
-        }
-        else if (error.request) {
-          alert('Communication error: Unable to connect to the server. Please try again later.');
-        } 
-        else {
-          alert('System error');
-        }
-        props.goToWelcomePage();
+      else if (minutes < 60){
+        answerPageTimeMessage = `asked ${minutes} minutes ago`;
       }
+      else if (hours < 24){
+        answerPageTimeMessage = `asked ${hours} hours ago`;
+      }
+      else if (years >= 0){
+        answerPageTimeMessage = `asked ${monthArr[new Date(props.questions[props.answerPageIndex].ask_date_time).getMonth()]} ${new Date(props.questions[props.answerPageIndex].ask_date_time).getDay()}, ${new Date(props.questions[props.answerPageIndex].ask_date_time).getFullYear()} at ${new Date(props.questions[props.answerPageIndex].ask_date_time).getHours()}:${String(new Date(props.questions[props.answerPageIndex].ask_date_time).getMinutes()).padStart(2, '0')}`;
+      }
+      else if (hours >= 24) {
+        answerPageTimeMessage = `asked ${monthArr[new Date(props.questions[props.answerPageIndex].ask_date_time).getMonth()]} ${new Date(props.questions[props.answerPageIndex].ask_date_time).getDay()} at ${new Date(props.questions[props.answerPageIndex].ask_date_time).getHours()}:${String(new Date(props.questions[props.answerPageIndex].ask_date_time).getMinutes()).padStart(2, '0')}`;
     }
+  
+    const updatedAnswerPage  = 
+    <div> <div className="answers-header">
+    <span className="answer-count-answers-page"> {numOfAnswers} answers </span>
+    <div className="question-title-answers-page"> {props.questions[props.answerPageIndex].title} </div>
+    {props.isLoggedIn && <div><button onClick={()=>props.handleAskQuestionBtn(true)} className="ask-question-btn">Ask Question</button></div>}
+  </div>
+  <div className="question-details-answers-page">
+      <span className="views-count-answers-page"> {props.questions[props.answerPageIndex].views} views</span>
+      <span className="question-text-answer-page"> {props.questions[props.answerPageIndex].text} </span>
+      <div className="answer-info">
+        <span className="post-username-question-answers-page"> {props.questions[props.answerPageIndex].asked_by} </span>
+        <span className="post-time-answers-page">{answerPageTimeMessage}</span>
+      </div>
+  </div></div>
+  setAnswerPage(updatedAnswerPage);
 
-    async function handleCommentVote(comment) {
-      if (props.isGuest) {
-        return; 
-      }
-      const commentIsVoted = (await axios.get(`http://localhost:8000/api/iscommentvoted/${comment._id}`, { withCredentials: true })).data;
-      if (commentIsVoted){
-        return;
-      }
-      try {
-        const data = new URLSearchParams();
-        data.append('comment', comment._id);
-        await axios.put('http://localhost:8000/api/addvotedcomment', data, {withCredentials: true,
-        headers: {
-          'Content-Type': 'application/x-www-form-urlencoded',
-        }});
-        props.fetchData();
-      } catch(error){
-        if (error.request) {
-          alert('Communication error: Unable to connect to the server. Please try again later.');
-        } 
-        else {
-          alert('System error');
-        }
-        props.goToWelcomePage();
-      }
-    }
-
-    async function postComment(ans){
-      try {
-        const resp = await axios.post('http://localhost:8000/api/addcomment', commentText, {withCredentials: true});
-        const comment = resp.data;
-        await axios.put('http://localhost:8000/api/updateanswercomments', ans._id, comment._id, {withCredentials: true});
-        props.fetchData();
-      } catch(error){
-        if (error.request) {
-          alert('Communication error: Unable to connect to the server. Please try again later.');
-        } 
-        else {
-          alert('System error: Login failed');
-        }
-      }
-      setCommentText('');
-    }
-
-    function handleCommentInput(event){
-      setCommentText(event.target.value);
-    }
-
-    let currTime = new Date();
-    let elapsedTime = currTime.getTime() - new Date(props.questions[props.answerPageIndex].ask_date_time).getTime();
-    let answerPosts = [];
-    let answerPageTimeMessage;
-    let startYear = new Date(props.questions[props.answerPageIndex].ask_date_time).getFullYear();
-    let endYear = currTime.getFullYear();
-
-    let years = Math.abs(Math.floor(endYear - startYear));
-    if (currTime.getMonth() < new Date(props.questions[props.answerPageIndex].ask_date_time).getMonth() || (currTime.getMonth() === new Date(props.questions[props.answerPageIndex].ask_date_time).getMonth() && currTime.getDate() < new Date(props.questions[props.answerPageIndex].ask_date_time).getDate())) {
-        years--;
-    }
-    
-    let hours = Math.abs(Math.floor(elapsedTime / (1000 * 60 * 60)));
-    let minutes = Math.abs(Math.floor(elapsedTime / (1000 * 60)));
-    let seconds = Math.abs(Math.floor(elapsedTime / 1000));
-    const monthArr = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-    if (seconds < 60){
-      answerPageTimeMessage = `asked ${seconds} seconds ago`;
-    }
-    else if (minutes < 60){
-      answerPageTimeMessage = `asked ${minutes} minutes ago`;
-    }
-    else if (hours < 24){
-      answerPageTimeMessage = `asked ${hours} hours ago`;
-    }
-    else if (years >= 0){
-      answerPageTimeMessage = `asked ${monthArr[new Date(props.questions[props.answerPageIndex].ask_date_time).getMonth()]} ${new Date(props.questions[props.answerPageIndex].ask_date_time).getDay()}, ${new Date(props.questions[props.answerPageIndex].ask_date_time).getFullYear()} at ${new Date(props.questions[props.answerPageIndex].ask_date_time).getHours()}:${String(new Date(props.questions[props.answerPageIndex].ask_date_time).getMinutes()).padStart(2, '0')}`;
-    }
-    else if (hours >= 24) {
-      answerPageTimeMessage = `asked ${monthArr[new Date(props.questions[props.answerPageIndex].ask_date_time).getMonth()]} ${new Date(props.questions[props.answerPageIndex].ask_date_time).getDay()} at ${new Date(props.questions[props.answerPageIndex].ask_date_time).getHours()}:${String(new Date(props.questions[props.answerPageIndex].ask_date_time).getMinutes()).padStart(2, '0')}`;
-  }
-
-  const answerPage  = 
-  <div> <div className="answers-header">
-  <span className="answer-count-answers-page"> {props.questions[props.answerPageIndex].answers.length} answers </span>
-  <div className="question-title-answers-page"> {props.questions[props.answerPageIndex].title} </div>
-  {props.isLoggedIn && <div><button onClick={()=>props.handleAskQuestionBtn(true)} className="ask-question-btn">Ask Question</button></div>}
-</div>
-<div className="question-details-answers-page">
-    <span className="views-count-answers-page"> {props.questions[props.answerPageIndex].views} views</span>
-    <span className="question-text-answer-page"> {props.questions[props.answerPageIndex].text} </span>
-    <div className="answer-info">
-      <span className="post-username-question-answers-page"> {props.questions[props.answerPageIndex].asked_by} </span>
-      <span className="post-time-answers-page">{answerPageTimeMessage}</span>
-    </div>
-</div></div>
+  
 
   let newAnsArray = [];
   props.questions[props.answerPageIndex].answers.forEach((ansIdForQuestion)=>{
-    props.answers.forEach((ans)=>{
+    answers.forEach((ans)=>{
       if (ansIdForQuestion === ans._id){
         newAnsArray.push(ans)
       }
@@ -159,6 +78,7 @@ export default function Answers(props) {
     return new Date(b.ans_date_time) - new Date(a.ans_date_time);
   })
 
+  let newAnsPostsArr = [];
   sortedAnsArray.forEach(ans => {
     if (props.questions[props.answerPageIndex].answers.includes(ans._id)){
       const comment = props.comments.find(comment => props.questions[props.answerPageIndex].answers.comments && props.questions[props.answerPageIndex].answers.comments.includes(comment._id));
@@ -265,17 +185,126 @@ export default function Answers(props) {
           )}
           {props.isLoggedIn && (
                 <div>
-                  <input className="add-comment" placeholder="Add a comment..." onChange={handleCommentInput}/>
-                  <button className="post-comment-btn" onClick={()=> postComment(ans)}>Post</button>
+                  <form onSubmit={(event) => handlePostComment(event, ans)}>
+                    <input className="add-comment" placeholder="Add a comment..." value={commentText} onChange={handleCommentInput}/>
+                    <button type="submit" className="post-comment-btn">Post</button>
+                  </form>
                   <button className="edit-answer-btn" onClick={() => editAnswer(ans)}>Edit</button>
                   <button className="delete-answer-btn" onClick={() => deleteAnswer(ans)}>Delete</button>
                 </div>
               )}
         </div>
       );
-      answerPosts.push(answerPost);
+      newAnsPostsArr.push(answerPost);
     }
   });
+  setAnswerPosts(newAnsPostsArr);
+},[answers, numOfAnswers, props])
+
+
+  function handlePostComment(event, ans) {
+    event.preventDefault();
+    postComment(ans, commentText);
+    // setCommentText(''); 
+  }
+    
+    const toggleDropdown = (index) => {
+      setOpenDropdowns((prevState) => ({
+        ...prevState,
+        [index]: !prevState[index],
+      }));
+    };
+
+    async function handleAnswerVote(upvote, answer){
+      if (props.isGuest){
+        return;
+      }
+      const questionIsVoted = (await axios.get(`http://localhost:8000/api/isanswervoted/${answer._id}`, { withCredentials: true,
+      })).data;
+      if (questionIsVoted){
+        return;
+      }
+      try {
+        const data = new URLSearchParams();
+        data.append('upvote', upvote);
+        data.append('answer', answer._id);
+        await axios.put('http://localhost:8000/api/addvotedanswer', data, {withCredentials: true,
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        }});
+        props.fetchData();
+      } catch(error){
+        if (error.response && error.response.data.errorMessage === "Must have at least 50 reputation points to vote."){
+          alert("Must have at least 50 reputation points to vote.");
+        }
+        else if (error.request) {
+          alert('Communication error: Unable to connect to the server. Please try again later.');
+        } 
+        else {
+          alert('System error');
+        }
+        props.goToWelcomePage();
+      }
+    }
+
+    async function handleCommentVote(comment) {
+      if (props.isGuest) {
+        return; 
+      }
+      const commentIsVoted = (await axios.get(`http://localhost:8000/api/iscommentvoted/${comment._id}`, { withCredentials: true })).data;
+      if (commentIsVoted){
+        return;
+      }
+      try {
+        const data = new URLSearchParams();
+        data.append('comment', comment._id);
+        await axios.put('http://localhost:8000/api/addvotedcomment', data, {withCredentials: true,
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        }});
+        props.fetchData();
+      } catch(error){
+        if (error.request) {
+          alert('Communication error: Unable to connect to the server. Please try again later.');
+        } 
+        else {
+          alert('System error');
+        }
+        props.goToWelcomePage();
+      }
+    }
+
+    async function postComment(ans, commentText){
+      try {
+        console.log(commentText)
+        const resp = await axios.post('http://localhost:8000/api/addcomment', commentText, {withCredentials: true});
+        const comment = resp.data;
+        await axios.put('http://localhost:8000/api/updateanswercomments', ans._id, comment._id, {withCredentials: true});
+        props.fetchData();
+      } catch(error){
+        if (error.request) {
+          alert('Communication error: Unable to connect to the server. Please try again later.');
+        } 
+        else {
+          alert('System error: Login failed');
+        }
+      }
+      setCommentText('');
+    }
+
+    function handleCommentInput(event){
+      setCommentText(event.target.value);
+    }
+
+    function replaceWithEditedAnswer(newAnswer) {
+      const newAnswers = answers.map(ans => {
+        if (ans._id === newAnswer._id) {
+          return newAnswer;
+        }
+        return ans;
+      });
+      setAnswers(newAnswers);
+    }
 
   async function editAnswer(answer){
     setAnswerToEdit(answer);
@@ -287,11 +316,14 @@ export default function Answers(props) {
     headers: {
       'Content-Type': 'application/json',
     }, data: answer});
+    setAnswers(prevAnswers => prevAnswers.filter(ans => ans._id !== answer._id));
+    setNumOfAnswers(prevNumOfAnswer => prevNumOfAnswer - 1);
+    props.fetchData()
   }
 
   return (
     <div>
-        {displayEditAnswerForm && <EditAnswerForm  fetchData={props.fetchData} answerToEdit={answerToEdit} setDisplayEditAnswerForm={setDisplayEditAnswerForm}/>}
+        {displayEditAnswerForm && <EditAnswerForm replaceWithEditedAnswer={replaceWithEditedAnswer} fetchData={props.fetchData} answerToEdit={answerToEdit} setDisplayEditAnswerForm={setDisplayEditAnswerForm}/>}
         {!displayEditAnswerForm && <div>
           <div>{answerPage}</div>
           <div className="answer-posts">{answerPosts.slice(startIndex, startIndex + 5)}</div>
@@ -304,5 +336,3 @@ export default function Answers(props) {
     </div>
   );
 }
-
-

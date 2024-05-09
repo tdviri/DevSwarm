@@ -7,7 +7,8 @@ export default function EditAnswerForm(props) {
 
   async function handleSubmit(e) {
     e.preventDefault();
-    await axios.put('http://localhost:8000/api/editanswer', { origAns: props.answerToEdit, newAnsText: ansText }, { withCredentials: true });
+    const resp = await axios.put('http://localhost:8000/api/editanswer', { origAns: props.answerToEdit, newAnsText: ansText }, { withCredentials: true });
+    props.replaceWithEditedAnswer(resp.data);
     props.setDisplayEditAnswerForm(false);
     props.fetchData();
   }

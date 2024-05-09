@@ -26,7 +26,7 @@ const AnswerController = {
     const ans = await Answer.findById(req.body.origAns._id);
     ans.text = req.body.newAnsText;
     ans.save();
-    res.send();
+    res.send(ans);
   },
 
   async deleteAnswer(req, res){
@@ -47,6 +47,7 @@ const AnswerController = {
       { new: true } 
     )
     await Answer.deleteOne(req.body);
+    res.send();
   }
 };
 

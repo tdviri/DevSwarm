@@ -7,7 +7,9 @@ const CommentController = {
     },
 
     async addComment(req, res) {
-        const newData = req.body.commentText;
+        const commText = req.body.commentText;
+        const user = req.userId;
+        let newData = {commText, user};
         const insertedComment = await Comment.create(newData);
         res.send(insertedComment); 
     }
