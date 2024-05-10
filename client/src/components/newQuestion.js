@@ -86,7 +86,8 @@ export default function NewQuestion(props) {
                 isVoted: false
             };
             await axios.put('http://localhost:8000/api/replacequestion', {origQuestion: props.userQuestion, newQuestion: newQuestion}, {withCredentials: true})
-    }
+            props.fetchData();
+        }
 
     async function handleDeleteQuestion(formData){
         await axios.delete('http://localhost:8000/api/deletequestion', {withCredentials: true, data: props.userQuestion});
@@ -98,7 +99,7 @@ export default function NewQuestion(props) {
       <div className="form-question-subheader-container">
         <label className="form-label">Question Title*</label>
         <span className="form-submessage">Limit title to 50 characters or less</span>
-        <input id="question-title" className="form-input" type="text" required name="title" value ={props.userQuestion.title}/>
+        <input id="question-title" className="form-input" type="text" required name="title" defaultValue ={props.userQuestion.title}/>
       </div>
       <br /><br />
       <div className="form-question-subheader-container">
@@ -116,7 +117,7 @@ export default function NewQuestion(props) {
       <div className="form-question-subheader-container">
         <label className="form-label">Tags*</label>
         <span className="form-submessage">Add keywords separated by whitespace</span>
-        <input id="question-tags" className="form-input" type="text" required name="tags" value={props.userTags.filter(tag =>{return props.userQuestion.tags.includes(tag._id)}).map(tag => tag.name).join(" ")} />
+        <input id="question-tags" className="form-input" type="text" required name="tags" defaultValue={props.userTags.filter(tag =>{return props.userQuestion.tags.includes(tag._id)}).map(tag => tag.name).join(" ")} />
       </div>
       <br /><br />
       <div className="submit-form">

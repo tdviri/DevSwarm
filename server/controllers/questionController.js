@@ -28,11 +28,11 @@ const QuestionController = {
 
   async replaceQuestion(req, res) {
     await Question.replaceOne(
-      { _id: ObjectId(req.body.origQuestion._id) },
+      { _id: req.body.origQuestion._id },
       req.body.newQuestion,
       { upsert: false }
-    );
-    res.send();
+  );
+  res.send();
   },
 
 async deleteQuestion(req, res){

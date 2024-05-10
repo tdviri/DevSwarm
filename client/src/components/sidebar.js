@@ -6,6 +6,12 @@ export default function Sidebar(props) {
     props.toggleDisplayTagsPage(value);
   }
 
+  function goToUserProfile(){
+    props.setShowUserProfile(true);
+    props.setClickedOnProfileSidebar(true);
+    props.fetchData();
+  }
+
   return (  
     <div className="sidebar">
         <div onClick={() => changeTagsPageDisplay(false)} id="questions-sidebar">
@@ -14,7 +20,7 @@ export default function Sidebar(props) {
         <div onClick={() => changeTagsPageDisplay(true)} id="tags-sidebar">
             <h1 id="tags-sidebar-header">Tags</h1>
         </div>
-        {props.isLoggedIn && <div onClick={()=>props.setShowUserProfile(true)} id="user-profile-sidebar">
+        {props.isLoggedIn && <div onClick={()=>goToUserProfile()} id="user-profile-sidebar">
         <h1 id="user-profile-sidebar-header">Profile</h1>
           </div>}
     </div> 

@@ -20,6 +20,12 @@ export default function UserProfile(props) {
 
     useEffect(() => {
         fetchUserData();
+        if (props.clickedOnProfileSidebar){
+            console.log("hi")
+            setShowNewQuestionForm(false);
+            setShowUserTagsPage(false);
+            setShowUserAnsweredQuestionsPage(false);
+        }
     }, []);
 
     async function fetchUserData(){
@@ -70,7 +76,7 @@ export default function UserProfile(props) {
             <div onClick={()=>viewUserTagsPage()}>View Your Tags</div>
             <div onClick={()=>viewUserAnsweredQuestionsPage()}>View Your Answered Questions</div>
         </div>}
-        {showNewQuestionForm && <NewQuestion fetchData={props.fetchData} userQuestion={questionToModify} userTags={userTags}/>}
+        {showNewQuestionForm && <NewQuestion tags={props.tags} fetchData={props.fetchData} userQuestion={questionToModify} userTags={userTags}/>}
     </div>
   );
 }

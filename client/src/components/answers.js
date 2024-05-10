@@ -196,7 +196,7 @@ export default function Answers(props) {
     }
   });
   setAnswerPosts(newAnsPostsArr);
-},[answers, numOfAnswers, props])
+},[answers, numOfAnswers, activeDropdownId, props])
 
 // function createDropdownStates(){
 //   const initialDropdownStates = {};
@@ -229,7 +229,7 @@ function handleFormSubmit(answer, inputValue) {
         console.log("don't dropdown")
           setActiveDropdownId(null); 
       } else {
-        console.log("dropdown")
+        console.log("dropdown", ansId)
           setActiveDropdownId(ansId); 
       }
   };
