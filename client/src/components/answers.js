@@ -81,7 +81,7 @@ export default function Answers(props) {
   })
 
   let newAnsPostsArr = [];
-  sortedAnsArray.forEach((ans, arrIndex) => {
+  sortedAnsArray.forEach(ans => {
     if (props.questions[props.answerPageIndex].answers.includes(ans._id)){
       const comment = props.comments.find(comment => props.questions[props.answerPageIndex].answers.comments && props.questions[props.answerPageIndex].answers.comments.includes(comment._id));
       let commAnswerPostTimeMessage;
@@ -224,11 +224,13 @@ function handleFormSubmit(answer, inputValue) {
     //     [arrIndex]: !prevState[arrIndex],
     //   }));
     // };
-    const toggleDropdown = (id) => {
-      if (activeDropdownId === id) {
+    const toggleDropdown = (ansId) => {
+      if (activeDropdownId === ansId) {
+        console.log("don't dropdown")
           setActiveDropdownId(null); 
       } else {
-          setActiveDropdownId(id); 
+        console.log("dropdown")
+          setActiveDropdownId(ansId); 
       }
   };
     async function handleAnswerVote(upvote, answer){
