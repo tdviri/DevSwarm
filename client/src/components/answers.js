@@ -8,7 +8,8 @@ import axios from 'axios';
 
 export default function Answers(props) {
     const [startIndex, setStartIndex] = useState(0);
-    const [openDropdowns, setOpenDropdowns] = useState({});
+    // const [openDropdowns, setOpenDropdowns] = useState({});
+    const [activeDropdownId, setActiveDropdownId] = useState(null);
     const [displayEditAnswerForm, setDisplayEditAnswerForm] = useState(false);
     const [answerToEdit, setAnswerToEdit] = useState(null);
     const [answers, setAnswers] = useState(props.answers);
@@ -66,7 +67,7 @@ export default function Answers(props) {
   setAnswerPage(updatedAnswerPage);
 
   
-  createDropdownStates();
+  // createDropdownStates();
   let newAnsArray = [];
   props.questions[props.answerPageIndex].answers.forEach((ansIdForQuestion)=>{
     answers.forEach((ans)=>{
@@ -156,10 +157,10 @@ export default function Answers(props) {
           </div>
           {ans.comments.length > 0 && (
             <div className="comments-dropdown">
-              <div className="comments-dropdown-header" onClick={() => toggleDropdown(arrIndex)}>
+              <div className="comments-dropdown-header" onClick={() => toggleDropdown(ans._id)}>
                 Show Comments
               </div>
-              {openDropdowns[arrIndex] && ans.comments.map((commentId, commentIndex) => {
+              {activeDropdownId === ans._id && ans.comments.map((commentId, commentIndex) => {
                 const comment = props.comments.find(comment => comment._id === commentId);
                 if (comment) {
                   return (
@@ -197,14 +198,14 @@ export default function Answers(props) {
   setAnswerPosts(newAnsPostsArr);
 },[answers, numOfAnswers, props])
 
-function createDropdownStates(){
-  const initialDropdownStates = {};
-  props.questions[props.answerPageIndex].answers.forEach((ansIdForQuestion, index)=>{
-    initialDropdownStates[index] = false;
-  })
-  console.log(initialDropdownStates);
-  setOpenDropdowns(initialDropdownStates);
-}
+// function createDropdownStates(){
+//   const initialDropdownStates = {};
+//   props.questions[props.answerPageIndex].answers.forEach((ansIdForQuestion, index)=>{
+//     initialDropdownStates[index] = false;
+//   })
+//   console.log(initialDropdownStates);
+//   setOpenDropdowns(initialDropdownStates);
+// }
 
 function handleFormSubmit(answer, inputValue) {
     answers.forEach(ans => {
@@ -216,14 +217,20 @@ function handleFormSubmit(answer, inputValue) {
     setInputValue('');
 }
     
-    const toggleDropdown = (arrIndex) => {
-      console.log("toggle dropdown", openDropdowns)
-      setOpenDropdowns((prevState) => ({
-        ...prevState,
-        [arrIndex]: !prevState[arrIndex],
-      }));
-    };
-
+    // const toggleDropdown = (arrIndex) => {
+    //   console.log("toggle dropdown", openDropdowns)
+    //   setOpenDropdowns((prevState) => ({
+    //     ...prevState,
+    //     [arrIndex]: !prevState[arrIndex],
+    //   }));
+    // };
+    const toggleDropdown = (id) => {
+      if (activeDropdownId === id) {
+          setActiveDropdownId(null); 
+      } else {
+          setActiveDropdownId(id); 
+      }
+  };
     async function handleAnswerVote(upvote, answer){
       if (props.isGuest){
         return;
@@ -323,7 +330,7 @@ function handleFormSubmit(answer, inputValue) {
     }, data: answer});
     setAnswers(prevAnswers => prevAnswers.filter(ans => ans._id !== answer._id));
     setNumOfAnswers(prevNumOfAnswer => prevNumOfAnswer - 1);
-    createDropdownStates();
+    // createDropdownStates();
     props.fetchData()
   }
 
