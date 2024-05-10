@@ -16,8 +16,8 @@ const AnswerController = {
   },
 
   async updateAnswerComments(req, res) {
-    const answer = await Answer.findById(req.body.ans._id);
-    answer.comments.push(req.body.comment._id);
+    const answer = await Answer.findById(req.body.ansId);
+    answer.comments.push(req.body.commentId);
     answer.save();
     res.send();
   },

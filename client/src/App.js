@@ -69,7 +69,8 @@ function App() {
     setShowUserProfile(false);
     setIsDisplayAnswerForm(false);
     setDisplayAnswers(showAnswers);
-    setAnswerPageIndex(index);
+    const newIndex = getSorted().findIndex(question => question._id === questionsArr[index]._id);
+    setAnswerPageIndex(newIndex);
     questionsArr[index].views++;
     fetchData();
  }

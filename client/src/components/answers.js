@@ -1,20 +1,20 @@
 import React from 'react';
 import '../stylesheets/App.css';
 import { FaArrowUp, FaArrowDown } from 'react-icons/fa';
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import EditAnswerForm from './editAnswerForm';
 import axios from 'axios';
 
 export default function Answers(props) {
     const [startIndex, setStartIndex] = useState(0);
     const [openDropdowns, setOpenDropdowns] = useState({});
-    const [commentText, setCommentText] = useState('');
     const [displayEditAnswerForm, setDisplayEditAnswerForm] = useState(false);
     const [answerToEdit, setAnswerToEdit] = useState(null);
     const [answers, setAnswers] = useState(props.answers);
     const [answerPosts, setAnswerPosts] = useState([]);
     const [answerPage, setAnswerPage] = useState(null);
     const [numOfAnswers, setNumOfAnswers] = useState(props.questions[props.answerPageIndex].answers.length);
+    const [inputValue, setInputValue] = useState('');
 
     useEffect(()=>{
       let currTime = new Date();
@@ -184,13 +184,15 @@ export default function Answers(props) {
             </div>
           )}
           {props.isLoggedIn && (
+            <div>
+              {/* <form onSubmit={handleFormSubmit}>
+                <input type="text" placeholder="Add a comment..." onChange={(e) => setInputValue(e.target.value)}/>
+                <button type="submit">Post Comment</button>
+              </form> */}
                 <div>
-                  <form onSubmit={(event) => handlePostComment(event, ans)}>
-                    <input className="add-comment" placeholder="Add a comment..." value={commentText} onChange={handleCommentInput}/>
-                    <button type="submit" className="post-comment-btn">Post</button>
-                  </form>
                   <button className="edit-answer-btn" onClick={() => editAnswer(ans)}>Edit</button>
                   <button className="delete-answer-btn" onClick={() => deleteAnswer(ans)}>Delete</button>
+                </div>
                 </div>
               )}
         </div>
@@ -202,11 +204,19 @@ export default function Answers(props) {
 },[answers, numOfAnswers, props])
 
 
-  function handlePostComment(event, ans) {
-    event.preventDefault();
-    postComment(ans, commentText);
-    // setCommentText(''); 
-  }
+function handleFormSubmit(answer) {
+  return (event) => {
+    event.preventDefault(); 
+    answers.forEach(ans => {
+      if (ans.text === answer){
+        answer = ans;
+      }
+    })
+    console.log("answer", answer);
+    postComment(answer, inputValue);
+    setInputValue('');
+  };
+}
     
     const toggleDropdown = (index) => {
       setOpenDropdowns((prevState) => ({
@@ -276,10 +286,11 @@ export default function Answers(props) {
 
     async function postComment(ans, commentText){
       try {
-        console.log(commentText)
-        const resp = await axios.post('http://localhost:8000/api/addcomment', commentText, {withCredentials: true});
+        const resp = await axios.post('http://localhost:8000/api/addcomment', {commentText: commentText}, {withCredentials: true, headers: {
+          'Content-Type': 'application/json',
+        }});
         const comment = resp.data;
-        await axios.put('http://localhost:8000/api/updateanswercomments', ans._id, comment._id, {withCredentials: true});
+        await axios.put('http://localhost:8000/api/updateanswercomments', {ansId: ans._id, commentId: comment._id}, {withCredentials: true});
         props.fetchData();
       } catch(error){
         if (error.request) {
@@ -289,11 +300,6 @@ export default function Answers(props) {
           alert('System error: Login failed');
         }
       }
-      setCommentText('');
-    }
-
-    function handleCommentInput(event){
-      setCommentText(event.target.value);
     }
 
     function replaceWithEditedAnswer(newAnswer) {
@@ -323,16 +329,27 @@ export default function Answers(props) {
 
   return (
     <div>
-        {displayEditAnswerForm && <EditAnswerForm replaceWithEditedAnswer={replaceWithEditedAnswer} fetchData={props.fetchData} answerToEdit={answerToEdit} setDisplayEditAnswerForm={setDisplayEditAnswerForm}/>}
-        {!displayEditAnswerForm && <div>
-          <div>{answerPage}</div>
-          <div className="answer-posts">{answerPosts.slice(startIndex, startIndex + 5)}</div>
-          {answerPosts.length > 5 && <div className="pagination-buttons">
-              <button disabled={startIndex === 0} onClick={() => setStartIndex(startIndex - 5)}>Prev</button>
-              <button disabled={startIndex + 5 >= answerPosts.length} onClick={() => setStartIndex(startIndex + 5)}>Next</button>
-          </div>}
-          {props.isLoggedIn && <button onClick={() => props.showAnswerForm(true)} id="answer-question-btn">Answer Question</button>}
+      {displayEditAnswerForm && <EditAnswerForm replaceWithEditedAnswer={replaceWithEditedAnswer} fetchData={props.fetchData} answerToEdit={answerToEdit} setDisplayEditAnswerForm={setDisplayEditAnswerForm} />}
+      {!displayEditAnswerForm && <div>
+        <div>{answerPage}</div>
+        <div className="answer-posts">
+          {answerPosts.slice(startIndex, startIndex + 5).map((post, index) => (
+            <div key={index}>
+              {post}
+              <form onSubmit={handleFormSubmit(post.props.children[1].props.children)}>
+                <input type="text" placeholder="Add a comment..." value={inputValue} onChange={(e) => setInputValue(e.target.value)}/>
+                <button type="submit">Post Comment</button>
+              </form>
+            </div>
+          ))}
+        </div>
+        {answerPosts.length > 5 && <div className="pagination-buttons">
+          <button disabled={startIndex === 0} onClick={() => setStartIndex(startIndex - 5)}>Prev</button>
+          <button disabled={startIndex + 5 >= answerPosts.length} onClick={() => setStartIndex(startIndex + 5)}>Next</button>
         </div>}
+        {props.isLoggedIn && <button onClick={() => props.showAnswerForm(true)} id="answer-question-btn">Answer Question</button>}
+      </div>}
     </div>
   );
+  
 }
