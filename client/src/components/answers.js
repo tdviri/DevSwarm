@@ -334,7 +334,7 @@ function handleFormSubmit(answer) {
         <div>{answerPage}</div>
         <div className="answer-posts">
           {answerPosts.slice(startIndex, startIndex + 5).map((post, index) => (
-            <div key={index}>
+            <div key={post._id}>
               {post}
               <form onSubmit={handleFormSubmit(post.props.children[1].props.children)}>
                 <input type="text" placeholder="Add a comment..." value={inputValue} onChange={(e) => setInputValue(e.target.value)}/>
