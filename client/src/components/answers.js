@@ -66,7 +66,7 @@ export default function Answers(props) {
   setAnswerPage(updatedAnswerPage);
 
   
-
+  createDropdownStates();
   let newAnsArray = [];
   props.questions[props.answerPageIndex].answers.forEach((ansIdForQuestion)=>{
     answers.forEach((ans)=>{
@@ -83,7 +83,6 @@ export default function Answers(props) {
   sortedAnsArray.forEach((ans, arrIndex) => {
     if (props.questions[props.answerPageIndex].answers.includes(ans._id)){
       const comment = props.comments.find(comment => props.questions[props.answerPageIndex].answers.comments && props.questions[props.answerPageIndex].answers.comments.includes(comment._id));
-      // let ans = props.answers.find(answer => answer._id === a._id);
       let commAnswerPostTimeMessage;
       let endYear = currTime.getFullYear();
       const monthArr = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
@@ -198,6 +197,14 @@ export default function Answers(props) {
   setAnswerPosts(newAnsPostsArr);
 },[answers, numOfAnswers, props])
 
+function createDropdownStates(){
+  const initialDropdownStates = {};
+  props.questions[props.answerPageIndex].answers.forEach((ansIdForQuestion, index)=>{
+    initialDropdownStates[index] = false;
+  })
+  console.log(initialDropdownStates);
+  setOpenDropdowns(initialDropdownStates);
+}
 
 function handleFormSubmit(answer, inputValue) {
     answers.forEach(ans => {
@@ -209,10 +216,11 @@ function handleFormSubmit(answer, inputValue) {
     setInputValue('');
 }
     
-    const toggleDropdown = (ansId) => {
+    const toggleDropdown = (arrIndex) => {
+      console.log("toggle dropdown", openDropdowns)
       setOpenDropdowns((prevState) => ({
         ...prevState,
-        [ansId]: !prevState[ansId],
+        [arrIndex]: !prevState[arrIndex],
       }));
     };
 
@@ -315,6 +323,7 @@ function handleFormSubmit(answer, inputValue) {
     }, data: answer});
     setAnswers(prevAnswers => prevAnswers.filter(ans => ans._id !== answer._id));
     setNumOfAnswers(prevNumOfAnswer => prevNumOfAnswer - 1);
+    createDropdownStates();
     props.fetchData()
   }
 
