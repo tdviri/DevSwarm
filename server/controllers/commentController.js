@@ -8,6 +8,7 @@ const CommentController = {
     },
 
     async addComment(req, res) {
+        console.log("hi", req.body.commentText)
         const commText = req.body.commentText;
         const user = await User.findById(req.userId);
         let newData = {text: commText, comm_by: user.username};

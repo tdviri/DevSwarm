@@ -3,6 +3,7 @@ import '../stylesheets/App.css';
 import { FaArrowUp, FaArrowDown } from 'react-icons/fa';
 import { useState, useEffect, useRef } from 'react';
 import EditAnswerForm from './editAnswerForm';
+import CommentForm from './commentForm';
 import axios from 'axios';
 
 export default function Answers(props) {
@@ -79,7 +80,7 @@ export default function Answers(props) {
   })
 
   let newAnsPostsArr = [];
-  sortedAnsArray.forEach(ans => {
+  sortedAnsArray.forEach((ans, arrIndex) => {
     if (props.questions[props.answerPageIndex].answers.includes(ans._id)){
       const comment = props.comments.find(comment => props.questions[props.answerPageIndex].answers.comments && props.questions[props.answerPageIndex].answers.comments.includes(comment._id));
       // let ans = props.answers.find(answer => answer._id === a._id);
@@ -156,10 +157,10 @@ export default function Answers(props) {
           </div>
           {ans.comments.length > 0 && (
             <div className="comments-dropdown">
-              <div className="comments-dropdown-header" onClick={() => toggleDropdown(props.answerPageIndex)}>
+              <div className="comments-dropdown-header" onClick={() => toggleDropdown(arrIndex)}>
                 Show Comments
               </div>
-              {openDropdowns[props.answerPageIndex] && ans.comments.map((commentId, commentIndex) => {
+              {openDropdowns[arrIndex] && ans.comments.map((commentId, commentIndex) => {
                 const comment = props.comments.find(comment => comment._id === commentId);
                 if (comment) {
                   return (
@@ -184,15 +185,9 @@ export default function Answers(props) {
             </div>
           )}
           {props.isLoggedIn && (
-            <div>
-              {/* <form onSubmit={handleFormSubmit}>
-                <input type="text" placeholder="Add a comment..." onChange={(e) => setInputValue(e.target.value)}/>
-                <button type="submit">Post Comment</button>
-              </form> */}
                 <div>
                   <button className="edit-answer-btn" onClick={() => editAnswer(ans)}>Edit</button>
                   <button className="delete-answer-btn" onClick={() => deleteAnswer(ans)}>Delete</button>
-                </div>
                 </div>
               )}
         </div>
@@ -204,24 +199,20 @@ export default function Answers(props) {
 },[answers, numOfAnswers, props])
 
 
-function handleFormSubmit(answer) {
-  return (event) => {
-    event.preventDefault(); 
+function handleFormSubmit(answer, inputValue) {
     answers.forEach(ans => {
       if (ans.text === answer){
         answer = ans;
       }
     })
-    console.log("answer", answer);
     postComment(answer, inputValue);
     setInputValue('');
-  };
 }
     
-    const toggleDropdown = (index) => {
+    const toggleDropdown = (ansId) => {
       setOpenDropdowns((prevState) => ({
         ...prevState,
-        [index]: !prevState[index],
+        [ansId]: !prevState[ansId],
       }));
     };
 
@@ -336,10 +327,7 @@ function handleFormSubmit(answer) {
           {answerPosts.slice(startIndex, startIndex + 5).map((post, index) => (
             <div key={post._id}>
               {post}
-              <form onSubmit={handleFormSubmit(post.props.children[1].props.children)}>
-                <input type="text" placeholder="Add a comment..." value={inputValue} onChange={(e) => setInputValue(e.target.value)}/>
-                <button type="submit">Post Comment</button>
-              </form>
+              <CommentForm post={post} handleFormSubmit={handleFormSubmit} />
             </div>
           ))}
         </div>
