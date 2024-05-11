@@ -12,7 +12,7 @@ export default function NewQuestion(props) {
         const questionTitle = formData.get('title');
         const questionSummary = formData.get('summary');
         const questionText = formData.get('text');
-        const questionTags = formData.get('tags').split(" ");
+        const questionTags = formData.get('tags').split(" ").filter(tag => tag.trim() !== "");
         setFormTitleError(false);
         setTagLengthError(false);
         setTagCountError(false);
@@ -39,7 +39,7 @@ export default function NewQuestion(props) {
             return;
         }
         let tagIdsArr = [];
-        if (questionTags.length > 1){
+        if (questionTags.length !== 0){
             const tagsArr = [...props.tags];
             for (const userTag of questionTags) {
                 let matchedTag = false;
@@ -81,12 +81,12 @@ export default function NewQuestion(props) {
                 summary: questionSummary,
                 text: questionText,
                 tags: tagIdsArr,
-                answers: [],
+                answers: props.userQuestion.answers,
                 asked_by: loggedInUser.username,
-                ask_date_time: new Date(),
-                views: 0,
-                votes: 0,
-                isVoted: false
+                ask_date_time: props.userQuestion.ask_date_time,
+                views: props.userQuestion.views,
+                votes: props.userQuestion.votes,
+                isVoted: props.userQuestion.isVoted
             };
             await axios.put('http://localhost:8000/api/replacequestion', {origQuestion: props.userQuestion, newQuestion: newQuestion}, {withCredentials: true})
             const updatedUserQuestions = props.userQuestions.map(question => {

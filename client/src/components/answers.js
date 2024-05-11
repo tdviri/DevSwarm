@@ -178,7 +178,8 @@ export default function Answers(props) {
                 } else {
                   return null; 
                 }
-              })}
+              })
+              }
             </div>
           )}
           {props.isLoggedIn && (
