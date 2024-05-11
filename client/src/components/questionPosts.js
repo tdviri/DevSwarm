@@ -3,7 +3,6 @@ import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { FaArrowUp, FaArrowDown } from 'react-icons/fa';
 import axios from 'axios';
-// axios.defaults.withCredentials = true;
 
 export default function QuestionPosts(props) {
     const [startIndex, setStartIndex] = useState(0);
@@ -42,7 +41,6 @@ export default function QuestionPosts(props) {
         const minute = new Date(question.ask_date_time).getMinutes();
         postTime = `asked ${monthArr[month]} ${day}, ${year} at ${hour}:${minute < 10 ? '0' + minute : minute}`;
       }
-    
       return {
         ...question,
         postUsername,
