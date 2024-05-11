@@ -5,7 +5,7 @@ export default function CommentForm(props) {
   
     const handleSubmit = (event) => {
       event.preventDefault();
-      props.handleFormSubmit(props.post.props.children[1].props.children, inputValue);
+      props.handleFormSubmit(props.ans, inputValue);
       setInputValue('');
     };
   

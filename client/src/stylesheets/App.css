@@ -262,20 +262,20 @@
 }
 
 .answer-post {
-    display: grid;
-    grid-template-columns: 3fr 1fr;
+    position: relative;
+    display: flex;
+    flex-direction: row;
+    height: 8vh;
     justify-items: center;
     padding-left: 3%;
     padding-right: 3%;
     gap: 3%;
     border-bottom: 1px black dotted;
-    height: 14%;
     align-items: center;
 }
 
 .question-title-answers-page {
     font-weight: bold;
-    
 }
 
 .answer-count-answers-page {
@@ -287,7 +287,7 @@
     color: white;
     position: relative;
     margin-right: auto;
-    margin-left: 10%;
+    margin-left: 40%;
 }
 
 #answer-question-btn:hover {
@@ -458,3 +458,30 @@
   .user-profile {
     flex: 4 1;
   }
+
+  .answer-modification-buttons {
+    position: absolute;
+    margin-left: 86%;
+    display: flex;
+  }
+
+  .answer-text {
+    position: absolute;
+    margin-left: 40%;
+  } 
+ 
+  /* .answer-info2 {
+    margin-left: 80%;
+    position: absolute;
+    margin-bottom: 5%;
+  } */
+
+  /* .comment-form {
+    border-bottom: 0.5px solid green;
+  }
+
+  .comments-dropdown-header {
+    position: absolute;
+    margin-top: 4%;
+    margin-left: 40%;
+  }   */

@@ -8,6 +8,7 @@ import axios from 'axios';
 
 export default function Answers(props) {
     const [startIndex, setStartIndex] = useState(0);
+    const [commentStartIndex, setCommentStartIndex] = useState(0);
     const [activeDropdownId, setActiveDropdownId] = useState(null);
     const [displayEditAnswerForm, setDisplayEditAnswerForm] = useState(false);
     const [answerToEdit, setAnswerToEdit] = useState(null);
@@ -151,6 +152,7 @@ export default function Answers(props) {
           <div className="answer-info2">
             <span className="post-username-answers-page">{ans.ans_by}</span>
             <span className="post-time-answers-page">{answerPostTimeMessage}</span>
+            <div className="comment-form"><CommentForm ans={ans} handleFormSubmit={handleFormSubmit} /></div>
           </div>
           {ans.comments.length > 0 && (
             <div className="comments-dropdown">
@@ -159,6 +161,7 @@ export default function Answers(props) {
               </div>
               {activeDropdownId === ans._id && ans.comments.map((commentId, commentIndex) => {
                 const comment = props.comments.find(comment => comment._id === commentId);
+                setCommentStartIndex(0);
                 if (comment) {
                   return (
                     <div className="comment-post" key={commentIndex}>
@@ -180,10 +183,16 @@ export default function Answers(props) {
                 }
               })
               }
+               {/* {ans.comments.length > 5 && (
+                <div className="comments-pagination-buttons">
+                  <button disabled={commentStartIndex === 0} onClick={() => setCommentStartIndex(commentStartIndex - 3)}>Prev</button>
+                  <button disabled={commentStartIndex + 5 >= ans.comments.length} onClick={() => setCommentStartIndex(commentStartIndex + 3)}>Next</button>
+                </div>
+            )} */}
             </div>
           )}
           {props.isLoggedIn && (
-                <div>
+                <div className="answer-modification-buttons">
                   <button className="edit-answer-btn" onClick={() => editAnswer(ans)}>Edit</button>
                   <button className="delete-answer-btn" onClick={() => deleteAnswer(ans)}>Delete</button>
                 </div>
@@ -195,15 +204,6 @@ export default function Answers(props) {
   });
   setAnswerPosts(newAnsPostsArr);
 },[answers, numOfAnswers, activeDropdownId, props])
-
-// function createDropdownStates(){
-//   const initialDropdownStates = {};
-//   props.questions[props.answerPageIndex].answers.forEach((ansIdForQuestion, index)=>{
-//     initialDropdownStates[index] = false;
-//   })
-//   console.log(initialDropdownStates);
-//   setOpenDropdowns(initialDropdownStates);
-// }
 
 function handleFormSubmit(answer, inputValue) {
     answers.forEach(ans => {
@@ -340,7 +340,6 @@ function handleFormSubmit(answer, inputValue) {
           {answerPosts.slice(startIndex, startIndex + 5).map((post, index) => (
             <div key={post._id}>
               {post}
-              <CommentForm post={post} handleFormSubmit={handleFormSubmit} />
             </div>
           ))}
         </div>
