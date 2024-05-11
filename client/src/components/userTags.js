@@ -103,6 +103,9 @@ export default function UserTags(props) {
             await axios.delete('http://localhost:8000/api/deletetag', {data: { tagId: tag._id }, withCredentials: true});
             props.fetchUserData();
             const updatedTags = tags.filter(t => t._id !== tag._id);
+            if (updatedTags.length === 0){
+                setNoUserTags(true);
+            }
             setTags(updatedTags); 
             createMapTags(updatedTags); 
         } catch (error) {

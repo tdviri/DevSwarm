@@ -79,7 +79,7 @@ export default function UserProfile(props) {
             <div onClick={()=>viewUserTagsPage()}>View Your Tags</div>
             <div onClick={()=>viewUserAnsweredQuestionsPage()}>View Your Answered Questions</div>
         </div>}
-        {!props.clickedOnProfileSidebar && showNewQuestionForm && <NewQuestion setClickedOnProfileSidebar={props.setClickedOnProfileSidebar} tags={props.tags} fetchData={props.fetchData} userQuestion={questionToModify} userTags={userTags}/>}
+        {!props.clickedOnProfileSidebar && showNewQuestionForm && <NewQuestion setUserQuestions={setUserQuestions} userQuestions={userQuestions} setClickedOnProfileSidebar={props.setClickedOnProfileSidebar} tags={props.tags} fetchData={props.fetchData} userQuestion={questionToModify} userTags={userTags}/>}
     </div>
   );
 }

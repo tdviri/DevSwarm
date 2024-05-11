@@ -39,7 +39,7 @@ export default function NewQuestion(props) {
             return;
         }
         let tagIdsArr = [];
-        if (questionTags !== null){
+        if (questionTags.length > 1){
             const tagsArr = [...props.tags];
             for (const userTag of questionTags) {
                 let matchedTag = false;
@@ -89,12 +89,22 @@ export default function NewQuestion(props) {
                 isVoted: false
             };
             await axios.put('http://localhost:8000/api/replacequestion', {origQuestion: props.userQuestion, newQuestion: newQuestion}, {withCredentials: true})
+            const updatedUserQuestions = props.userQuestions.map(question => {
+                if (question._id === props.userQuestion._id) {
+                    return {...newQuestion, _id: question._id}; 
+                } else {
+                    return question;
+                }
+            });
+            props.setUserQuestions(updatedUserQuestions);
             props.setClickedOnProfileSidebar(true);
             props.fetchData();
         }
 
     async function handleDeleteQuestion(formData){
         await axios.delete('http://localhost:8000/api/deletequestion', {withCredentials: true, data: props.userQuestion});
+        const updatedUserQuestions = props.userQuestions.filter(question => question._id !== props.userQuestion._id);
+        props.setUserQuestions(updatedUserQuestions);
         props.setClickedOnProfileSidebar(true);
         props.fetchData()
     }
