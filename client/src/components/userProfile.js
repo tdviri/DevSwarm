@@ -21,7 +21,6 @@ export default function UserProfile(props) {
     useEffect(() => {
         fetchUserData();
         if (props.clickedOnProfileSidebar){
-            console.log("hi")
             setShowNewQuestionForm(false);
             setShowUserTagsPage(false);
             setShowUserAnsweredQuestionsPage(false);
@@ -69,8 +68,8 @@ export default function UserProfile(props) {
 
   return (
     <div className="user-profile">
-        {!props.clickedOnProfileSidebar && !showNewQuestionForm && showUserTagsPage && <UserTags fetchData={props.fetchData} questions={props.questions} setDisplayTagsPage={props.setDisplayTagsPage} setShowUserProfile={props.setShowUserProfile} setSearch={props.setSearch} setCurrentTag={props.setCurrentTag} userTags={userTags}/>}
-        {!props.sclickedOnProfileSidebar && !showNewQuestionForm && showUserAnsweredQuestionsPage && <UserAnsweredQuestions handleAnswerPage={props.handleAnswerPage} setDisplayUserAnswers={props.setDisplayUserAnswers} fetchUserData={fetchUserData} tags={props.tags} userAnsweredQuestions={userAnsweredQuestions}/>}
+        {!props.clickedOnProfileSidebar && !showNewQuestionForm && showUserTagsPage && <UserTags fetchUserData={fetchUserData} fetchData={props.fetchData} questions={props.questions} setDisplayTagsPage={props.setDisplayTagsPage} setShowUserProfile={props.setShowUserProfile} setSearch={props.setSearch} setCurrentTag={props.setCurrentTag} userTags={userTags}/>}
+        {!props.clickedOnProfileSidebar && !showNewQuestionForm && showUserAnsweredQuestionsPage && <UserAnsweredQuestions handleAnswerPage={props.handleAnswerPage} setDisplayUserAnswers={props.setDisplayUserAnswers} fetchUserData={fetchUserData} tags={props.tags} userAnsweredQuestions={userAnsweredQuestions}/>}
         {props.clickedOnProfileSidebar && <div>
             <h1>Profile</h1>
             <div>Reputation: {userReputation}</div>
@@ -79,7 +78,7 @@ export default function UserProfile(props) {
             <div onClick={()=>viewUserTagsPage()}>View Your Tags</div>
             <div onClick={()=>viewUserAnsweredQuestionsPage()}>View Your Answered Questions</div>
         </div>}
-        {!props.clickedOnProfileSidebar && showNewQuestionForm && <NewQuestion tags={props.tags} fetchData={props.fetchData} userQuestion={questionToModify} userTags={userTags}/>}
+        {!props.clickedOnProfileSidebar && showNewQuestionForm && <NewQuestion setClickedOnProfileSidebar={props.setClickedOnProfileSidebar} tags={props.tags} fetchData={props.fetchData} userQuestion={questionToModify} userTags={userTags}/>}
     </div>
   );
 }

@@ -2,12 +2,13 @@ import React from 'react';
 import '../stylesheets/App.css';
 import {useState} from 'react';
 import { FaArrowUp, FaArrowDown } from 'react-icons/fa';
+import NoQuestionsAnswered from './noQuestionsAnswered';
 import axios from 'axios';
 
 export default function UserAnsweredQuestions(props) {
     const [startIndex, setStartIndex] = useState(0);
     let questionData;
-    if (props.userAnsweredQuestions){
+    if (props.userAnsweredQuestions && props.userAnsweredQuestions.length > 0){
         questionData = props.userAnsweredQuestions.slice(startIndex, startIndex + 5).map(question => {
         const postUsername = `${question.asked_by}`;
         let postTime;
@@ -96,38 +97,87 @@ export default function UserAnsweredQuestions(props) {
       }
     }
 
-    return (
-      <div className="posts-container">
-        <h1 class="user-answered-questions-header">Answered Questions</h1>
-        {props.userAnsweredQuestions && questionData.map((question, index) => (
-          <div key={index} id={`post${index}`} className='post'>
-            <div className="upvote-downvote-arrows"> 
-              <div className="upvote-arrow" onClick={()=>handleVote(true, question)}><FaArrowUp className='authenticated-upvote' /></div>
-              <div className="vote-count">{question.votes}</div>
-              <div className="downvote-arrow" onClick={()=>handleVote(false, question)}><FaArrowDown className='authenticated-downvote' /></div>
-            </div>
-            <div className='view-and-answer-count'>
-              <span className="answer-count">{question.answers.length} answers</span>
-              <span className="views-count">{question.views} views</span>
-            </div>
-            <div id={`post-title${index}`} className='title-and-tags'>
-              <span onClick={() => {props.setDisplayUserAnswers(true); props.handleAnswerPage(index, props.userAnsweredQuestions, true)}} className='post-title'>{question.title}</span>
-              <div className='tags'>
-                {question.tags.map((tagId, tagIndex) => (
-                  <span className="tag" key={tagIndex}>
-                    {props.tags.find(tag => tag._id === tagId)?.name}
-                  </span>
+//     return (
+//       <div className="posts-container">
+//         <h1 class="user-answered-questions-header">Answered Questions</h1>
+//         {props.userAnsweredQuestions && questionData.map((question, index) => (
+//           <div key={index} id={`post${index}`} className='post'>
+//             <div className="upvote-downvote-arrows"> 
+//               <div className="upvote-arrow" onClick={()=>handleVote(true, question)}><FaArrowUp className='authenticated-upvote' /></div>
+//               <div className="vote-count">{question.votes}</div>
+//               <div className="downvote-arrow" onClick={()=>handleVote(false, question)}><FaArrowDown className='authenticated-downvote' /></div>
+//             </div>
+//             <div className='view-and-answer-count'>
+//               <span className="answer-count">{question.answers.length} answers</span>
+//               <span className="views-count">{question.views} views</span>
+//             </div>
+//             <div id={`post-title${index}`} className='title-and-tags'>
+//               <span onClick={() => {props.setDisplayUserAnswers(true); props.handleAnswerPage(index, props.userAnsweredQuestions, true)}} className='post-title'>{question.title}</span>
+//               <div className='tags'>
+//                 {question.tags.map((tagId, tagIndex) => (
+//                   <span className="tag" key={tagIndex}>
+//                     {props.tags.find(tag => tag._id === tagId)?.name}
+//                   </span>
+//                 ))}
+//               </div>
+//             </div>
+//             <span className="post-username">{question.postUsername}</span>
+//             <span className="post-time">{question.postTime}</span>
+//           </div>
+//         ))}
+//          {props.UserAnsweredQuestions && props.userAnsweredQuestions.length > 5 && <div className="pagination">
+//             <button onClick={handlePrev} disabled={startIndex === 0}>Prev</button>
+//             <button onClick={handleNext} disabled={startIndex + 5 >= props.userAnsweredQuestions.length}>Next</button>
+//           </div>}
+//       </div>
+//   );
+return (
+    <div>
+        {props.userAnsweredQuestions && props.userAnsweredQuestions.length > 0 ? (
+            <div className="posts-container">
+                <h1 className="user-answered-questions-header">Answered Questions</h1>
+                {props.userAnsweredQuestions.map((question, index) => (
+                    <div key={index} id={`post${index}`} className='post'>
+                        <div className="upvote-downvote-arrows"> 
+                            <div className="upvote-arrow" onClick={() => handleVote(true, question)}>
+                                <FaArrowUp className='authenticated-upvote' />
+                            </div>
+                            <div className="vote-count">{question.votes}</div>
+                            <div className="downvote-arrow" onClick={() => handleVote(false, question)}>
+                                <FaArrowDown className='authenticated-downvote' />
+                            </div>
+                        </div>
+                        <div className='view-and-answer-count'>
+                            <span className="answer-count">{question.answers.length} answers</span>
+                            <span className="views-count">{question.views} views</span>
+                        </div>
+                        <div id={`post-title${index}`} className='title-and-tags'>
+                            <span onClick={() => { props.setDisplayUserAnswers(true); props.handleAnswerPage(index, props.userAnsweredQuestions, true) }} className='post-title'>
+                                {question.title}
+                            </span>
+                            <div className='tags'>
+                                {question.tags.map((tagId, tagIndex) => (
+                                    <span className="tag" key={tagIndex}>
+                                        {props.tags.find(tag => tag._id === tagId)?.name}
+                                    </span>
+                                ))}
+                            </div>
+                        </div>
+                        <span className="post-username">{question.postUsername}</span>
+                        <span className="post-time">{question.postTime}</span>
+                    </div>
                 ))}
-              </div>
+                {props.userAnsweredQuestions.length > 5 && (
+                    <div className="pagination">
+                        <button onClick={handlePrev} disabled={startIndex === 0}>Prev</button>
+                        <button onClick={handleNext} disabled={startIndex + 5 >= props.userAnsweredQuestions.length}>Next</button>
+                    </div>
+                )}
             </div>
-            <span className="post-username">{question.postUsername}</span>
-            <span className="post-time">{question.postTime}</span>
-          </div>
-        ))}
-         {props.UserAnsweredQuestions && props.userAnsweredQuestions.length > 5 && <div className="pagination">
-            <button onClick={handlePrev} disabled={startIndex === 0}>Prev</button>
-            <button onClick={handleNext} disabled={startIndex + 5 >= props.userAnsweredQuestions.length}>Next</button>
-          </div>}
-      </div>
-  );
+        ) : (
+            <NoQuestionsAnswered/>
+        )}
+    </div>
+);
+
 }

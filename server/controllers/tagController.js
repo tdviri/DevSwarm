@@ -21,10 +21,13 @@ const TagController = {
   },
 
   async deleteTag(req, res){
-    // const tag = await Tag.findById(req.body)
-    // // await Question.findOneAndDelete({ _id: { $in: req.body.tags } }); //incorrect, just change it
-    // await Tag.deleteOne(tag);
-    // res.send();
+    const tagId = req.body.tagId; 
+    await Question.updateMany(
+        { tags: tagId },
+        { $pull: { tags: tagId } } 
+    );
+    await Tag.deleteOne({ _id: tagId });
+    res.send();
   }
 }
 

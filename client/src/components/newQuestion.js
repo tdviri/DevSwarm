@@ -38,37 +38,40 @@ export default function NewQuestion(props) {
         if (!valid){
             return;
         }
-        const tagsArr = [...props.tags];
         let tagIdsArr = [];
-        for (const userTag of questionTags) {
-            let matchedTag = false;
-            for (const tag of tagsArr) {
-                if (userTag === tag.name) {
-                tagIdsArr.push(tag._id);
-                matchedTag = true;
-                break;
+        if (questionTags !== null){
+            const tagsArr = [...props.tags];
+            for (const userTag of questionTags) {
+                let matchedTag = false;
+                for (const tag of tagsArr) {
+                    if (userTag === tag.name) {
+                    tagIdsArr.push(tag._id);
+                    matchedTag = true;
+                    break;
+                    }
                 }
-            }
-    
-            if (!matchedTag) { 
-                const newTag = {name: userTag};
-                tagsArr.push(newTag)
-                try{ 
-                const resp = await axios.post('http://localhost:8000/api/updatetags', newTag, { withCredentials: true,
-                headers: {
-                'Content-Type': 'application/json',
-                }})
-                tagIdsArr.push(resp.data._id);
-                } catch (error){
-                if (error.request) {
-                    alert('Communication error: Unable to connect to the server. Please try again later.');
+        
+                if (!matchedTag) { 
+                    const newTag = {name: userTag};
+                    tagsArr.push(newTag)
+                    try{ 
+                    const resp = await axios.post('http://localhost:8000/api/updatetags', newTag, { withCredentials: true,
+                    headers: {
+                    'Content-Type': 'application/json',
+                    }})
+                    tagIdsArr.push(resp.data._id);
+                    } catch (error){
+                    if (error.request) {
+                        alert('Communication error: Unable to connect to the server. Please try again later.');
+                    } 
+                    else {
+                        alert('System error: Registration failed');
+                    }
+                    }
+                }
                 } 
-                else {
-                    alert('System error: Registration failed');
-                }
-                }
-            }
-            } 
+        }
+        
             const loggedInUser = (await axios.get('http://localhost:8000/api/getLoggedInUser', {withCredentials: true,
             headers: {
             'Content-Type': 'application/json',
@@ -86,12 +89,12 @@ export default function NewQuestion(props) {
                 isVoted: false
             };
             await axios.put('http://localhost:8000/api/replacequestion', {origQuestion: props.userQuestion, newQuestion: newQuestion}, {withCredentials: true})
-            props.fetchData();
+            props.setClickedOnProfileSidebar(true);
         }
 
     async function handleDeleteQuestion(formData){
         await axios.delete('http://localhost:8000/api/deletequestion', {withCredentials: true, data: props.userQuestion});
-        props.fetchData();
+        props.setClickedOnProfileSidebar(true);
     }
 
   return (
@@ -117,7 +120,7 @@ export default function NewQuestion(props) {
       <div className="form-question-subheader-container">
         <label className="form-label">Tags*</label>
         <span className="form-submessage">Add keywords separated by whitespace</span>
-        <input id="question-tags" className="form-input" type="text" required name="tags" defaultValue={props.userTags.filter(tag =>{return props.userQuestion.tags.includes(tag._id)}).map(tag => tag.name).join(" ")} />
+        <input id="question-tags" className="form-input" type="text" required name="tags" defaultValue={(props.userQuestion.tags && props.userQuestion.tags.length > 0) ? (props.userTags.filter(tag =>{return props.userQuestion.tags.includes(tag._id)}).map(tag => tag.name).join(" ")) : ''} />
       </div>
       <br /><br />
       <div className="submit-form">
