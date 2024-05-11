@@ -12,11 +12,11 @@ export default function UserTags(props) {
     const [noUserTags, setNoUserTags] = useState(false);
 
     useEffect(()=>{
+        console.log(tags)
         setNoUserTags(false);
-        if (tags && tags.length > 0 && tags.some(tag => tag && tag._id)){
-           createMapTags();
-        }
-        else {
+        if (tags && tags.length > 0 && tags.every(tag => tag && typeof tag === 'object' && tag._id)) {
+            createMapTags();
+        } else {
             setNoUserTags(true);
         }
     }, [])

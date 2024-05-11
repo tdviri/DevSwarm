@@ -200,10 +200,11 @@ async getUserTags(req, res){
     let tags = [];
     for (const askedQuestion of user.askedQuestions) {
       const question = await Question.findById(askedQuestion);
-      tags.push([...question.tags]);
+      tags.push(question.tags);
     }
 
     let userTags = [];
+    console.log("tag", tags)
     for (const tag of tags){
       const t = await Tag.findById(tag);
       userTags.push(t);
