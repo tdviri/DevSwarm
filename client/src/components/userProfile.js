@@ -44,6 +44,7 @@ export default function UserProfile(props) {
     }
 
     function viewUserTagsPage(){
+        props.setClickedOnProfileSidebar(false);
         setShowUserAnsweredQuestionsPage(false);
         setShowUserTagsPage(true);
         setShowNewQuestionForm(false);
@@ -51,6 +52,7 @@ export default function UserProfile(props) {
     }
 
     function viewUserAnsweredQuestionsPage(){
+        props.setClickedOnProfileSidebar(false);
         setShowUserAnsweredQuestionsPage(true);
         setShowUserTagsPage(false);
         setShowNewQuestionForm(false);
@@ -58,6 +60,7 @@ export default function UserProfile(props) {
     }
 
     function viewNewQuestionForm(userQuestion){
+        props.setClickedOnProfileSidebar(false);
         setQuestionToModify(userQuestion);
         setShowNewQuestionForm(true);
         setShowUserAnsweredQuestionsPage(false);
@@ -66,9 +69,9 @@ export default function UserProfile(props) {
 
   return (
     <div className="user-profile">
-        {!showNewQuestionForm && showUserTagsPage && <UserTags fetchData={props.fetchData} questions={props.questions} setDisplayTagsPage={props.setDisplayTagsPage} setShowUserProfile={props.setShowUserProfile} setSearch={props.setSearch} setCurrentTag={props.setCurrentTag} userTags={userTags}/>}
-        {!showNewQuestionForm && showUserAnsweredQuestionsPage && <UserAnsweredQuestions handleAnswerPage={props.handleAnswerPage} setDisplayUserAnswers={props.setDisplayUserAnswers} fetchUserData={fetchUserData} tags={props.tags} userAnsweredQuestions={userAnsweredQuestions}/>}
-        {!showNewQuestionForm && !showUserTagsPage && !showUserAnsweredQuestionsPage && <div>
+        {!props.clickedOnProfileSidebar && !showNewQuestionForm && showUserTagsPage && <UserTags fetchData={props.fetchData} questions={props.questions} setDisplayTagsPage={props.setDisplayTagsPage} setShowUserProfile={props.setShowUserProfile} setSearch={props.setSearch} setCurrentTag={props.setCurrentTag} userTags={userTags}/>}
+        {!props.sclickedOnProfileSidebar && !showNewQuestionForm && showUserAnsweredQuestionsPage && <UserAnsweredQuestions handleAnswerPage={props.handleAnswerPage} setDisplayUserAnswers={props.setDisplayUserAnswers} fetchUserData={fetchUserData} tags={props.tags} userAnsweredQuestions={userAnsweredQuestions}/>}
+        {props.clickedOnProfileSidebar && <div>
             <h1>Profile</h1>
             <div>Reputation: {userReputation}</div>
             <div>Account created {userAccountDuration} days ago</div>
@@ -76,7 +79,7 @@ export default function UserProfile(props) {
             <div onClick={()=>viewUserTagsPage()}>View Your Tags</div>
             <div onClick={()=>viewUserAnsweredQuestionsPage()}>View Your Answered Questions</div>
         </div>}
-        {showNewQuestionForm && <NewQuestion tags={props.tags} fetchData={props.fetchData} userQuestion={questionToModify} userTags={userTags}/>}
+        {!props.clickedOnProfileSidebar && showNewQuestionForm && <NewQuestion tags={props.tags} fetchData={props.fetchData} userQuestion={questionToModify} userTags={userTags}/>}
     </div>
   );
 }

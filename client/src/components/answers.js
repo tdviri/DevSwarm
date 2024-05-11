@@ -8,7 +8,6 @@ import axios from 'axios';
 
 export default function Answers(props) {
     const [startIndex, setStartIndex] = useState(0);
-    // const [openDropdowns, setOpenDropdowns] = useState({});
     const [activeDropdownId, setActiveDropdownId] = useState(null);
     const [displayEditAnswerForm, setDisplayEditAnswerForm] = useState(false);
     const [answerToEdit, setAnswerToEdit] = useState(null);
@@ -66,8 +65,6 @@ export default function Answers(props) {
   </div></div>
   setAnswerPage(updatedAnswerPage);
 
-  
-  // createDropdownStates();
   let newAnsArray = [];
   props.questions[props.answerPageIndex].answers.forEach((ansIdForQuestion)=>{
     answers.forEach((ans)=>{
@@ -216,20 +213,11 @@ function handleFormSubmit(answer, inputValue) {
     postComment(answer, inputValue);
     setInputValue('');
 }
-    
-    // const toggleDropdown = (arrIndex) => {
-    //   console.log("toggle dropdown", openDropdowns)
-    //   setOpenDropdowns((prevState) => ({
-    //     ...prevState,
-    //     [arrIndex]: !prevState[arrIndex],
-    //   }));
-    // };
+
     const toggleDropdown = (ansId) => {
       if (activeDropdownId === ansId) {
-        console.log("don't dropdown")
           setActiveDropdownId(null); 
       } else {
-        console.log("dropdown", ansId)
           setActiveDropdownId(ansId); 
       }
   };
@@ -299,6 +287,13 @@ function handleFormSubmit(answer, inputValue) {
         }});
         const comment = resp.data;
         await axios.put('http://localhost:8000/api/updateanswercomments', {ansId: ans._id, commentId: comment._id}, {withCredentials: true});
+        const updatedAnswers = answers.map(answer => {
+          if (answer._id === ans._id) {
+              return {...answer, comments: [...answer.comments, comment._id]}; // Assuming newComment._id is the ID of the new comment
+          }
+          return answer;
+      });
+      setAnswers(updatedAnswers);
         props.fetchData();
       } catch(error){
         if (error.request) {
@@ -332,7 +327,6 @@ function handleFormSubmit(answer, inputValue) {
     }, data: answer});
     setAnswers(prevAnswers => prevAnswers.filter(ans => ans._id !== answer._id));
     setNumOfAnswers(prevNumOfAnswer => prevNumOfAnswer - 1);
-    // createDropdownStates();
     props.fetchData()
   }
 
