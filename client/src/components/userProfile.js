@@ -73,9 +73,12 @@ export default function UserProfile(props) {
         {!props.clickedOnProfileSidebar && !showNewQuestionForm && showUserAnsweredQuestionsPage && <UserAnsweredQuestions handleAnswerPage={props.handleAnswerPage} setDisplayUserAnswers={props.setDisplayUserAnswers} fetchUserData={fetchUserData} tags={props.tags} userAnsweredQuestions={userAnsweredQuestions}/>}
         {props.clickedOnProfileSidebar && <div>
             <h1>Profile</h1>
+            <h3>Account Details</h3>
             <div>Reputation: {userReputation}</div>
             <div>Account created {userAccountDuration} days ago</div>
+            <h3>Questions Asked</h3>
             <div>{userQuestions && userQuestions.map(userQuestion =>{return <div onClick={()=>viewNewQuestionForm(userQuestion)}>{userQuestion.title}</div>})}</div>
+            <h3>View More</h3>
             <div onClick={()=>viewUserTagsPage()}>View Your Tags</div>
             <div onClick={()=>viewUserAnsweredQuestionsPage()}>View Your Answered Questions</div>
         </div>}
