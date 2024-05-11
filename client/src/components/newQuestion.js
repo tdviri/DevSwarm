@@ -90,11 +90,13 @@ export default function NewQuestion(props) {
             };
             await axios.put('http://localhost:8000/api/replacequestion', {origQuestion: props.userQuestion, newQuestion: newQuestion}, {withCredentials: true})
             props.setClickedOnProfileSidebar(true);
+            props.fetchData();
         }
 
     async function handleDeleteQuestion(formData){
         await axios.delete('http://localhost:8000/api/deletequestion', {withCredentials: true, data: props.userQuestion});
         props.setClickedOnProfileSidebar(true);
+        props.fetchData()
     }
 
   return (

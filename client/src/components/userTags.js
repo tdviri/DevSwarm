@@ -12,16 +12,15 @@ export default function UserTags(props) {
     const [noUserTags, setNoUserTags] = useState(false);
 
     useEffect(()=>{
-        console.log(tags)
         setNoUserTags(false);
         if (tags && tags.length > 0 && tags.every(tag => tag && typeof tag === 'object' && tag._id)) {
-            createMapTags();
+            createMapTags(tags);
         } else {
             setNoUserTags(true);
         }
     }, [])
 
-    function createMapTags(){
+    function createMapTags(tags){
         const tagsArr = tags?.map((tag)=>{ 
             return {
                 ...tag,
@@ -102,37 +101,15 @@ export default function UserTags(props) {
             })
             setIsTagInUse(false);
             await axios.delete('http://localhost:8000/api/deletetag', {data: { tagId: tag._id }, withCredentials: true});
-            // props.fetchUserData();
-            // setTags(props.userTags)
-            // createMapTags();
+            props.fetchUserData();
+            const updatedTags = tags.filter(t => t._id !== tag._id);
+            setTags(updatedTags); 
+            createMapTags(updatedTags); 
         } catch (error) {
             console.error('Error deleting tag:', error);
         }
     }
 
-    // return (
-    //     <div>
-    //         {!noUserTags ? <div className="tags-page-header">
-    //             <div id="num-of-tags-header">{tags && tags.length} Tags</div>
-    //         </div>
-    //         <div id="tags-container">
-    //             {mapTags && mapTags.map((tag) => (
-    //                 <div key={tag._id} className="tag-container">
-    //                     <div className="tag-name" onClick={() => !editingTagId && showTaggedQuestions(tag._id)}>
-    //                         {editingTagId === tag._id  ? <input type="text" value={newTagName} onChange={(e) => setNewTagName(e.target.value)} /> : tag.name}
-    //                     </div>
-    //                     <span className="tag-num-of-questions">{tag.questionCount} {tag.questionCount === 1 ? 'question' : 'questions'}</span>
-    //                     {!isTagInUse  && <div>
-    //                         <button className="edit-user-tag-btn" onClick={() => editingTagId === tag._id ? editTag(tag) : setEditingTagId(tag._id)}>
-    //                             {editingTagId === tag._id ? 'Save' : 'Edit'}
-    //                         </button>
-    //                     <button className="delete-user-tag-btn" onClick={() => deleteTag(tag)}>Delete</button></div>}
-    //                     {isTagInUse && <span>Cannot edit/delete tag because it's currently in use by other users.</span>}
-    //                 </div>
-    //             ))}
-    //         </div> : <NoTagsCreated/>}
-    //     </div>
-    // );
     return (
         <div>
             {!noUserTags ? (
@@ -141,7 +118,7 @@ export default function UserTags(props) {
                         <div id="num-of-tags-header">{tags && tags.length} Tags</div>
                     </div>
                     <div id="tags-container">
-                        {mapTags && mapTags.map((tag) => (
+                        {console.log("maptags", mapTags)}{mapTags && mapTags.map((tag) => (
                             <div key={tag._id} className="tag-container">
                                 <div className="tag-name" onClick={() => !editingTagId && showTaggedQuestions(tag._id)}>
                                     {editingTagId === tag._id ? (

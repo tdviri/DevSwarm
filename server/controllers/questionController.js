@@ -33,6 +33,7 @@ const QuestionController = {
       req.body.newQuestion,
       { upsert: false }
   );
+    
   res.send();
   },
 
