@@ -197,19 +197,17 @@ async getUserQuestions(req, res){
 
 async getUserTags(req, res){
     const user = await User.findById(req.userId);
-    let tags = [];
+    let tagIds = new Set(); 
     for (const askedQuestion of user.askedQuestions) {
-      const question = await Question.findById(askedQuestion);
-      tags.push(question.tags);
+        const question = await Question.findById(askedQuestion);
+        if (question && question.tags) {
+            question.tags.forEach(tag => {
+              tagIds.add(tag._id.toString());
+            });
+        }
     }
-
-    let userTags = [];
-    console.log("tag", tags)
-    for (const tag of tags){
-      const t = await Tag.findById(tag);
-      userTags.push(t);
-    }
-    res.send(userTags)
+    let userTags = await Tag.find({ '_id': { $in: Array.from(tagIds) } });
+    res.send(userTags);
 },
 
 async getUserAnsweredQuestions(req, res){
