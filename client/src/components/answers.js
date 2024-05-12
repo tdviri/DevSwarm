@@ -165,8 +165,8 @@ export default function Answers(props) {
               <div className="comments-dropdown-header" onClick={() => toggleDropdown(ans._id)}>
                 Show Comments
               </div>
-              {activeDropdownId === ans._id && getSortedComments(ans.comments).map((comment, commentIndex) => {
-                setCommentStartIndex(0);
+              {console.log("comment start index", commentStartIndex)}
+              {activeDropdownId === ans._id && getSortedComments(ans.comments).slice(commentStartIndex, commentStartIndex + 3).map((comment, commentIndex) => {
                 if (comment) {
                   return (
                     <div className="comment-post" key={commentIndex}>
@@ -188,10 +188,10 @@ export default function Answers(props) {
                 }
               })
               }
-               {ans.comments.length > 5 && activeDropdownId === ans._id && (
+               {ans.comments.length > 3 && activeDropdownId === ans._id && (
                 <div className="comments-pagination-buttons">
                   <button disabled={commentStartIndex === 0} onClick={() => setCommentStartIndex(commentStartIndex - 3)}>Prev</button>
-                  <button disabled={commentStartIndex + 5 >= ans.comments.length} onClick={() => setCommentStartIndex(commentStartIndex + 3)}>Next</button>
+                  <button disabled={commentStartIndex + 3 >= ans.comments.length} onClick={() => setCommentStartIndex(commentStartIndex + 3)}>Next</button>
                 </div>
             )}
             </div>
@@ -203,7 +203,7 @@ export default function Answers(props) {
     }
   });
   setAnswerPosts(newAnsPostsArr);
-},[answers, numOfAnswers, activeDropdownId, props])
+},[answers, numOfAnswers, activeDropdownId, commentStartIndex, props])
 
 function getSortedComments(answerComments){
   if (!answerComments || !props.comments) return [];
@@ -222,6 +222,7 @@ function handleFormSubmit(answer, inputValue) {
 }
 
     const toggleDropdown = (ansId) => {
+      setCommentStartIndex(0);
       if (activeDropdownId === ansId) {
           setActiveDropdownId(null); 
       } else {

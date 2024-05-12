@@ -297,6 +297,10 @@
     color: green;
 }
 
+.post-time-answers-page {
+   margin-left: 6px;
+}
+
 .answer-form {
     display: flex;
     flex-direction: column;
