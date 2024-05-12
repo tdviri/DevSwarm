@@ -152,8 +152,8 @@ export default function Answers(props) {
           <div className="answer-info2">
             <span className="post-username-answers-page">{ans.ans_by}</span>
             <span className="post-time-answers-page">{answerPostTimeMessage}</span>
-            <div className="comment-form"><CommentForm ans={ans} handleFormSubmit={handleFormSubmit} /></div>
           </div>
+          <div className="comment-form"><CommentForm ans={ans} handleFormSubmit={handleFormSubmit} /></div>
           {ans.comments.length > 0 && (
             <div className="comments-dropdown">
               <div className="comments-dropdown-header" onClick={() => toggleDropdown(ans._id)}>

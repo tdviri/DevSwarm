@@ -262,9 +262,8 @@
 }
 
 .answer-post {
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start; 
+    display: grid;
+    grid-template-columns: 1.5fr 6fr 1fr; 
     padding: 1%; 
     border-bottom: 1px black dotted;
     position: relative; 
@@ -419,12 +418,14 @@
 }
 
 .upvote-downvote-arrows {
-    display: flex;
+    /* display: flex;
     flex-direction: column;
     align-items: center;
     margin-right: 0;
     margin-left: 2%; 
-    margin-bottom: 1%;
+    margin-bottom: 1%; */
+    grid-column: 1;
+    align-items: right;
 }
 
 .upvote-arrow,
@@ -434,7 +435,7 @@
 }
 
 .vote-count {
-    margin-top: 90%
+    margin-top: 10%
 }
 
 .guest-upvote, .guest-downvote, .authenticated-downvote, .authenticated-upvote {
@@ -455,7 +456,28 @@
     flex: 4 1;
   }
 
+  .answer-text {
+    grid-column: 2;
+  }
+
+  .answer-info2 {
+    grid-column: 3;
+    align-self: right;
+  }
+
+  .comment-form {
+    grid-column: 2;
+  }
+
+  .comments-dropdown-header{
+    grid-column: 2;
+  }
+
   .answer-modification-buttons {
+    grid-column: 3;
+  }
+
+  /* .answer-modification-buttons {
     position: absolute;
     margin-left: 86%;
     display: flex;
@@ -465,11 +487,19 @@
     position: absolute;
     margin-left: 40%;
   } 
- 
+  */
   /* .answer-info2 {
     margin-left: 80%;
     position: absolute;
     margin-bottom: 5%;
+  } */
+
+  /* .post-time-answers-page {
+    margin-left: 90%;
+  }
+
+  .post-username-answers-page {
+    margin-left: 89%;
   } */
 
   /* .comment-form {
@@ -482,7 +512,7 @@
     margin-left: 40%;
   }   */
 
-  .comments-dropdown {
+  /* .comments-dropdown {
     position: absolute; 
     width: 100%;  
     background: #f9f9f9; 
@@ -490,6 +520,18 @@
     box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
     padding: 1%; 
     margin-top: 5%;
-  }
+  } */
 
+  /* .comments-dropdown {
+    width: 100%;  
+    background: #f9f9f9; 
+    border-top: 1px solid #000000;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
+    padding: 1%; 
+    margin-top: 5%;
+}
+
+.comment-form {
+    margin-top: 20%;
+} */
   
