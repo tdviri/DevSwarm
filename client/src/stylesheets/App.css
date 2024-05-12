@@ -263,7 +263,7 @@
 
 .answer-post {
     display: grid;
-    grid-template-columns: 1.5fr 6fr 1fr; 
+    grid-template-columns: 1fr 2fr 6fr 4fr; 
     padding: 1%; 
     border-bottom: 1px black dotted;
     position: relative; 
@@ -418,14 +418,8 @@
 }
 
 .upvote-downvote-arrows {
-    /* display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-right: 0;
-    margin-left: 2%; 
-    margin-bottom: 1%; */
     grid-column: 1;
-    align-items: right;
+    justify-self: center;
 }
 
 .upvote-arrow,
@@ -457,81 +451,27 @@
   }
 
   .answer-text {
-    grid-column: 2;
+    grid-column: 3;
+    justify-self: center;
   }
 
   .answer-info2 {
-    grid-column: 3;
-    align-self: right;
+    grid-column: 4;
+    justify-self: right;
   }
 
   .comment-form {
     grid-column: 2;
+    justify-self: left;
   }
 
-  .comments-dropdown-header{
-    grid-column: 2;
+  .comments-dropdown{
+    grid-column: 3;
+    justify-self: center;
+    margin-top: 3%
   }
 
   .answer-modification-buttons {
-    grid-column: 3;
+    grid-column: 4;
+    justify-self: right;
   }
-
-  /* .answer-modification-buttons {
-    position: absolute;
-    margin-left: 86%;
-    display: flex;
-  }
-
-  .answer-text {
-    position: absolute;
-    margin-left: 40%;
-  } 
-  */
-  /* .answer-info2 {
-    margin-left: 80%;
-    position: absolute;
-    margin-bottom: 5%;
-  } */
-
-  /* .post-time-answers-page {
-    margin-left: 90%;
-  }
-
-  .post-username-answers-page {
-    margin-left: 89%;
-  } */
-
-  /* .comment-form {
-    border-bottom: 0.5px solid green;
-  }
-
-  .comments-dropdown-header {
-    position: absolute;
-    margin-top: 4%;
-    margin-left: 40%;
-  }   */
-
-  /* .comments-dropdown {
-    position: absolute; 
-    width: 100%;  
-    background: #f9f9f9; 
-    border-top: 1px solid #000000;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
-    padding: 1%; 
-    margin-top: 5%;
-  } */
-
-  /* .comments-dropdown {
-    width: 100%;  
-    background: #f9f9f9; 
-    border-top: 1px solid #000000;
-    box-shadow: 0 2px 5px rgba(0,0,0,0.1); 
-    padding: 1%; 
-    margin-top: 5%;
-}
-
-.comment-form {
-    margin-top: 20%;
-} */
-  
