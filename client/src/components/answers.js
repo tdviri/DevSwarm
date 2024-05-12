@@ -68,7 +68,7 @@ export default function Answers(props) {
 
   let newAnsArray = [];
   props.questions[props.answerPageIndex].answers.forEach((ansIdForQuestion)=>{
-    answers.forEach((ans)=>{
+    props.answers.forEach((ans)=>{
       if (ansIdForQuestion === ans._id){
         newAnsArray.push(ans)
       }
