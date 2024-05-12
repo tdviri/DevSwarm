@@ -94,8 +94,8 @@ export default function Answers(props) {
   }
 
   if (props.viewingUserAnswers){
-    const userAnswers = sortedAnsArray.filter(ans => ans.ans_by === loggedInUser.username);
-    const otherAnswers = sortedAnsArray.filter(ans => ans.ans_by !== loggedInUser.username);
+    const userAnswers = sortedAnsArray.filter(ans => loggedInUser.answersAdded.includes(ans._id));
+    const otherAnswers = sortedAnsArray.filter(ans => !loggedInUser.answersAdded.includes(ans._id));
     sortedAnsArray = userAnswers.concat(otherAnswers);
   }
 
@@ -148,7 +148,7 @@ export default function Answers(props) {
             <span className="post-time-answers-page">{answerPostTimeMessage}</span>
           </div>
           {props.isLoggedIn && <div className="comment-form"><CommentForm ans={ans} handleFormSubmit={handleFormSubmit} /></div>}
-         {props.isLoggedIn && props.viewingUserAnswers && ans.ans_by === loggedInUser.username && (
+         {props.isLoggedIn && props.viewingUserAnswers && loggedInUser.answersAdded.includes(ans._id) && (
                 <div className="answer-modification-buttons">
                   <button className="edit-answer-btn" onClick={() => editAnswer(ans)}>Edit</button>
                   <button className="delete-answer-btn" onClick={() => deleteAnswer(ans)}>Delete</button>

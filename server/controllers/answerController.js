@@ -11,7 +11,10 @@ const AnswerController = {
 
   async updateAnswers(req, res) {
     const newData = req.body;
+    const user = await User.findById(req.userId);
     const insertedAnswer = await Answer.create(newData);
+    user.answersAdded.push(insertedAnswer);
+    user.save();
     res.send(insertedAnswer); 
   },
 
@@ -30,7 +33,6 @@ const AnswerController = {
   },
 
   async deleteAnswer(req, res){
-    console.log("deleting answer")
     await Question.findOneAndUpdate(
       { answers: req.body._id },
       { $pull: { answers: req.body._id } }, 
@@ -44,6 +46,11 @@ const AnswerController = {
     await User.findOneAndUpdate(
       { votedAnswers: req.body._id },
       { $pull: { votedAnswers: req.body._id } }, 
+      { new: true } 
+    )
+    await User.findOneAndUpdate(
+      { answersAdded: req.body._id },
+      { $pull: { answersAdded: req.body._id } }, 
       { new: true } 
     )
     await Answer.deleteOne(req.body);

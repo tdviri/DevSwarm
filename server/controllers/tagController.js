@@ -1,5 +1,6 @@
 const Tag = require('../models/tags');
 const Question = require('../models/questions');
+const User = require('../models/users');
 
 const TagController = {
   async retrieveTags(req, res) {
@@ -8,8 +9,11 @@ const TagController = {
   },
 
   async updateTags(req, res) {
+    const user = await User.findById(req.userId);
     const newData = req.body;
     const insertedTag = await Tag.create(newData);
+    user.tagsCreated.push(insertedTag);
+    user.save();
     res.send(insertedTag); 
   },
 
@@ -26,6 +30,11 @@ const TagController = {
         { tags: tagId },
         { $pull: { tags: tagId } } 
     );
+    await User.findOneAndUpdate(
+      { tagsCreated: tagId },
+      { $pull: { tagsCreated: tagId } }, 
+      { new: true } 
+    )
     await Tag.deleteOne({ _id: tagId });
     res.send();
   }

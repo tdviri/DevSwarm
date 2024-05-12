@@ -180,12 +180,6 @@ async isAnswerVoted(req, res){
 },
 
 async getUserQuestions(req, res){
-  // const user = await User.findById(req.userId).populate({
-  //   path: 'askedQuestions'
-  // }).exec();
-  // console.log(user)
-  // const userQuestions = user.askedQuestions;
-  // res.status(200).json(userQuestions);
   const user = await User.findById(req.userId);
   let userQuestions = [];
   for (const askedQuestion of user.askedQuestions) {
