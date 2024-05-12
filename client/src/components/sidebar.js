@@ -3,6 +3,7 @@ import '../stylesheets/App.css';
 
 export default function Sidebar(props) {
   function changeTagsPageDisplay(value){
+    props.setViewingUserAnswers(false);
     props.toggleDisplayTagsPage(value);
   }
 

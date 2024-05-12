@@ -16,7 +16,18 @@ export default function Answers(props) {
     const [answerPosts, setAnswerPosts] = useState([]);
     const [answerPage, setAnswerPage] = useState(null);
     const [numOfAnswers, setNumOfAnswers] = useState(props.questions[props.answerPageIndex].answers.length);
+    const [loggedInUser, setLoggedInUser] = useState(null);
     const [inputValue, setInputValue] = useState('');
+
+      async function getLoggedInUser(){
+        const userResponse = await axios.get('http://localhost:8000/api/getLoggedInUser', {withCredentials: true});
+        const user = userResponse.data;
+        setLoggedInUser(user.username);
+      }
+
+      useEffect(()=>{
+        getLoggedInUser();
+      }, [])
 
     useEffect(()=>{
       let currTime = new Date();
@@ -85,33 +96,6 @@ export default function Answers(props) {
       let commAnswerPostTimeMessage;
       let endYear = currTime.getFullYear();
       const monthArr = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
-
-      // if (comment){
-      //   let commElapsedTime = currTime.getTime() - new Date(comment.comm_date_time).getTime();
-      //   let commStartYear = new Date(comment.comm_date_time).getFullYear();
-      //   let commYears = Math.abs(Math.floor(endYear - commStartYear));
-      //   if (currTime.getMonth() < new Date(comment.comm_date_time).getMonth() || (currTime.getMonth() === new Date(comment.comm_date_time).getMonth() && currTime.getDate() < new Date(comment.comm_date_time).getDate())){
-      //     commYears--;
-      //   }
-      //   let commHours = Math.abs(Math.floor(commElapsedTime / (1000 * 60 * 60)));
-      //   let commMinutes = Math.abs(Math.floor(commElapsedTime / (1000 * 60)));
-      //   let commSeconds = Math.abs(Math.floor(commElapsedTime / 1000));
-      //   if (commSeconds < 60){
-      //     commAnswerPostTimeMessage =  `commented ${commSeconds} seconds ago`;
-      //   }
-      //   else if (commMinutes < 60){
-      //     commAnswerPostTimeMessage = `commented ${commMinutes} minutes ago`;
-      //   }
-      //   else if (commHours < 24){
-      //     commAnswerPostTimeMessage = `commented ${commHours} hours ago`;
-      //   }
-      //   else if (commYears >= 0){
-      //     commAnswerPostTimeMessage = `commented ${monthArr[new Date(comment.comm_date_time).getMonth()]} ${new Date(comment.comm_date_time).getDay()}, ${new Date(comment.comm_date_time).getFullYear()} at ${new Date(comment.comm_date_time).getHours()}:${String(new Date(comment.comm_date_time).getMinutes()).padStart(2, '0')}`
-      //   }
-      //   else if (commHours >= 24) {
-      //     commAnswerPostTimeMessage = `commented ${monthArr[new Date(comment.comm_date_time).getMonth()]} ${new Date(comment.comm_date_time).getDay()} at ${new Date(comment.comm_date_time).getHours()}:${String(new Date(comment.comm_date_time).getMinutes()).padStart(2, '0')}`
-      //   }
-      // }
       let answerPostTimeMessage;
       currTime = new Date();
       let elapsedTime = currTime.getTime() - new Date(ans.ans_date_time).getTime();
@@ -154,7 +138,7 @@ export default function Answers(props) {
             <span className="post-time-answers-page">{answerPostTimeMessage}</span>
           </div>
           {props.isLoggedIn && <div className="comment-form"><CommentForm ans={ans} handleFormSubmit={handleFormSubmit} /></div>}
-          {props.isLoggedIn && (
+         {props.isLoggedIn && props.viewingUserAnswers && ans.ans_by === loggedInUser && (
                 <div className="answer-modification-buttons">
                   <button className="edit-answer-btn" onClick={() => editAnswer(ans)}>Edit</button>
                   <button className="delete-answer-btn" onClick={() => deleteAnswer(ans)}>Delete</button>
@@ -178,7 +162,6 @@ export default function Answers(props) {
                       <span className="comment-post-text">{comment.text}</span>
                       <div className="comment-info">
                         <span className="comment-post-username">commented by {comment.comm_by}</span>
-                        {/* <span className="comment-post-time-message">{commAnswerPostTimeMessage}</span> */}
                       </div>
                     </div>
                   );
