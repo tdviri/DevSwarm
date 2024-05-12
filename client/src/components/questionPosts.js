@@ -12,7 +12,7 @@ export default function QuestionPosts(props) {
     const [questions, setQuestions] = useState(props.questions);
     const [inputValue, setInputValue] = useState('');
 
-    const questionData = questions.slice(startIndex, startIndex + 5).map(question => {
+    const questionData = props.questions.slice(startIndex, startIndex + 5).map(question => {
       const postUsername = `${question.asked_by}`;
       let postTime;
       const currentTime = new Date();
