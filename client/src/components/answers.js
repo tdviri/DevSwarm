@@ -178,7 +178,7 @@ export default function Answers(props) {
                       </div>
                       <span className="comment-post-text">{comment.text}</span>
                       <div className="comment-info">
-                        <span className="comment-post-username">{comment.comm_by}</span>
+                        <span className="comment-post-username">commented by {comment.comm_by}</span>
                         <span className="comment-post-time-message">{commAnswerPostTimeMessage}</span>
                       </div>
                     </div>
