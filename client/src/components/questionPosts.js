@@ -2,12 +2,17 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import { useState } from 'react';
 import { FaArrowUp, FaArrowDown } from 'react-icons/fa';
+import QuestionCommentForm from './questionCommentForm';
 import axios from 'axios';
 
 export default function QuestionPosts(props) {
     const [startIndex, setStartIndex] = useState(0);
+    const [commentStartIndex, setCommentStartIndex] = useState(0);
+    const [activeDropdownId, setActiveDropdownId] = useState(null);
+    const [questions, setQuestions] = useState(props.questions);
+    const [inputValue, setInputValue] = useState('');
 
-    const questionData = props.questions.slice(startIndex, startIndex + 5).map(question => {
+    const questionData = questions.slice(startIndex, startIndex + 5).map(question => {
       const postUsername = `${question.asked_by}`;
       let postTime;
       const currentTime = new Date();
@@ -49,7 +54,7 @@ export default function QuestionPosts(props) {
     });
 
     const handleNext = () => {
-      if (startIndex + 5 < props.questions.length) {
+      if (startIndex + 5 < questions.length) {
         setStartIndex(startIndex + 5);
       }
     };
@@ -92,6 +97,74 @@ export default function QuestionPosts(props) {
       }
     }
 
+    const toggleDropdown = (questionId) => {
+      setCommentStartIndex(0);
+      if (activeDropdownId === questionId) {
+          setActiveDropdownId(null); 
+      } else {
+          setActiveDropdownId(questionId); 
+      }
+  };
+
+    async function handleCommentVote(comment) {
+      if (props.isGuest) {
+        return; 
+      }
+      const commentIsVoted = (await axios.get(`http://localhost:8000/api/iscommentvoted/${comment._id}`, { withCredentials: true })).data;
+      if (commentIsVoted){
+        return;
+      }
+      try {
+        const data = new URLSearchParams();
+        data.append('comment', comment._id);
+        await axios.put('http://localhost:8000/api/addvotedcomment', data, {withCredentials: true, //change this
+        headers: {
+          'Content-Type': 'application/x-www-form-urlencoded',
+        }});
+        props.fetchData();
+      } catch(error){
+        if (error.request) {
+          alert('Communication error: Unable to connect to the server. Please try again later.');
+        } 
+        else {
+          alert('System error');
+        }
+        props.goToWelcomePage();
+      }
+    }
+
+    function handleFormSubmit(question, inputValue) {
+      questions.forEach(ans => {
+        if (ans.text === question){
+          question = ans;
+        }
+      })
+      postComment(question, inputValue);
+      setInputValue('');
+  }
+
+  function getSortedComments(questionComments){
+    if (!questionComments || !props.comments) return [];
+    return props.comments.filter(comment => questionComments.includes(comment._id))
+    .sort((a, b) => new Date(b.comm_date_time) - new Date(a.comm_date_time));
+  }
+
+   async function postComment(question, commentText){ 
+        const resp = await axios.post('http://localhost:8000/api/addcomment', {commentText: commentText}, {withCredentials: true, headers: {
+          'Content-Type': 'application/json',
+        }});
+        const comment = resp.data;
+        await axios.put('http://localhost:8000/api/updatequestioncomments', {questionId: question._id, commentId: comment._id}, {withCredentials: true});
+        const updatedQuestions = questions.map(q => {
+          if (q._id === question._id) {
+              return {...q, comments: [...q.comments, comment._id]}; 
+          }
+          return q;
+      });
+      setQuestions(updatedQuestions);
+      props.fetchData();
+    }
+
   return (
       <div className="posts-container">
         {questionData.map((question, index) => (
@@ -106,7 +179,7 @@ export default function QuestionPosts(props) {
               <span className="views-count">{question.views} views</span>
             </div>
             <div id={`post-title${index}`} className='title-and-tags'>
-              <span onClick={() =>  props.handleAnswerPageIndex(index, props.questions, true)} className='post-title'>{question.title}</span>
+              <span onClick={() =>  props.handleAnswerPageIndex(index, questions, true)} className='post-title'>{question.title}</span>
               <div className='tags'>
                 {question.tags.map((tagId, tagIndex) => (
                   <span className="tag" key={tagIndex}>
@@ -117,11 +190,48 @@ export default function QuestionPosts(props) {
             </div>
             <span className="post-username">{question.postUsername}</span>
             <span className="post-time">{question.postTime}</span>
+            <div className="comment-form"><QuestionCommentForm question={question} handleFormSubmit={handleFormSubmit}/></div>
+            {question.comments.length > 0 && (
+              <div className="comments-dropdown">
+                <div className="comments-dropdown-header" onClick={() => toggleDropdown(question._id)}>
+                  Show Comments
+                </div>
+              {console.log(getSortedComments(question.comments))}
+              {activeDropdownId === question._id && getSortedComments(question.comments).slice(commentStartIndex, commentStartIndex + 3).map((comment, commentIndex) => {
+                if (comment) {
+                  return (
+                    <div className="comment-post" key={commentIndex}>
+                      <div className="comment-upvote"> 
+                        <div className="comment-upvote-arrow" onClick={() => handleCommentVote(comment)}>
+                          <FaArrowUp className={props.isGuest ? 'guest-upvote' : 'authenticated-upvote'} />
+                        </div>
+                        <div className="comment-vote-count">{comment.votes}</div>
+                      </div>
+                      <span className="comment-post-text">{comment.text}</span>
+                      <div className="comment-info">
+                        <span className="comment-post-username">commented by {comment.comm_by}</span>
+                        {/* <span className="comment-post-time-message">{commAnswerPostTimeMessage}</span> */}
+                      </div>
+                    </div>
+                  );
+                } else {
+                  return null; 
+                }
+              })
+              }
+               {question.comments.length > 3 && activeDropdownId === question._id && (
+                <div className="comments-pagination-buttons">
+                  <button disabled={commentStartIndex === 0} onClick={() => setCommentStartIndex(commentStartIndex - 3)}>Prev</button>
+                  <button disabled={commentStartIndex + 3 >= question.comments.length} onClick={() => setCommentStartIndex(commentStartIndex + 3)}>Next</button>
+                </div>
+            )}
+            </div>
+          )}
           </div>
         ))}
-         {props.questions.length > 5 && <div className="pagination">
+         {questions.length > 5 && <div className="pagination">
             <button onClick={handlePrev} disabled={startIndex === 0}>Prev</button>
-            <button onClick={handleNext} disabled={startIndex + 5 >= props.questions.length}>Next</button>
+            <button onClick={handleNext} disabled={startIndex + 5 >= questions.length}>Next</button>
           </div>}
       </div>
   );

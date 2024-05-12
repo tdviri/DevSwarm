@@ -87,6 +87,7 @@ export default function AskQuestionForm(props) {
           ask_date_time: new Date(),
           views: 0,
           votes: 0,
+          comments: []
         };
         props.addNewQuestion(newQuestion);
         props.handleAskQuestionBtn(false);

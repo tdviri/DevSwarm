@@ -43,13 +43,14 @@ function answerCreate(text, ans_by, ans_date_time, comments, votes) {
   return answer.save();
 }
 
-function questionCreate(title, summary, text, tags, answers, asked_by, ask_date_time, views, votes) {
+function questionCreate(title, summary, text, tags, answers, comments, asked_by, ask_date_time, views, votes) {
   qstndetail = {
     title: title,
     summary: summary,
     text: text,
     tags: tags,
-    asked_by: asked_by
+    comments: [],
+    asked_by: asked_by,
   }
   if (answers != false) qstndetail.answers = answers;
   if (ask_date_time != false) qstndetail.ask_date_time = ask_date_time;

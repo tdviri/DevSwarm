@@ -86,32 +86,32 @@ export default function Answers(props) {
       let endYear = currTime.getFullYear();
       const monthArr = ["Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"];
 
-      if (comment){
-        let commElapsedTime = currTime.getTime() - new Date(comment.comm_date_time).getTime();
-        let commStartYear = new Date(comment.comm_date_time).getFullYear();
-        let commYears = Math.abs(Math.floor(endYear - commStartYear));
-        if (currTime.getMonth() < new Date(comment.comm_date_time).getMonth() || (currTime.getMonth() === new Date(comment.comm_date_time).getMonth() && currTime.getDate() < new Date(comment.comm_date_time).getDate())){
-          commYears--;
-        }
-        let commHours = Math.abs(Math.floor(commElapsedTime / (1000 * 60 * 60)));
-        let commMinutes = Math.abs(Math.floor(commElapsedTime / (1000 * 60)));
-        let commSeconds = Math.abs(Math.floor(commElapsedTime / 1000));
-        if (commSeconds < 60){
-          commAnswerPostTimeMessage =  `commented ${commSeconds} seconds ago`;
-        }
-        else if (commMinutes < 60){
-          commAnswerPostTimeMessage = `commented ${commMinutes} minutes ago`;
-        }
-        else if (commHours < 24){
-          commAnswerPostTimeMessage = `commented ${commHours} hours ago`;
-        }
-        else if (commYears >= 0){
-          commAnswerPostTimeMessage = `commented ${monthArr[new Date(comment.comm_date_time).getMonth()]} ${new Date(comment.comm_date_time).getDay()}, ${new Date(comment.comm_date_time).getFullYear()} at ${new Date(comment.comm_date_time).getHours()}:${String(new Date(comment.comm_date_time).getMinutes()).padStart(2, '0')}`
-        }
-        else if (commHours >= 24) {
-          commAnswerPostTimeMessage = `commented ${monthArr[new Date(comment.comm_date_time).getMonth()]} ${new Date(comment.comm_date_time).getDay()} at ${new Date(comment.comm_date_time).getHours()}:${String(new Date(comment.comm_date_time).getMinutes()).padStart(2, '0')}`
-        }
-      }
+      // if (comment){
+      //   let commElapsedTime = currTime.getTime() - new Date(comment.comm_date_time).getTime();
+      //   let commStartYear = new Date(comment.comm_date_time).getFullYear();
+      //   let commYears = Math.abs(Math.floor(endYear - commStartYear));
+      //   if (currTime.getMonth() < new Date(comment.comm_date_time).getMonth() || (currTime.getMonth() === new Date(comment.comm_date_time).getMonth() && currTime.getDate() < new Date(comment.comm_date_time).getDate())){
+      //     commYears--;
+      //   }
+      //   let commHours = Math.abs(Math.floor(commElapsedTime / (1000 * 60 * 60)));
+      //   let commMinutes = Math.abs(Math.floor(commElapsedTime / (1000 * 60)));
+      //   let commSeconds = Math.abs(Math.floor(commElapsedTime / 1000));
+      //   if (commSeconds < 60){
+      //     commAnswerPostTimeMessage =  `commented ${commSeconds} seconds ago`;
+      //   }
+      //   else if (commMinutes < 60){
+      //     commAnswerPostTimeMessage = `commented ${commMinutes} minutes ago`;
+      //   }
+      //   else if (commHours < 24){
+      //     commAnswerPostTimeMessage = `commented ${commHours} hours ago`;
+      //   }
+      //   else if (commYears >= 0){
+      //     commAnswerPostTimeMessage = `commented ${monthArr[new Date(comment.comm_date_time).getMonth()]} ${new Date(comment.comm_date_time).getDay()}, ${new Date(comment.comm_date_time).getFullYear()} at ${new Date(comment.comm_date_time).getHours()}:${String(new Date(comment.comm_date_time).getMinutes()).padStart(2, '0')}`
+      //   }
+      //   else if (commHours >= 24) {
+      //     commAnswerPostTimeMessage = `commented ${monthArr[new Date(comment.comm_date_time).getMonth()]} ${new Date(comment.comm_date_time).getDay()} at ${new Date(comment.comm_date_time).getHours()}:${String(new Date(comment.comm_date_time).getMinutes()).padStart(2, '0')}`
+      //   }
+      // }
       let answerPostTimeMessage;
       currTime = new Date();
       let elapsedTime = currTime.getTime() - new Date(ans.ans_date_time).getTime();
@@ -165,7 +165,6 @@ export default function Answers(props) {
               <div className="comments-dropdown-header" onClick={() => toggleDropdown(ans._id)}>
                 Show Comments
               </div>
-              {console.log("comment start index", commentStartIndex)}
               {activeDropdownId === ans._id && getSortedComments(ans.comments).slice(commentStartIndex, commentStartIndex + 3).map((comment, commentIndex) => {
                 if (comment) {
                   return (
@@ -179,7 +178,7 @@ export default function Answers(props) {
                       <span className="comment-post-text">{comment.text}</span>
                       <div className="comment-info">
                         <span className="comment-post-username">commented by {comment.comm_by}</span>
-                        <span className="comment-post-time-message">{commAnswerPostTimeMessage}</span>
+                        {/* <span className="comment-post-time-message">{commAnswerPostTimeMessage}</span> */}
                       </div>
                     </div>
                   );
@@ -233,9 +232,9 @@ function handleFormSubmit(answer, inputValue) {
       if (props.isGuest){
         return;
       }
-      const questionIsVoted = (await axios.get(`http://localhost:8000/api/isanswervoted/${answer._id}`, { withCredentials: true,
+      const answerIsVoted = (await axios.get(`http://localhost:8000/api/isanswervoted/${answer._id}`, { withCredentials: true,
       })).data;
-      if (questionIsVoted){
+      if (answerIsVoted){
         return;
       }
       try {

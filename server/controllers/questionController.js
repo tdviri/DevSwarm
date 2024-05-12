@@ -52,7 +52,14 @@ async deleteQuestion(req, res){
     )
     await Question.deleteOne(req.body);
     res.send();
-  }
+  },
+
+  async updateQuestionComments(req, res) {
+    const question = await Question.findById(req.body.questionId);
+    question.comments.push(req.body.commentId);
+    question.save();
+    res.send();
+  },
 };
 
 module.exports = QuestionController;
