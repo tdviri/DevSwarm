@@ -188,9 +188,11 @@ export default function QuestionPosts(props) {
                 ))}
               </div>
             </div>
-            <span className="post-username">{question.postUsername}</span>
-            <span className="post-time">{question.postTime}</span>
-            <div className="comment-form"><QuestionCommentForm question={question} handleFormSubmit={handleFormSubmit}/></div>
+            <div className="post-info">
+              <span className="post-username">{question.postUsername}</span>
+              <span className="post-time">{question.postTime}</span>
+            </div>
+            <div className="question-comment-form"><QuestionCommentForm question={question} handleFormSubmit={handleFormSubmit}/></div>
             {question.comments.length > 0 && (
               <div className="comments-dropdown">
                 <div className="comments-dropdown-header" onClick={() => toggleDropdown(question._id)}>
