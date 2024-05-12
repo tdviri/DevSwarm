@@ -465,13 +465,21 @@
     justify-self: left;
   }
 
-  .comments-dropdown{
-    grid-column: 3;
-    justify-self: center;
-    margin-top: 3%
+  .comments-dropdown-header {
+    align-content: center;
   }
 
   .answer-modification-buttons {
     grid-column: 4;
     justify-self: right;
   }
+
+  .comments-dropdown {
+    grid-column: 1 / -1; 
+    width: 100%; 
+    background: #f2f2f2;
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+    padding: 1%; 
+    margin-top: 1%;
+  }
+

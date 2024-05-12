@@ -154,6 +154,12 @@ export default function Answers(props) {
             <span className="post-time-answers-page">{answerPostTimeMessage}</span>
           </div>
           <div className="comment-form"><CommentForm ans={ans} handleFormSubmit={handleFormSubmit} /></div>
+          {props.isLoggedIn && (
+                <div className="answer-modification-buttons">
+                  <button className="edit-answer-btn" onClick={() => editAnswer(ans)}>Edit</button>
+                  <button className="delete-answer-btn" onClick={() => deleteAnswer(ans)}>Delete</button>
+                </div>
+              )}
           {ans.comments.length > 0 && (
             <div className="comments-dropdown">
               <div className="comments-dropdown-header" onClick={() => toggleDropdown(ans._id)}>
@@ -191,12 +197,7 @@ export default function Answers(props) {
             )} */}
             </div>
           )}
-          {props.isLoggedIn && (
-                <div className="answer-modification-buttons">
-                  <button className="edit-answer-btn" onClick={() => editAnswer(ans)}>Edit</button>
-                  <button className="delete-answer-btn" onClick={() => deleteAnswer(ans)}>Delete</button>
-                </div>
-              )}
+         
         </div>
       );
       newAnsPostsArr.push(answerPost);
