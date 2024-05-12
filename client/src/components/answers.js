@@ -143,10 +143,10 @@ export default function Answers(props) {
       }
       const answerPost = (
         <div className="answer-post">
-          <div className="upvote-downvote-arrows"> 
-            <div className="upvote-arrow" onClick={()=>handleAnswerVote(true, ans)}><FaArrowUp className={props.isGuest ? 'guest-upvote' : 'authenticated-upvote'} /></div>
-            <div className="vote-count">{ans.votes}</div>
-            <div className="downvote-arrow" onClick={()=>handleAnswerVote(false, ans)}><FaArrowDown className={props.isGuest ? 'guest-downvote' : 'authenticated-downvote'} /></div>
+          <div className="answer-upvote-downvote-arrows"> 
+            <div className="answer-upvote-arrow" onClick={()=>handleAnswerVote(true, ans)}><FaArrowUp className={props.isGuest ? 'guest-upvote' : 'authenticated-upvote'} /></div>
+            <div className="answer-vote-count">{ans.votes}</div>
+            <div className="answer-downvote-arrow" onClick={()=>handleAnswerVote(false, ans)}><FaArrowDown className={props.isGuest ? 'guest-downvote' : 'authenticated-downvote'} /></div>
           </div>
           <div className="answer-text">{ans.text}</div>
           <div className="answer-info2">
@@ -170,11 +170,11 @@ export default function Answers(props) {
                 if (comment) {
                   return (
                     <div className="comment-post" key={commentIndex}>
-                      <div className="comment-upvote-arrow"> 
+                      <div className="comment-upvote"> 
                         <div className="comment-upvote-arrow" onClick={() => handleCommentVote(comment)}>
                           <FaArrowUp className={props.isGuest ? 'guest-upvote' : 'authenticated-upvote'} />
                         </div>
-                        <div className="vote-count">{comment.votes}</div>
+                        <div className="comment-vote-count">{comment.votes}</div>
                       </div>
                       <span className="comment-post-text">{comment.text}</span>
                       <div className="comment-info">
@@ -188,12 +188,12 @@ export default function Answers(props) {
                 }
               })
               }
-               {/* {ans.comments.length > 5 && (
+               {ans.comments.length > 5 && activeDropdownId === ans._id && (
                 <div className="comments-pagination-buttons">
                   <button disabled={commentStartIndex === 0} onClick={() => setCommentStartIndex(commentStartIndex - 3)}>Prev</button>
                   <button disabled={commentStartIndex + 5 >= ans.comments.length} onClick={() => setCommentStartIndex(commentStartIndex + 3)}>Next</button>
                 </div>
-            )} */}
+            )}
             </div>
           )}
          
@@ -357,5 +357,4 @@ function handleFormSubmit(answer, inputValue) {
       </div>}
     </div>
   );
-  
 }
