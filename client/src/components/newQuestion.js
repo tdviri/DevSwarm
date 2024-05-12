@@ -7,6 +7,7 @@ export default function NewQuestion(props) {
     const [formTitleError, setFormTitleError] = useState(false);
     const [tagLengthError, setTagLengthError] = useState(false);
     const [tagCountError, setTagCountError] = useState(false);
+    const [inputValidationError, setInputValidationError] = useState(false);
 
     async function handleEditQuestion(formData){
         const questionTitle = formData.get('title');
@@ -17,6 +18,11 @@ export default function NewQuestion(props) {
         setTagLengthError(false);
         setTagCountError(false);
         let valid = true;
+
+        if (questionTitle === '' || questionSummary === '' || questionText === ''){
+            setInputValidationError(true);
+            valid = false;
+        }
 
         if (questionTitle.length > 100){
             setFormTitleError(true);
@@ -141,6 +147,7 @@ export default function NewQuestion(props) {
         <span className="mandatory-fields-message">* indicates mandatory fields</span>
       </div>
       <div className="ask-question-form-error-message">
+        {inputValidationError && <div>All fields besides Tags need to be filled</div>}
         {formTitleError && <div className="error-message">Question title cannot be more than 140 characters in length</div>}
         {tagCountError && <div className="error-message">Number of tags cannot be more than 5</div>}
         {tagLengthError && <div className="error-message">Length of each tag cannot be more than 20 characters in length</div>}

@@ -22,7 +22,7 @@ export default function Answers(props) {
       async function getLoggedInUser(){
         const userResponse = await axios.get('http://localhost:8000/api/getLoggedInUser', {withCredentials: true});
         const user = userResponse.data;
-        setLoggedInUser(user.username);
+        setLoggedInUser(user);
       }
 
       useEffect(()=>{
@@ -85,9 +85,19 @@ export default function Answers(props) {
       }
     })
   })
-  const sortedAnsArray = newAnsArray.sort(function(a, b){
+  let sortedAnsArray = newAnsArray.sort(function(a, b){
     return new Date(b.ans_date_time) - new Date(a.ans_date_time);
   })
+
+  if (!loggedInUser) {
+    return;
+  }
+
+  if (props.viewingUserAnswers){
+    const userAnswers = sortedAnsArray.filter(ans => ans.ans_by === loggedInUser.username);
+    const otherAnswers = sortedAnsArray.filter(ans => ans.ans_by !== loggedInUser.username);
+    sortedAnsArray = userAnswers.concat(otherAnswers);
+  }
 
   let newAnsPostsArr = [];
   sortedAnsArray.forEach(ans => {
@@ -138,7 +148,7 @@ export default function Answers(props) {
             <span className="post-time-answers-page">{answerPostTimeMessage}</span>
           </div>
           {props.isLoggedIn && <div className="comment-form"><CommentForm ans={ans} handleFormSubmit={handleFormSubmit} /></div>}
-         {props.isLoggedIn && props.viewingUserAnswers && ans.ans_by === loggedInUser && (
+         {props.isLoggedIn && props.viewingUserAnswers && ans.ans_by === loggedInUser.username && (
                 <div className="answer-modification-buttons">
                   <button className="edit-answer-btn" onClick={() => editAnswer(ans)}>Edit</button>
                   <button className="delete-answer-btn" onClick={() => deleteAnswer(ans)}>Delete</button>
