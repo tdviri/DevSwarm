@@ -165,8 +165,7 @@ export default function Answers(props) {
               <div className="comments-dropdown-header" onClick={() => toggleDropdown(ans._id)}>
                 Show Comments
               </div>
-              {activeDropdownId === ans._id && ans.comments.map((commentId, commentIndex) => {
-                const comment = props.comments.find(comment => comment._id === commentId);
+              {activeDropdownId === ans._id && getSortedComments(ans.comments).map((comment, commentIndex) => {
                 setCommentStartIndex(0);
                 if (comment) {
                   return (
@@ -205,6 +204,12 @@ export default function Answers(props) {
   });
   setAnswerPosts(newAnsPostsArr);
 },[answers, numOfAnswers, activeDropdownId, props])
+
+function getSortedComments(answerComments){
+  if (!answerComments || !props.comments) return [];
+  return props.comments.filter(comment => answerComments.includes(comment._id))
+  .sort((a, b) => new Date(b.comm_date_time) - new Date(a.comm_date_time));
+}
 
 function handleFormSubmit(answer, inputValue) {
     answers.forEach(ans => {
@@ -291,7 +296,7 @@ function handleFormSubmit(answer, inputValue) {
         await axios.put('http://localhost:8000/api/updateanswercomments', {ansId: ans._id, commentId: comment._id}, {withCredentials: true});
         const updatedAnswers = answers.map(answer => {
           if (answer._id === ans._id) {
-              return {...answer, comments: [...answer.comments, comment._id]}; // Assuming newComment._id is the ID of the new comment
+              return {...answer, comments: [...answer.comments, comment._id]}; 
           }
           return answer;
       });

@@ -483,3 +483,9 @@
     margin-top: 1%;
   }
 
+ .comment-post {
+    display: grid;
+    grid-template-columns: 1fr 4fr 2fr;
+    border-top: 1px dotted black;
+ }
+
