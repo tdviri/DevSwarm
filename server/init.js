@@ -17,7 +17,7 @@ const adminEmail = adminCredentials[0];
 const adminPassword = adminCredentials[1];
 
 if (!userArgs[1].startsWith('mongodb')) {
-    console.log('ERROR: You need to specify a valid mongodb URL as the first argument');
+    console.log('ERROR: You need to specify a valid mongodb URL');
     return
 }
 let User = require('./models/users')
@@ -27,7 +27,7 @@ let Question = require('./models/questions')
 let Comment = require('./models/comments')
 
 let mongoose = require('mongoose');
-let mongoDB = userArgs[0];
+let mongoDB = userArgs[1];
 mongoose.connect(mongoDB, {useNewUrlParser: true, useUnifiedTopology: true});
 // mongoose.Promise = global.Promise;
 let db = mongoose.connection;

@@ -105,6 +105,7 @@ export default function UserTags(props) {
                 }
                 setTags(updatedTags); 
                 createMapTags(updatedTags); 
+                props.fetchData();
             }
         } catch (error) {
             console.error('Error deleting tag:', error);
