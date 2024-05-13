@@ -45,26 +45,22 @@ export default function UserTags(props) {
     }
 
     async function editTag(tag) {
-            const resp = await axios.get('http://localhost:8000/api/retrievequestions', {
-                withCredentials: true,
-                headers: {
-                    'Content-Type': 'application/json',
-                }
-            });
-            const appQuestions = resp.data;
-            let count = 0;
-            appQuestions.forEach(appQuestion => {
-                if (appQuestion.tags.includes(tag._id)){
-                    count++;
-                }
-                if (count === 2){
-                    setIsTagInUse(true);
-                    setEditingTagId(null);
-                    setNewTagName('');
-                    props.fetchData();
-                    return;
-                }
-            })
+
+        let resp = await axios.get('http://localhost:8000/api/getLoggedInUser', { withCredentials: true });
+        const loggedInUser = resp.data;
+        resp = await axios.get('http://localhost:8000/api/retrieveusers', {withCredentials: true});
+        const allUsers = resp.data;
+        let valid = true;
+        allUsers.forEach(user => {
+            if (user.tagsCreated.includes(tag._id) && user._id !== loggedInUser._id){
+                setIsTagInUse(true);
+                setEditingTagId(null);
+                setNewTagName('');
+                props.fetchData();
+                valid = false;
+            }
+        })
+        if (valid){
             setIsTagInUse(false);
             await axios.put('http://localhost:8000/api/edittag', { id: tag._id, name: newTagName }, {
                 withCredentials: true,
@@ -83,31 +79,33 @@ export default function UserTags(props) {
             setEditingTagId(null);
             setNewTagName('');
             props.fetchData();
+        }
     }
 
     async function deleteTag(tag) {
         try {
-            const resp = await axios.get('http://localhost:8000/api/retrievequestions', { withCredentials: true });
-            const appQuestions = resp.data;
-            let count = 0;
-            appQuestions.forEach(appQuestion => {
-                if (appQuestion.tags.includes(tag._id)){
-                    count++;
-                }
-                if (count === 2){
+            let resp = await axios.get('http://localhost:8000/api/getLoggedInUser', { withCredentials: true });
+            const loggedInUser = resp.data;
+            resp = await axios.get('http://localhost:8000/api/retrieveusers', {withCredentials: true});
+            const allUsers = resp.data;
+            let valid = true;
+            allUsers.forEach(user => {
+                if (user.tagsCreated.includes(tag._id) && user._id !== loggedInUser._id){
                     setIsTagInUse(true);
-                    return;
+                    valid = false;
                 }
             })
-            setIsTagInUse(false);
-            await axios.delete('http://localhost:8000/api/deletetag', {data: { tagId: tag._id }, withCredentials: true});
-            props.fetchUserData();
-            const updatedTags = tags.filter(t => t._id !== tag._id);
-            if (updatedTags.length === 0){
-                setNoUserTags(true);
+            if (valid){
+                setIsTagInUse(false);
+                await axios.delete('http://localhost:8000/api/deletetag', {data: { tagId: tag._id }, withCredentials: true});
+                props.fetchUserData();
+                const updatedTags = tags.filter(t => t._id !== tag._id);
+                if (updatedTags.length === 0){
+                    setNoUserTags(true);
+                }
+                setTags(updatedTags); 
+                createMapTags(updatedTags); 
             }
-            setTags(updatedTags); 
-            createMapTags(updatedTags); 
         } catch (error) {
             console.error('Error deleting tag:', error);
         }

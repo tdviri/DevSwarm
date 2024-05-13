@@ -6,13 +6,19 @@
 // Run this script to test your schema
 // Start the mongoDB service as a background process before running the script
 // Pass URL of your mongoDB instance as first argument(e.g., mongodb://127.0.0.1:27017/fake_so)
+
+//admin credentials: username: admin, password: secret
 let userArgs = process.argv.slice(2);
 
-if (!userArgs[0].startsWith('mongodb')) {
+let adminCredentials = userArgs[0].split(':');
+const adminUsername = adminCredentials[0];
+const adminPassword = adminCredentials[1];
+
+if (!userArgs[1].startsWith('mongodb')) {
     console.log('ERROR: You need to specify a valid mongodb URL as the first argument');
     return
 }
-
+let User = require('./models/users')
 let Tag = require('./models/tags')
 let Answer = require('./models/answers')
 let Question = require('./models/questions')
@@ -32,12 +38,61 @@ function tagCreate(name) {
   return tag.save();
 }
 
+let adminUser = {
+  firstName: 'Tom',
+  lastName: 'Dviri',
+  email: 'tom.dviri@stonybrook.edu', 
+  username: adminUsername,
+  passwordHash: adminPassword, 
+  reputation: 50,
+  votedQuestions: [], 
+  votedAnswers: [],
+  votedComments: [],
+  askedQuestions: [], 
+  answersAdded: [],
+  tagsCreated: [],  
+  isAdmin: true
+}
+let admin = new User(adminUser);
+admin.save();
+
+function userCreate(firstName, lastName, email, username, passwordHash, reputation,votedQuestions, votedAnswers, votedComments, askedQuestions, answersAdded, tagsCreated, isAdmin){
+  let user = {
+    firstName: firstName,
+    lastName: lastName,
+    email: email, 
+    username: username,
+    passwordHash: passwordHash, 
+    reputation: reputation,
+    votedQuestions: votedQuestions, 
+    votedAnswers: votedAnswers,
+    votedComments: votedComments,
+    askedQuestions: askedQuestions, 
+    answersAdded: answersAdded,
+    tagsCreated: tagsCreated,  
+    isAdmin: isAdmin
+  }
+  if (reputation) {user.reputation = reputation};
+  if (votedQuestions){user.votedQuestions = votedQuestions};
+  if (votedAnswers) {user.votedAnswers = votedAnswers};
+  if (votedComments) {user.votedComments = votedComments};
+  if (askedQuestions) {user.askedQuestions = askedQuestions};
+  if (answersAdded) {user.answersAdded = answersAdded};
+  if (tagsCreated) {user.tagsCreated = tagsCreated};
+  if (isAdmin) {user.isAdmin = isAdmin};
+
+  let newUser = new User(user);
+  return newUser.save();
+}
+
 function answerCreate(text, ans_by, ans_date_time, comments, votes) {
-  comments ? answerdetail = {text: text, comments: comments} : answerdetail = {text: text};
-  // answerdetail = {text:text};
-  if (ans_by != false) answerdetail.ans_by = ans_by;
-  if (ans_date_time != false) answerdetail.ans_date_time = ans_date_time;
-  if (votes != false) answerdetail.votes = votes;
+  let answerdetail = {
+    text: text,
+    ans_by: ans_by
+  }
+  if (ans_date_time) {answerdetail.ans_date_time = ans_date_time};
+  if (comments) {answerdetail.comments = comments};
+  if (votes) {answerdetail.votes = votes};
 
   let answer = new Answer(answerdetail);
   return answer.save();
@@ -49,31 +104,34 @@ function questionCreate(title, summary, text, tags, answers, comments, asked_by,
     summary: summary,
     text: text,
     tags: tags,
-    comments: [],
     asked_by: asked_by,
   }
-  if (answers != false) qstndetail.answers = answers;
-  if (ask_date_time != false) qstndetail.ask_date_time = ask_date_time;
-  if (views != false) qstndetail.views = views;
-  if (votes != false) qstndetail.votes = votes;
+  if (answers) {qstndetail.answers = answers};
+  if (comments) {qstndetail.comments = comments};
+  if (ask_date_time) {qstndetail.ask_date_time = ask_date_time};
+  if (views) {qstndetail.views = qstndetail.views};
+  if (votes) {qstndetail.votes = qstndetail.votes};
 
   let qstn = new Question(qstndetail);
   return qstn.save();
 }
 
-function commentCreate(text, comm_by, comm_date_time, votes, isVoted){
+function commentCreate(text, comm_by, comm_date_time, votes){
   commentDetail = {
     text: text,
-    comm_by
+    comm_by: comm_by,
   }
-  if (comm_date_time != false) commentDetail.comm_date_time = comm_date_time;
-  if (votes != false) commentDetail.votes = votes;
-  if (isVoted != false) commentDetail.isVoted = isVoted;
-  let comment = new Comment(commentDetail);
-  return comment.save();
+  if (comm_date_time) {commentDetail.comm_date_time = comm_date_time};
+  if (votes) {commentDetail.votes = votes};
+
+  let comment = new Comment(commentDetail)
+  return comment.save()
 }
 
 const populate = async () => {
+  let u1 = await userCreate("Mark", "Bern", "mbern@gmail.com", "mbern", passwordHash)
+  let u2 = await userCreate("Mikayla", "Gerj", "mikaylagerj@stonybrook.edu", "mgerj", passwordHash)
+  let u3 = await userCreate("Jack", "Don", "jackdon@gmail.com@", "jackd14", passwordHash)
   let t1 = await tagCreate('react');
   let t2 = await tagCreate('javascript');
   let t3 = await tagCreate('android-studio');
