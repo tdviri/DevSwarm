@@ -20,6 +20,7 @@ export default function UserProfile(props) {
     const [allUsers, setAllUsers] = useState(null);
 
     useEffect(() => {
+        console.log("isAdmin: ", props.currentLoggedInUser.isAdmin)
         fetchUserData();
         if (props.clickedOnProfileSidebar){
             setShowNewQuestionForm(false);

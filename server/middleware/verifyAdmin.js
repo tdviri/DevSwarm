@@ -6,4 +6,4 @@ async function verifyAdmin(req, res, next) {
     }
 }
 
-module.exports = adminVerification;
+module.exports = verifyAdmin;

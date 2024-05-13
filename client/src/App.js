@@ -241,7 +241,7 @@ function App() {
           </div>
         </div>
       }
-      {showUserProfile &&  <div> 
+      {showUserProfile && currentLoggedInUser && <div> 
           <Navbar goToWelcomePage={goToWelcomePage} isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} setIsGuest={setIsGuest} setSortField={setSortField} setCurrentTag={setCurrentTag} setSearch={setSearch} />
           <div id="main" className="main">
             <Sidebar setViewingUserAnswers={setViewingUserAnswers}  fetchData={fetchData} setClickedOnProfileSidebar={setClickedOnProfileSidebar} toggleDisplayTagsPage={toggleDisplayTagsPage} isLoggedIn={isLoggedIn} setShowUserProfile={setShowUserProfile} />

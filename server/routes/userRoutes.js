@@ -2,6 +2,7 @@ const express = require('express');
 const router = express.Router();
 const UserController = require('../controllers/userController');
 const auth = require('../middleware/auth');
+const verifyAdmin = require('../middleware/verifyAdmin');
 
 router.post('/api/register', UserController.registerUser);
 router.post('/api/login', UserController.loginUser);
