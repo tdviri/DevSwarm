@@ -49,6 +49,7 @@ function App() {
   const [displayUserAnswers, setDisplayUserAnswers] = useState(false);
   const [clickedOnProfileSidebar, setClickedOnProfileSidebar] = useState(false);
   const [viewingUserAnswers, setViewingUserAnswers] = useState(false);
+  const [currentLoggedInUser, setCurrentLoggedInUser] = useState(null);
   let response;
 
   useEffect(()=> {
@@ -64,6 +65,10 @@ function App() {
       setTags(response.data);
       response = await axios.get('http://localhost:8000/api/retrievecomments');
       setComments(response.data);
+      if (isLoggedIn){
+        response = await axios.get('http://localhost:8000/api/getLoggedInUser', {withCredentials: true});
+        setCurrentLoggedInUser(response.data);
+      }
  }
 
  function handleAnswerPage(index, questionsArr, showAnswers){
@@ -236,7 +241,7 @@ function App() {
           <Navbar goToWelcomePage={goToWelcomePage} isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} setIsGuest={setIsGuest} setSortField={setSortField} setCurrentTag={setCurrentTag} setSearch={setSearch} />
           <div id="main" className="main">
             <Sidebar setViewingUserAnswers={setViewingUserAnswers}  fetchData={fetchData} setClickedOnProfileSidebar={setClickedOnProfileSidebar} toggleDisplayTagsPage={toggleDisplayTagsPage} isLoggedIn={isLoggedIn} setShowUserProfile={setShowUserProfile} />
-            <UserProfile clickedOnProfileSidebar={clickedOnProfileSidebar} setClickedOnProfileSidebar={setClickedOnProfileSidebar} handleAnswerPage={handleAnswerPage} setDisplayUserAnswers={setDisplayUserAnswers} fetchData={fetchData} questions={getSorted()} setDisplayTagsPage={setDisplayTagsPage} showUserProfile={showUserProfile} setShowUserProfile={setShowUserProfile} setSearch={setSearch} setCurrentTag={setCurrentTag} tags={tags}/>
+            <UserProfile currentLoggedInUser={currentLoggedInUser} clickedOnProfileSidebar={clickedOnProfileSidebar} setClickedOnProfileSidebar={setClickedOnProfileSidebar} handleAnswerPage={handleAnswerPage} setDisplayUserAnswers={setDisplayUserAnswers} fetchData={fetchData} questions={getSorted()} setDisplayTagsPage={setDisplayTagsPage} showUserProfile={showUserProfile} setShowUserProfile={setShowUserProfile} setSearch={setSearch} setCurrentTag={setCurrentTag} tags={tags}/>
           </div>
       </div>}
 </div>
