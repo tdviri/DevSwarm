@@ -131,7 +131,6 @@ function App() {
     headers: {
       'Content-Type': 'application/json',
     }});
-    fetchData();
   }
 
   function toggleUnansweredBtnClicked(){
@@ -221,6 +220,7 @@ function App() {
 
   async function switchUser(user){
     await axios.get(`http://localhost:8000/api/switchuser/${user._id}`, {withCredentials: true});
+    fetchData();
   }
 
   return (
@@ -232,7 +232,7 @@ function App() {
     {showRegisterPage && <Register users={users} setUsers={setUsers} setShowRegisterPage={setShowRegisterPage} setShowLoginPage={setShowLoginPage}/>}
       {!showUserProfile && questions && answers && tags && (isLoggedIn || isGuest) &&
         <div> 
-          <Navbar goToWelcomePage={goToWelcomePage} isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} setIsGuest={setIsGuest} setSortField={setSortField} setCurrentTag={setCurrentTag} setSearch={setSearch} />
+          <Navbar setShowUserProfile={setShowUserProfile} goToWelcomePage={goToWelcomePage} isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} setIsGuest={setIsGuest} setSortField={setSortField} setCurrentTag={setCurrentTag} setSearch={setSearch} />
           <div id="main" className="main">
             <Sidebar setViewingUserAnswers={setViewingUserAnswers} fetchData={fetchData} setClickedOnProfileSidebar={setClickedOnProfileSidebar}  toggleDisplayTagsPage={toggleDisplayTagsPage} isLoggedIn={isLoggedIn} setShowUserProfile={setShowUserProfile} />
             <Forum viewingUserAnswers={viewingUserAnswers} displayUserAnswers={displayUserAnswers} fetchData={fetchData} comments={comments} goToWelcomePage={goToWelcomePage} isGuest={isGuest} isLoggedIn={isLoggedIn} answers={answers} displayTagsPage={displayTagsPage} displayAnswers={displayAnswers}
@@ -242,7 +242,7 @@ function App() {
         </div>
       }
       {showUserProfile && currentLoggedInUser && <div> 
-          <Navbar goToWelcomePage={goToWelcomePage} isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} setIsGuest={setIsGuest} setSortField={setSortField} setCurrentTag={setCurrentTag} setSearch={setSearch} />
+          <Navbar setShowUserProfile={setShowUserProfile} goToWelcomePage={goToWelcomePage} isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} setIsGuest={setIsGuest} setSortField={setSortField} setCurrentTag={setCurrentTag} setSearch={setSearch} />
           <div id="main" className="main">
             <Sidebar setViewingUserAnswers={setViewingUserAnswers}  fetchData={fetchData} setClickedOnProfileSidebar={setClickedOnProfileSidebar} toggleDisplayTagsPage={toggleDisplayTagsPage} isLoggedIn={isLoggedIn} setShowUserProfile={setShowUserProfile} />
             <UserProfile switchUser={switchUser} currentLoggedInUser={currentLoggedInUser} clickedOnProfileSidebar={clickedOnProfileSidebar} setClickedOnProfileSidebar={setClickedOnProfileSidebar} handleAnswerPage={handleAnswerPage} setDisplayUserAnswers={setDisplayUserAnswers} fetchData={fetchData} questions={getSorted()} setDisplayTagsPage={setDisplayTagsPage} showUserProfile={showUserProfile} setShowUserProfile={setShowUserProfile} setSearch={setSearch} setCurrentTag={setCurrentTag} tags={tags}/>

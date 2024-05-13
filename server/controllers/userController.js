@@ -225,9 +225,15 @@ async getUserAnsweredQuestions(req, res){
 async switchUser (req, res) {
   const userToLoginAs = await User.findById(req.params.userId);
 
-  const impersonationToken = jwt.sign({ userId: userToLoginAs._id }, 'JWT$3cr3tKey!#2024');
+  const impersonationToken = jwt.sign({ userId: userToLoginAs._id, isAdmin: true }, 'JWT$3cr3tKey!#2024');
   res.set("authorization", impersonationToken);
   res.cookie("token", impersonationToken, { httpOnly: true }).send();
+},
+
+async deleteUser (req, res){
+  const userToDelete = await User.findById(req.params.userId);
+  userToDelete.deleteOne();
+  res.send();
 }
 };
 

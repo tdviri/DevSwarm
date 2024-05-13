@@ -18,7 +18,8 @@ router.get('/api/isanswervoted/:id', auth, UserController.isAnswerVoted);
 router.get('/api/getuserquestions', auth, UserController.getUserQuestions);
 router.get('/api/getusertags', auth, UserController.getUserTags);
 router.get('/api/getuseransweredquestions', auth, UserController.getUserAnsweredQuestions);
-router.get('/api/switchuser:userId', auth, verifyAdmin, UserController.switchUser);
+router.get('/api/switchuser/:userId', auth, verifyAdmin, UserController.switchUser);
+router.delete('/api/deleteuser/:userId', auth, verifyAdmin, UserController.deleteUser);
 
 // router.put('/api/addUser', auth, UserController.addUser);
 

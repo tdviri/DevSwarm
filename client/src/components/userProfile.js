@@ -17,7 +17,7 @@ export default function UserProfile(props) {
     const [showUserTagsPage, setShowUserTagsPage] = useState(false);
     const [showUserAnsweredQuestionsPage, setShowUserAnsweredQuestionsPage] = useState(false);
     const [showNewQuestionForm, setShowNewQuestionForm] = useState(false);
-    const [allUsers, setAllUsers] = useState(null);
+    const [allUsers, setAllUsers] = useState([]);
 
     useEffect(() => {
         console.log("isAdmin: ", props.currentLoggedInUser.isAdmin)
@@ -37,8 +37,10 @@ export default function UserProfile(props) {
         console.log("fetching user tags in userProfile.js", resp.data)
         resp = await axios.get('http://localhost:8000/api/getuseransweredquestions',  { withCredentials: true });
         setUserAnsweredQuestions(resp.data);
-        resp = await axios.get('http://localhost:8000/api/retrieveusers', {withCredentials: true});
-        setAllUsers(resp.data);
+        if (props.currentLoggedInUser){
+            resp = await axios.get('http://localhost:8000/api/retrieveusers', {withCredentials: true});
+            setAllUsers(resp.data);
+        }
 
         const loggedInUserResponse = await axios.get('http://localhost:8000/api/getLoggedInUser', {withCredentials: true});
         const loggedInUser = loggedInUserResponse.data;
@@ -71,6 +73,11 @@ export default function UserProfile(props) {
         setShowUserTagsPage(false);
     }
 
+    async function deleteUser(user, index){
+        await axios.delete(`http://localhost:8000/api/deleteuser/${user._id}`, {withCredentials: true});
+        allUsers.splice(index, 1);
+    }
+
   return (
     <div className="user-profile">
         {!props.clickedOnProfileSidebar && !showNewQuestionForm && showUserTagsPage && <UserTags fetchUserData={fetchUserData} fetchData={props.fetchData} questions={props.questions} setDisplayTagsPage={props.setDisplayTagsPage} setShowUserProfile={props.setShowUserProfile} setSearch={props.setSearch} setCurrentTag={props.setCurrentTag} userTags={userTags}/>}
@@ -81,12 +88,13 @@ export default function UserProfile(props) {
             <div>Reputation: {userReputation}</div>
             <div>Account created {userAccountDuration} days ago</div>
             <h3>Questions Asked</h3>
+            {userQuestions && userQuestions.length === 0 && <div>Currently no questions asked</div>}
             <div>{userQuestions && userQuestions.map(userQuestion =>{return <div onClick={()=>viewNewQuestionForm(userQuestion)}>{userQuestion?.title}</div>})}</div>
             <h3>View More</h3>
             <div onClick={()=>viewUserTagsPage()}>View Your Tags</div>
             <div onClick={()=>viewUserAnsweredQuestionsPage()}>View Your Answered Questions</div>
-            <h3>All Users</h3>
-            {props.currentLoggedInUser.isAdmin && <div className="admin-profile-list-of-users">{allUsers.map(user => <div onClick={()=>{props.switchUser(user)}}>{user.username}, {user._id}</div>)}</div>}
+            {props.currentLoggedInUser && props.currentLoggedInUser.isAdmin && <h3>All Users</h3>}
+            {props.currentLoggedInUser && props.currentLoggedInUser.isAdmin && <div className="admin-profile-list-of-users">{allUsers?.map((user, index) => <div className="admin-profile-user-container"><div onClick={()=>{props.switchUser(user); fetchUserData()}}>Username: {user.username}, User ID: {user._id}</div><button onClick={()=>deleteUser(user, index)}>Delete User</button></div>)}</div>}
         </div>}
         {!props.clickedOnProfileSidebar && showNewQuestionForm && <NewQuestion setUserQuestions={setUserQuestions} userQuestions={userQuestions} setClickedOnProfileSidebar={props.setClickedOnProfileSidebar} tags={props.tags} fetchData={props.fetchData} userQuestion={questionToModify} userTags={userTags}/>}
     </div>
