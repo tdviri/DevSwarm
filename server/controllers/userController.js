@@ -64,7 +64,7 @@ const UserController = {
         return res.status(401).json({errorMessage: "Password is incorrect."})
       }
 
-    const token = jwt.sign({ userId: user._id }, 'JWT$3cr3tKey!#2024');
+    const token = jwt.sign({ userId: user._id, isAdmin: user.isAdmin }, 'JWT$3cr3tKey!#2024');
     res.set("authorization", token)
     res.cookie("token", token, {httpOnly: true }).status(200).json({success: true}).send();
   },
@@ -220,6 +220,14 @@ async getUserAnsweredQuestions(req, res){
 
   const answeredQuestions = filteredQuestions.filter(question => question !== null);
   res.status(200).json(answeredQuestions);
+},
+
+async switchUser (req, res) {
+  const userToLoginAs = await User.findById(req.params.userId);
+
+  const impersonationToken = jwt.sign({ userId: userToLoginAs._id }, 'JWT$3cr3tKey!#2024');
+  res.set("authorization", impersonationToken);
+  res.cookie("token", impersonationToken, { httpOnly: true }).send();
 }
 };
 

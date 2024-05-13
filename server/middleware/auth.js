@@ -12,6 +12,7 @@ async function authManager(req, res, next) {
         }
         const decoded = jwt.verify(token, 'JWT$3cr3tKey!#2024');
         req.user = decoded;
+        req.isAdmin = decoded.isAdmin;
         req.userId = decoded.userId; // SEND ON THE USER INFO
         const user = await User.findById(req.userId);
         req.username = user.username;

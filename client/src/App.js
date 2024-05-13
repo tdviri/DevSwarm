@@ -220,7 +220,7 @@ function App() {
   }
 
   async function switchUser(user){
-    
+    await axios.get(`http://localhost:8000/api/switchuser/${user._id}`, {withCredentials: true});
   }
 
   return (
