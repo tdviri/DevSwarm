@@ -17,6 +17,7 @@ export default function UserProfile(props) {
     const [showUserTagsPage, setShowUserTagsPage] = useState(false);
     const [showUserAnsweredQuestionsPage, setShowUserAnsweredQuestionsPage] = useState(false);
     const [showNewQuestionForm, setShowNewQuestionForm] = useState(false);
+    const [allUsers, setAllUsers] = useState(null);
 
     useEffect(() => {
         fetchUserData();
@@ -35,6 +36,8 @@ export default function UserProfile(props) {
         console.log("fetching user tags in userProfile.js", resp.data)
         resp = await axios.get('http://localhost:8000/api/getuseransweredquestions',  { withCredentials: true });
         setUserAnsweredQuestions(resp.data);
+        resp = await axios.get('http://localhost:8000/api/retrieveusers', {withCredentials: true});
+        setAllUsers(resp.data);
 
         const loggedInUserResponse = await axios.get('http://localhost:8000/api/getLoggedInUser', {withCredentials: true});
         const loggedInUser = loggedInUserResponse.data;
@@ -81,6 +84,8 @@ export default function UserProfile(props) {
             <h3>View More</h3>
             <div onClick={()=>viewUserTagsPage()}>View Your Tags</div>
             <div onClick={()=>viewUserAnsweredQuestionsPage()}>View Your Answered Questions</div>
+            <h3>All Users</h3>
+            {props.currentLoggedInUser.isAdmin && <div className="admin-profile-list-of-users">{allUsers.map(user => <div onClick={()=>{props.switchUser(user)}}>{user.username}, {user._id}</div>)}</div>}
         </div>}
         {!props.clickedOnProfileSidebar && showNewQuestionForm && <NewQuestion setUserQuestions={setUserQuestions} userQuestions={userQuestions} setClickedOnProfileSidebar={props.setClickedOnProfileSidebar} tags={props.tags} fetchData={props.fetchData} userQuestion={questionToModify} userTags={userTags}/>}
     </div>

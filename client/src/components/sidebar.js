@@ -22,8 +22,8 @@ export default function Sidebar(props) {
             <h1 id="tags-sidebar-header">Tags</h1>
         </div>
         {props.isLoggedIn && <div onClick={()=>goToUserProfile()} id="user-profile-sidebar">
-        <h1 id="user-profile-sidebar-header">Profile</h1>
-          </div>}
+          <h1 id="user-profile-sidebar-header">Profile</h1>
+        </div>}
     </div> 
   );
 }
