@@ -7,11 +7,11 @@
 // Start the mongoDB service as a background process before running the script
 // Pass URL of your mongoDB instance as first argument(e.g., mongodb://127.0.0.1:27017/fake_so)
 
-//admin credentials: username: admin, password: secret
+//admin credentials: username: admin@gmail.com, password: secretAdmin
 let userArgs = process.argv.slice(2);
 
 let adminCredentials = userArgs[0].split(':');
-const adminUsername = adminCredentials[0];
+const adminEmail = adminCredentials[0];
 const adminPassword = adminCredentials[1];
 
 if (!userArgs[1].startsWith('mongodb')) {
@@ -38,25 +38,7 @@ function tagCreate(name) {
   return tag.save();
 }
 
-let adminUser = {
-  firstName: 'Tom',
-  lastName: 'Dviri',
-  email: 'tom.dviri@stonybrook.edu', 
-  username: adminUsername,
-  passwordHash: adminPassword, 
-  reputation: 50,
-  votedQuestions: [], 
-  votedAnswers: [],
-  votedComments: [],
-  askedQuestions: [], 
-  answersAdded: [],
-  tagsCreated: [],  
-  isAdmin: true
-}
-let admin = new User(adminUser);
-admin.save();
-
-function userCreate(firstName, lastName, email, username, passwordHash, reputation,votedQuestions, votedAnswers, votedComments, askedQuestions, answersAdded, tagsCreated, isAdmin){
+function userCreate(firstName, lastName, email, username, passwordHash, reputation, votedQuestions, votedAnswers, votedComments, askedQuestions, answersAdded, tagsCreated, isAdmin){
   let user = {
     firstName: firstName,
     lastName: lastName,
@@ -64,22 +46,14 @@ function userCreate(firstName, lastName, email, username, passwordHash, reputati
     username: username,
     passwordHash: passwordHash, 
     reputation: reputation,
-    votedQuestions: votedQuestions, 
+    votedQuestions: votedQuestions,
     votedAnswers: votedAnswers,
-    votedComments: votedComments,
-    askedQuestions: askedQuestions, 
+    votedComments: votedComments, 
+    askedQuestions: askedQuestions,
     answersAdded: answersAdded,
-    tagsCreated: tagsCreated,  
+    tagsCreated: tagsCreated,
     isAdmin: isAdmin
   }
-  if (reputation) {user.reputation = reputation};
-  if (votedQuestions){user.votedQuestions = votedQuestions};
-  if (votedAnswers) {user.votedAnswers = votedAnswers};
-  if (votedComments) {user.votedComments = votedComments};
-  if (askedQuestions) {user.askedQuestions = askedQuestions};
-  if (answersAdded) {user.answersAdded = answersAdded};
-  if (tagsCreated) {user.tagsCreated = tagsCreated};
-  if (isAdmin) {user.isAdmin = isAdmin};
 
   let newUser = new User(user);
   return newUser.save();
@@ -88,11 +62,11 @@ function userCreate(firstName, lastName, email, username, passwordHash, reputati
 function answerCreate(text, ans_by, ans_date_time, comments, votes) {
   let answerdetail = {
     text: text,
-    ans_by: ans_by
+    ans_by: ans_by,
+    ans_date_time: ans_date_time,
+    comments: comments,
+    votes: votes
   }
-  if (ans_date_time) {answerdetail.ans_date_time = ans_date_time};
-  if (comments) {answerdetail.comments = comments};
-  if (votes) {answerdetail.votes = votes};
 
   let answer = new Answer(answerdetail);
   return answer.save();
@@ -104,13 +78,13 @@ function questionCreate(title, summary, text, tags, answers, comments, asked_by,
     summary: summary,
     text: text,
     tags: tags,
+    answers: answers,
+    comments: comments,
     asked_by: asked_by,
+    ask_date_time: ask_date_time,
+    views: views,
+    votes: votes
   }
-  if (answers) {qstndetail.answers = answers};
-  if (comments) {qstndetail.comments = comments};
-  if (ask_date_time) {qstndetail.ask_date_time = ask_date_time};
-  if (views) {qstndetail.views = qstndetail.views};
-  if (votes) {qstndetail.votes = qstndetail.votes};
 
   let qstn = new Question(qstndetail);
   return qstn.save();
@@ -120,31 +94,37 @@ function commentCreate(text, comm_by, comm_date_time, votes){
   commentDetail = {
     text: text,
     comm_by: comm_by,
+    comm_date_time: comm_date_time,
+    votes: votes
   }
-  if (comm_date_time) {commentDetail.comm_date_time = comm_date_time};
-  if (votes) {commentDetail.votes = votes};
 
   let comment = new Comment(commentDetail)
   return comment.save()
 }
 
 const populate = async () => {
-  let u1 = await userCreate("Mark", "Bern", "mbern@gmail.com", "mbern", passwordHash)
-  let u2 = await userCreate("Mikayla", "Gerj", "mikaylagerj@stonybrook.edu", "mgerj", passwordHash)
-  let u3 = await userCreate("Jack", "Don", "jackdon@gmail.com@", "jackd14", passwordHash)
   let t1 = await tagCreate('react');
   let t2 = await tagCreate('javascript');
   let t3 = await tagCreate('android-studio');
   let t4 = await tagCreate('shared-preferences');
-  let c1 = await commentCreate('comment1', 'tdv');
-  let c2 = await commentCreate('comment2', 'gd');
-  let a1 = await answerCreate('React Router is mostly a wrapper around the history library. history handles interaction with the browser\'s window.history for you with its browser and hash histories. It also provides a memory history which is useful for environments that don\'t have a global history. This is particularly useful in mobile app development (react-native) and unit testing with Node.', 'hamkalo', false, [c1, c2]);
-  let a2 = await answerCreate('On my end, I like to have a single history object that I can carry even outside components. I like to have a single history.js file that I import on demand, and just manipulate it. You just have to change BrowserRouter to Router, and specify the history prop. This doesn\'t change anything for you, except that you have your own history object that you can manipulate as you want. You need to install history, the library used by react-router.', 'azad', false);
-  let a3 = await answerCreate('Consider using apply() instead; commit writes its data to persistent storage immediately, whereas apply will handle it in the background.', 'abaya', false);
-  let a4 = await answerCreate('YourPreference yourPrefrence = YourPreference.getInstance(context); yourPreference.saveData(YOUR_KEY,YOUR_VALUE);', 'alia', false);
-  let a5 = await answerCreate('I just found all the above examples just too confusing, so I wrote my own. ', 'sana', false);
-  await questionCreate('Programmatically navigate using React router', 'need to understand how React router works', 'the alert shows the proper index for the li clicked, and when I alert the variable within the last function I\'m calling, moveToNextImage(stepClicked), the same value shows but the animation isn\'t happening. This works many other ways, but I\'m trying to pass the index value of the list item clicked to use for the math to calculate.', [t1, t2], [a1, a2], 'Joji John', false, false);
-  await questionCreate('android studio save string shared preference', 'having difficulty working with android studio', 'I am using bottom navigation view but am using custom navigation, so my fragments are not recreated every time i switch to a different view. I just hide/show my fragments depending on the icon selected. The problem i am facing is that whenever a config change happens (dark/light theme), my app crashes. I have 2 fragments in this activity and the below code is what i am using to refrain them from being recreated.', [t3, t4, t2], [a3, a4, a5], 'saltyPeter', false, 121);
+
+  let c1 = await commentCreate('comment1', 'mbern', Date.now(), 0);
+  let c2 = await commentCreate('comment2', 'mgerj', Date.now(), 0);
+  let c3 = await commentCreate('comment3', 'mbern', Date.now(), 0);
+  
+  let a1 = await answerCreate('React Router is mostly a wrapper around the history library. history handles interaction with the browser\'s window.history for you with its browser and hash histories. It also provides a memory history which is useful for environments that don\'t have a global history. This is particularly useful in mobile app development (react-native) and unit testing with Node.', 'jackd14', Date.now(), [c1, c2], 0); 
+  let a2 = await answerCreate('On my end, I like to have a single history object that I can carry even outside components. I like to have a single history.js file that I import on demand, and just manipulate it. You just have to change BrowserRouter to Router, and specify the history prop. This doesn\'t change anything for you, except that you have your own history object that you can manipulate as you want. You need to install history, the library used by react-router.', 'mgerj', Date.now(), [], 0 );
+  let a3 = await answerCreate('Consider using apply() instead; commit writes its data to persistent storage immediately, whereas apply will handle it in the background.', 'mbern', Date.now(), [], 0);
+  let a4 = await answerCreate('YourPreference yourPrefrence = YourPreference.getInstance(context); yourPreference.saveData(YOUR_KEY,YOUR_VALUE);', 'mbern', Date.now(), [], 0);
+  let a5 = await answerCreate('I just found all the above examples just too confusing, so I wrote my own. ', 'mbern', Date.now(), [], 0);
+
+  let q1 = await questionCreate('Programmatically navigate using React router', 'need to understand how React router works', 'the alert shows the proper index for the li clicked, and when I alert the variable within the last function I\'m calling, moveToNextImage(stepClicked), the same value shows but the animation isn\'t happening. This works many other ways, but I\'m trying to pass the index value of the list item clicked to use for the math to calculate.', [t1, t2], [a1, a2], [], 'mbern', Date.now(), 32, 0); 
+  let q2 = await questionCreate('android studio save string shared preference', 'having difficulty working with android studio', 'I am using bottom navigation view but am using custom navigation, so my fragments are not recreated every time i switch to a different view. I just hide/show my fragments depending on the icon selected. The problem i am facing is that whenever a config change happens (dark/light theme), my app crashes. I have 2 fragments in this activity and the below code is what i am using to refrain them from being recreated.', [t3, t4, t2], [a3, a4, a5], [], 'mgerj', Date.now(), 121, 0);
+  
+  let u1 = await userCreate("Mark", "Bern", "mbern@gmail.com", "mbern", passwordHash, 50, [], [], [], [q1], [a3, a4, a5], [t1, t2], false);
+  let u2 = await userCreate("Mikayla", "Gerj", "mikaylagerj@stonybrook.edu", "mgerj", passwordHash, 50, [], [], [], [q2], [a2], [t2, t3, t4], false)
+  let u3 = await userCreate("Jack", "Don", "jackdon@gmail.com@", "jackd14", passwordHash, 50, [], [], [], [], [a1], [], false)
+  let adminUser = await userCreate("administrator", "1", adminEmail, "admin", adminPassword, 50, [], [], [], [], [], [], true);
   if(db) db.close();
   console.log('done');
 }
