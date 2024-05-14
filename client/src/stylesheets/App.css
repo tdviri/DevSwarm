@@ -511,6 +511,7 @@
 
   .user-profile {
     flex: 4 1;
+    position: relative;
   }
 
   .answer-text {
@@ -611,5 +612,13 @@
     text-shadow: 0 0 10px rgba(0, 0, 255, 0.7); 
     cursor: pointer;
     color: blue;
+ }
+
+ .no-questions-answered-message, .no-tags-created-message {
+    font-size: 50px;
+    position: absolute;
+    top: 35%;
+    left: 50%;
+    transform: translate(-50%, -50%);
  }
 
