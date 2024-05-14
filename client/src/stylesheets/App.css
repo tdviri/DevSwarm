@@ -672,6 +672,11 @@
     font-size: 20px;
  }
 
+ .register-form-input {
+    width: 20vw;
+    height: 2vh;
+ }
+
  .signup-btn {
     font-size: 20px;
     cursor: pointer;
