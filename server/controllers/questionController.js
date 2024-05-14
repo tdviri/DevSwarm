@@ -36,7 +36,18 @@ const QuestionController = {
   },
 
 async deleteQuestion(req, res){
-  await Tag.deleteMany({ _id: { $in: req.body.tags } });
+  // await Tag.deleteMany({ _id: { $in: req.body.tags } });
+  for (let tagId of req.body.tags) {
+    const isTagUsedByOtherQuestions = await Question.countDocuments({
+        _id: { $ne: req.body._id }, 
+        tags: tagId
+    });
+    if (isTagUsedByOtherQuestions === 0) {
+        await Tag.findByIdAndDelete(tagId);
+    }
+  }
+  await Answer.deleteMany({_id: { $in: req.body.answers }});
+  await Comment.deleteMany({ _id: { $in: req.body.comments }});
   await User.findOneAndUpdate(
       { votedQuestions: req.body._id },
       { $pull: { votedQuestions: req.body._id } }, 

@@ -20,9 +20,20 @@ export default function Answers(props) {
     const [inputValue, setInputValue] = useState('');
 
       async function getLoggedInUser(){
-        const userResponse = await axios.get('http://localhost:8000/api/getLoggedInUser', {withCredentials: true});
-        const user = userResponse.data;
-        setLoggedInUser(user);
+        try {
+          const userResponse = await axios.get('http://localhost:8000/api/getLoggedInUser', { withCredentials: true });
+          const user = userResponse.data;
+          setLoggedInUser(user);
+      } catch (error) {
+          if (error.response) {
+              console.error('System error');
+          } else if (error.request) {
+              console.error('Communication error');
+          } else {
+              console.error('System error');
+          }
+          props.goToWelcomePage();
+      }
       }
 
       useEffect(()=>{
@@ -94,7 +105,7 @@ export default function Answers(props) {
   if (!loggedInUser && !props.isGuest) {
     return;
   }
-  
+
   if (props.viewingUserAnswers){
     const userAnswers = sortedAnsArray.filter(ans => loggedInUser.answersAdded.includes(ans._id));
     const otherAnswers = sortedAnsArray.filter(ans => !loggedInUser.answersAdded.includes(ans._id));
@@ -251,7 +262,6 @@ function handleFormSubmit(answer, inputValue) {
         else {
           alert('System error');
         }
-        props.goToWelcomePage();
       }
     }
 
@@ -278,7 +288,6 @@ function handleFormSubmit(answer, inputValue) {
         else {
           alert('System error');
         }
-        props.goToWelcomePage();
       }
     }
 
@@ -323,13 +332,23 @@ function handleFormSubmit(answer, inputValue) {
   }
 
   async function deleteAnswer(answer){
-    await axios.delete('http://localhost:8000/api/deleteanswer', {withCredentials: true,
-    headers: {
-      'Content-Type': 'application/json',
-    }, data: answer});
-    setAnswers(prevAnswers => prevAnswers.filter(ans => ans._id !== answer._id));
-    setNumOfAnswers(prevNumOfAnswer => prevNumOfAnswer - 1);
-    props.fetchData()
+    try {
+      await axios.delete('http://localhost:8000/api/deleteanswer', {
+          withCredentials: true,
+          headers: {
+              'Content-Type': 'application/json',
+          }, data: answer
+      });
+      setAnswers(prevAnswers => prevAnswers.filter(ans => ans._id !== answer._id));
+      setNumOfAnswers(prevNumOfAnswer => prevNumOfAnswer - 1);
+      props.fetchData();
+  } catch (error) {
+      if (error.request) {
+          alert('Communication error: Unable to connect to the server. Please try again later.');
+      } else {
+          alert('System error');
+      }
+  }
   }
 
   return (
