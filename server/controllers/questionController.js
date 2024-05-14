@@ -29,6 +29,13 @@ const QuestionController = {
   res.send();
   },
 
+  async updateQuestions(req, res) {
+    const newData = req.body;
+    await Question.deleteMany({}); 
+    await Question.insertMany(newData); 
+    res.send();
+  },
+
 async deleteQuestion(req, res){
   await Tag.deleteMany({ _id: { $in: req.body.tags } });
   await User.findOneAndUpdate(

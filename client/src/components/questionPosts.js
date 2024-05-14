@@ -179,7 +179,7 @@ export default function QuestionPosts(props) {
               <span className="views-count">{question.views} views</span>
             </div>
             <div id={`post-title${index}`} className='title-and-tags'>
-              <span onClick={() =>props.handleAnswerPageIndex(index, questions, true)} className='post-title'>{question.title}</span>
+              <span onClick={() =>{props.clickedOnTag ? props.handleAnswerPageIndex(index, questions, true, true) : props.handleAnswerPageIndex(index, questions, true, false)}} className='post-title'>{question.title}</span>
               <div className='tags'>
                 {question.tags.map((tagId, tagIndex) => (
                   <span className="tag" key={tagIndex}>

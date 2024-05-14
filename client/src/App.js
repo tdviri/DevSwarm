@@ -50,6 +50,7 @@ function App() {
   const [viewingUserAnswers, setViewingUserAnswers] = useState(false);
   const [currentLoggedInUser, setCurrentLoggedInUser] = useState(null);
   const [isAdmin, setIsAdmin] = useState(false);
+  const [clickedOnTag, setClickedOnTag] = useState(false);
   let response;
 
   useEffect(()=> {
@@ -86,13 +87,19 @@ function App() {
     fetchData();
  }
 
-  async function handleAnswerPageIndex(index, questionsArr, showAnswers){
+ async function handleAnswerPageIndex(index, questionsArr, showAnswers, clickedOnTaggedQuestion){
     setDisplayTagsPage(false);
     setShowUserProfile(false);
     setIsDisplayAnswerForm(false);
     setDisplayAnswers(showAnswers);
     setAnswerPageIndex(index);
     questionsArr[index].views++;
+    if (!clickedOnTaggedQuestion){
+      await axios.put('http://localhost:8000/api/updatequestions', questionsArr, {withCredentials: true,
+      headers: {
+        'Content-Type': 'application/json',
+      }});
+    }
     fetchData();
   }
 
@@ -237,7 +244,7 @@ function App() {
           <Navbar setShowUserProfile={setShowUserProfile} goToWelcomePage={goToWelcomePage} isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} setIsGuest={setIsGuest} setSortField={setSortField} setCurrentTag={setCurrentTag} setSearch={setSearch} />
           <div id="main" className="main">
             <Sidebar setViewingUserAnswers={setViewingUserAnswers} fetchData={fetchData} setClickedOnProfileSidebar={setClickedOnProfileSidebar}  toggleDisplayTagsPage={toggleDisplayTagsPage} isLoggedIn={isLoggedIn} setShowUserProfile={setShowUserProfile} />
-            <Forum viewingUserAnswers={viewingUserAnswers} displayUserAnswers={displayUserAnswers} fetchData={fetchData} comments={comments} goToWelcomePage={goToWelcomePage} isGuest={isGuest} isLoggedIn={isLoggedIn} answers={answers} displayTagsPage={displayTagsPage} displayAnswers={displayAnswers}
+            <Forum clickedOnTag={clickedOnTag} setClickedOnTag={setClickedOnTag} viewingUserAnswers={viewingUserAnswers} displayUserAnswers={displayUserAnswers} fetchData={fetchData} comments={comments} goToWelcomePage={goToWelcomePage} isGuest={isGuest} isLoggedIn={isLoggedIn} answers={answers} displayTagsPage={displayTagsPage} displayAnswers={displayAnswers}
              setSearch={setSearch} setCurrentTag={setCurrentTag} toggleUnansweredBtnClicked={toggleUnansweredBtnClicked} setSortField={handleSort} addNewQuestion={addNewQuestion} answerPageIndex={answerPageIndex} displayAnswerForm={displayAnswerForm} showAnswerForm={showAnswerForm} handleAskQuestionBtn={handleAskQuestionBtn} isAskQuestionBtnClicked={isAskQuestionBtnClicked} setDisplayTagsPage={setDisplayTagsPage} tags={mapTags} ansArray={answers} setQuestions={setQuestions} handleAnswerPageIndex={handleAnswerPageIndex} isNoQuestionsFound={isNoQuestionsFound} questions={getSorted()}
             />
           </div>

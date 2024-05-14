@@ -4,6 +4,7 @@ import PropTypes from 'prop-types';
 
 export default function Tags(props) {
     function showTaggedQuestions(tagId){
+        props.setClickedOnTag(true);
         props.setSearch('');
         props.setCurrentTag(tagId);
         props.setDisplayTagsPage(false);
