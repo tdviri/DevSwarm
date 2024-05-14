@@ -57,21 +57,75 @@ function App() {
   }, [])
 
   async function fetchData() {
-      response = await axios.get('http://localhost:8000/api/retrievequestions'); 
+    try {
+      let response = await axios.get('http://localhost:8000/api/retrievequestions');
       setQuestions(response.data);
-      response = await axios.get('http://localhost:8000/api/retrieveanswers');
+    } catch (error) {
+      if (error.response) {
+        console.error('System error');
+      } else if (error.request) {
+        console.error('Communication error');
+      } else {
+        console.error('System error');
+      }
+    }
+    
+    try {
+      let response = await axios.get('http://localhost:8000/api/retrieveanswers');
       setAnswers(response.data);
-      response = await axios.get('http://localhost:8000/api/retrievetags');
+    } catch (error) {
+      if (error.response) {
+        console.error('System error');
+      } else if (error.request) {
+        console.error('Communication error');
+      } else {
+        console.error('System error');
+      }
+    }
+    
+    try {
+      let response = await axios.get('http://localhost:8000/api/retrievetags');
       setTags(response.data);
-      response = await axios.get('http://localhost:8000/api/retrievecomments');
+    } catch (error) {
+      if (error.response) {
+        console.error('System error');
+      } else if (error.request) {
+        console.error('Communication error');
+      } else {
+        console.error('System error');
+      }
+    }
+    
+    try {
+      let response = await axios.get('http://localhost:8000/api/retrievecomments');
       setComments(response.data);
-      if (isLoggedIn){
-        response = await axios.get('http://localhost:8000/api/getLoggedInUser', {withCredentials: true});
-        if (response.data.email === 'admin@gmail.com'){
+    } catch (error) {
+      if (error.response) {
+        console.error('System error');
+      } else if (error.request) {
+        console.error('Communication error');
+      } else {
+        console.error('System error');
+      }
+    }
+    
+    if (isLoggedIn) {
+      try {
+        let response = await axios.get('http://localhost:8000/api/getLoggedInUser', { withCredentials: true });
+        if (response.data.email === 'admin@gmail.com') {
           setIsAdmin(true);
         }
         setCurrentLoggedInUser(response.data);
+      } catch (error) {
+        if (error.response) {
+          console.error('System error');
+        } else if (error.request) {
+          console.error('Communication error');
+        } else {
+          console.error('System error');
+        }
       }
+    }
  }
 
  function handleAnswerPage(index, questionsArr, showAnswers){

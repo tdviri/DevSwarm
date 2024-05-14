@@ -19,7 +19,7 @@ export default function Navbar(props) {
         alert('Communication error: Unable to connect to the server. Please try again later.');
       } 
       else {
-        alert('System error: Registration failed');
+        alert('System error: Log out failed');
       }
     }
     props.goToWelcomePage();

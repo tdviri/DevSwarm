@@ -1,6 +1,6 @@
 import React from 'react';
 import PropTypes from 'prop-types';
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { FaArrowUp, FaArrowDown } from 'react-icons/fa';
 import QuestionCommentForm from './questionCommentForm';
 import axios from 'axios';
@@ -11,6 +11,10 @@ export default function QuestionPosts(props) {
     const [activeDropdownId, setActiveDropdownId] = useState(null);
     const [questions, setQuestions] = useState(props.questions);
     const [inputValue, setInputValue] = useState('');
+
+    useEffect(() => {
+      setQuestions(props.questions);
+    }, [props.questions]);
 
     const questionData = props.questions.slice(startIndex, startIndex + 5).map(question => {
       const postUsername = `${question.asked_by}`;
@@ -211,7 +215,6 @@ export default function QuestionPosts(props) {
                       <span className="comment-post-text">{comment.text}</span>
                       <div className="comment-info">
                         <span className="comment-post-username">commented by {comment.comm_by}</span>
-                        {/* <span className="comment-post-time-message">{commAnswerPostTimeMessage}</span> */}
                       </div>
                     </div>
                   );

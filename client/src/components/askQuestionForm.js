@@ -3,11 +3,14 @@ import '../stylesheets/App.css';
 import { useState } from 'react';
 import axios from 'axios';
 import PropTypes from 'prop-types';
+import questions from '../../../server/models/questions';
 
 export default function AskQuestionForm(props) {
     const [formTitleError, setFormTitleError] = useState(false);
+    const [summaryError, setSummaryError] = useState(false);
     const [tagLengthError, setTagLengthError] = useState(false);
     const [tagCountError, setTagCountError] = useState(false);
+    const [reputationError, setReputationError] = useState(false);
 
   async function handleSubmit(e) {
     e.preventDefault();
@@ -19,11 +22,36 @@ export default function AskQuestionForm(props) {
     setFormTitleError(false);
     setTagLengthError(false);
     setTagCountError(false);
+    setSummaryError(false);
+    setReputationError(false);
     let valid = true;
 
-    if (questionTitle.length > 100){
+    let loggedInUser;
+    try {
+      const response = await axios.get('http://localhost:8000/api/getLoggedInUser', {
+        withCredentials: true,
+        headers: {'Content-Type': 'application/json',},
+        });
+        loggedInUser = response.data;
+} catch (error) {
+  if (error.response) {
+    console.error('System error');
+  } else if (error.request) {
+    console.error('Communication error');
+  } else {
+    console.error('System error');
+  }
+  return;
+}
+
+    if (questionTitle.length > 50){
         setFormTitleError(true);
         valid = false;
+    }
+
+    if (questionSummary.length > 140){
+      setSummaryError(true);
+      valid = false;
     }
     
     if (questionTags.length > 5){
@@ -36,6 +64,11 @@ export default function AskQuestionForm(props) {
             setTagLengthError(true);
             valid = false;
             break;
+        }
+        if (loggedInUser.reputation < 50 && props.tags.includes(tag._id)) {
+          setReputationError(true);
+          valid = false;
+          break;
         }
     }
 
@@ -68,15 +101,11 @@ export default function AskQuestionForm(props) {
                 alert('Communication error: Unable to connect to the server. Please try again later.');
               } 
               else {
-                alert('System error: Registration failed');
+                alert('System error');
               }
             }
           }
         } 
-        const loggedInUser = (await axios.get('http://localhost:8000/api/getLoggedInUser', {withCredentials: true,
-        headers: {
-          'Content-Type': 'application/json',
-        }})).data;
         let newQuestion = {
           title: questionTitle,
           summary: questionSummary,
@@ -124,9 +153,11 @@ export default function AskQuestionForm(props) {
         <span className="mandatory-fields-message">* indicates mandatory fields</span>
       </div>
       <div className="ask-question-form-error-message">
-        {formTitleError && <div className="error-message">Question title cannot be more than 140 characters in length</div>}
+        {formTitleError && <div className="error-message">Question title cannot be more than 50 characters in length</div>}
         {tagCountError && <div className="error-message">Number of tags cannot be more than 5</div>}
         {tagLengthError && <div className="error-message">Length of each tag cannot be more than 20 characters in length</div>}
+        {summaryError && <div className="error-message">Summary cannot be more than 140 characters in length</div>}
+        {reputationError && <div className="error-message">At least 50 reputation points required to create new tag name</div>}
       </div>
     </form>
   );
