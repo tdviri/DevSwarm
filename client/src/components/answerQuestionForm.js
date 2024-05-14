@@ -31,6 +31,8 @@ export default function AnswerQuestionForm(props) {
       return b.ans_date_time - a.ans_date_time;
     })
     props.handleAnswerPageIndex(props.answerPageIndex, questionsArr, false, false);
+    props.setDisplayAnswers(true);
+    props.setDisplayAnswerForm(false);
   }
 
 

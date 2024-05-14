@@ -306,20 +306,15 @@ function handleFormSubmit(answer, inputValue) {
       });
         setAnswers(updatedAnswers);
         props.fetchData();
-      } catch(error){
-        if (error.request) {
-          alert('Communication error: Unable to connect to the server. Please try again later.');
-        } 
-        else if (error.response && error.response.data.errorMessage === 'Comment length cannot exceed 140 characters'){
-          alert(error.response.data.errorMessage);
+      } catch (error) {
+        if (error.response) {
+            alert(error.response.data.errorMessage || 'System error');
+        } else if (error.request) {
+            alert('Communication error: Unable to connect to the server. Please try again later.');
+        } else {
+            alert('System error');
         }
-        else if (error.response && error.response.data.errorMessage === 'Minimum 50 reputation points are required to post a comment'){
-          alert(error.response.data.errorMessage);
-        }
-        else {
-          alert('System error: Failed to post comment');
-        }
-      }
+    }
     }
 
     function replaceWithEditedAnswer(newAnswer) {
