@@ -121,7 +121,7 @@ export default function QuestionPosts(props) {
       try {
         const data = new URLSearchParams();
         data.append('comment', comment._id);
-        await axios.put('http://localhost:8000/api/addvotedcomment', data, {withCredentials: true, //change this
+        await axios.put('http://localhost:8000/api/addvotedcomment', data, {withCredentials: true, 
         headers: {
           'Content-Type': 'application/x-www-form-urlencoded',
         }});
@@ -153,21 +153,38 @@ export default function QuestionPosts(props) {
     .sort((a, b) => new Date(b.comm_date_time) - new Date(a.comm_date_time));
   }
 
-   async function postComment(question, commentText){ 
-        const resp = await axios.post('http://localhost:8000/api/addcomment', {commentText: commentText}, {withCredentials: true, headers: {
-          'Content-Type': 'application/json',
-        }});
+  async function postComment(question, commentText) {
+    try {
+        const resp = await axios.post('http://localhost:8000/api/addcomment', { commentText: commentText }, {
+            withCredentials: true,
+            headers: {
+                'Content-Type': 'application/json',
+            }
+        });
         const comment = resp.data;
-        await axios.put('http://localhost:8000/api/updatequestioncomments', {questionId: question._id, commentId: comment._id}, {withCredentials: true});
-        const updatedQuestions = questions.map(q => {
-          if (q._id === question._id) {
-              return {...q, comments: [...q.comments, comment._id]}; 
-          }
-          return q;
-      });
-      setQuestions(updatedQuestions);
-      props.fetchData();
+        await axios.put('http://localhost:8000/api/updatequestioncomments', { questionId: question._id, commentId: comment._id }, {
+            withCredentials: true
+        });
+
+      const updatedQuestions = questions.map(q => {
+            if (q._id === question._id) {
+                return { ...q, comments: [...q.comments, comment._id] };
+            }
+            return q;
+        });
+        setQuestions(updatedQuestions);
+        props.fetchData();
+      } 
+      catch (error) {
+        if (error.response) {
+            alert(error.response.data.errorMessage || 'System error');
+        } else if (error.request) {
+            alert('Communication error: Unable to connect to the server. Please try again later.');
+        } else {
+            alert('System error');
+        }
     }
+}
 
   return (
       <div className="posts-container">

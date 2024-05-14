@@ -304,14 +304,20 @@ function handleFormSubmit(answer, inputValue) {
           }
           return answer;
       });
-      setAnswers(updatedAnswers);
+        setAnswers(updatedAnswers);
         props.fetchData();
       } catch(error){
         if (error.request) {
           alert('Communication error: Unable to connect to the server. Please try again later.');
         } 
+        else if (error.response && error.response.data.errorMessage === 'Comment length cannot exceed 140 characters'){
+          alert(error.response.data.errorMessage);
+        }
+        else if (error.response && error.response.data.errorMessage === 'Minimum 50 reputation points are required to post a comment'){
+          alert(error.response.data.errorMessage);
+        }
         else {
-          alert('System error: Login failed');
+          alert('System error: Failed to post comment');
         }
       }
     }
