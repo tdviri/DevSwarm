@@ -31,22 +31,31 @@ export default function UserProfile(props) {
     }, []);
 
     async function fetchUserData(){
-        let resp = await axios.get('http://localhost:8000/api/getuserquestions',  {withCredentials: true});
-        setUserQuestions(resp.data);
-        resp = await axios.get('http://localhost:8000/api/getusertags',  {withCredentials: true}); 
-        setUserTags(resp.data);
-        resp = await axios.get('http://localhost:8000/api/getuseransweredquestions',  { withCredentials: true });
-        setUserAnsweredQuestions(resp.data);
-        if (props.currentLoggedInUser){
-            resp = await axios.get('http://localhost:8000/api/retrieveusers', {withCredentials: true});
-            setAllUsers(resp.data);
-        }
+        try {
+    let resp = await axios.get('http://localhost:8000/api/getuserquestions', {withCredentials: true});
+    setUserQuestions(resp.data);
 
-        const loggedInUserResponse = await axios.get('http://localhost:8000/api/getLoggedInUser', {withCredentials: true});
-        const loggedInUser = loggedInUserResponse.data;
-        const userRegistrationDate = loggedInUser.createdAt;
-        setUserReputation(loggedInUser.reputation);
-        setUserAccountDuration(moment().diff(userRegistrationDate, 'days'));
+    resp = await axios.get('http://localhost:8000/api/getusertags', {withCredentials: true});
+    setUserTags(resp.data);
+
+    resp = await axios.get('http://localhost:8000/api/getuseransweredquestions', {withCredentials: true});
+    setUserAnsweredQuestions(resp.data);
+
+    if (props.currentLoggedInUser) {
+      resp = await axios.get('http://localhost:8000/api/retrieveusers', {withCredentials: true});
+      setAllUsers(resp.data);
+    }
+
+    const loggedInUserResponse = await axios.get('http://localhost:8000/api/getLoggedInUser', {withCredentials: true});
+    const loggedInUser = loggedInUserResponse.data;
+    const userRegistrationDate = loggedInUser.createdAt;
+
+    setUserReputation(loggedInUser.reputation);
+    setUserAccountDuration(moment().diff(userRegistrationDate, 'days'));
+
+  } catch (error) {
+    alert('Failed to fetch user data. Please try again.');  
+  }
     }
 
     function viewUserTagsPage(){
@@ -93,7 +102,7 @@ export default function UserProfile(props) {
             {userQuestions && userQuestions.length === 0 && <div className="user-profile-no-questions-asked">Currently no questions asked</div>}
             <div className="user-profile-asked-questions-list">{userQuestions && userQuestions.map(userQuestion =>{return <div className="user-profile-asked-question" onClick={()=>viewNewQuestionForm(userQuestion)}>{userQuestion?.title}</div>})}</div>
             <h3 className="user-profile-view-more-header">View More</h3>
-            <div className="user-profile-view-tags" onClick={()=>viewUserTagsPage()}>View Your Tags</div>
+            <div className="user-profile-view-tags" onClick={()=>{fetchUserData();viewUserTagsPage()}}>View Your Tags</div>
             <div className="user-profile-answered-questions" onClick={()=>viewUserAnsweredQuestionsPage()}>View Your Answered Questions</div>
             {props.currentLoggedInUser && props.isAdmin && <h3 className="admin-profile-all-users-header">All Users</h3>} 
             {props.currentLoggedInUser && props.isAdmin && allUsers?.length > 1 && <div className="admin-profile-list-of-users">
