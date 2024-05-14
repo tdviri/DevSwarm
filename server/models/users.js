@@ -15,6 +15,7 @@ var UserSchema = new Schema({
     askedQuestions: [{type: Schema.Types.ObjectId}],
     answersAdded: [{type: Schema.Types.ObjectId}],
     tagsCreated: [{type: Schema.Types.ObjectId}],
+    commentsAdded: [{type: Schema.Types.ObjectId}],
     isAdmin: {type: Boolean, default: false}
 }, { timestamps: true });
 

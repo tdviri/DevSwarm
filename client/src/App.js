@@ -224,7 +224,7 @@ function App() {
   }
 
   async function switchUser(user){
-    const resp = await axios.get(`http://localhost:8000/api/switchuser/${user._id}`, {withCredentials: true});
+    const resp = await axios.get('http://localhost:8000/api/switchuser/${user._id}', {withCredentials: true});
     fetchData();
     setIsAdmin(resp.data.isAdmin);
   }

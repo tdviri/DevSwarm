@@ -12,6 +12,8 @@ const CommentController = {
         const user = await User.findById(req.userId);
         let newData = {text: commText, comm_by: user.username};
         const insertedComment = await Comment.create(newData);
+        user.commentsAdded.push(insertedComment);
+        user.save();
         res.send(insertedComment); 
     }
 };

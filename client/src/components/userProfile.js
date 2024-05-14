@@ -75,7 +75,7 @@ export default function UserProfile(props) {
     }
 
     async function deleteUser(user, index){
-        await axios.delete(`http://localhost:8000/api/deleteuser/${user._id}`, {withCredentials: true});
+        await axios.delete('http://localhost:8000/api/deleteuser',  {data: { user: user}, withCredentials: true});
         allUsers.splice(index, 1);
         fetchUserData();
         props.fetchData();

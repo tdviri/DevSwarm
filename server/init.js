@@ -38,7 +38,7 @@ function tagCreate(name) {
   return tag.save();
 }
 
-async function userCreate(firstName, lastName, email, username, password, reputation, votedQuestions, votedAnswers, votedComments, askedQuestions, answersAdded, tagsCreated, isAdmin){
+async function userCreate(firstName, lastName, email, username, password, reputation, votedQuestions, votedAnswers, votedComments, askedQuestions, answersAdded, tagsCreated, commentsAdded, questionsAsked, isAdmin){
   const salt = await bcrypt.genSalt(saltRounds);
   const passwordHash = await bcrypt.hash(password, salt);
   
@@ -55,6 +55,7 @@ async function userCreate(firstName, lastName, email, username, password, reputa
     askedQuestions: askedQuestions,
     answersAdded: answersAdded,
     tagsCreated: tagsCreated,
+    commentsAdded: commentsAdded,
     isAdmin: isAdmin
   }
 
@@ -124,8 +125,8 @@ const populate = async () => {
   let q1 = await questionCreate('Programmatically navigate using React router', 'need to understand how React router works', 'the alert shows the proper index for the li clicked, and when I alert the variable within the last function I\'m calling, moveToNextImage(stepClicked), the same value shows but the animation isn\'t happening. This works many other ways, but I\'m trying to pass the index value of the list item clicked to use for the math to calculate.', [t1, t2], [a1, a2], [], 'mbern', Date.now(), 32, 0); 
   let q2 = await questionCreate('android studio save string shared preference', 'having difficulty working with android studio', 'I am using bottom navigation view but am using custom navigation, so my fragments are not recreated every time i switch to a different view. I just hide/show my fragments depending on the icon selected. The problem i am facing is that whenever a config change happens (dark/light theme), my app crashes. I have 2 fragments in this activity and the below code is what i am using to refrain them from being recreated.', [t3, t4, t2], [a3, a4, a5], [], 'mgerj', Date.now(), 121, 0);
   
-  let u1 = await userCreate("Mark", "Bern", "mbern@gmail.com", "mbern", "den43", 50, [], [], [], [q1], [a3, a4, a5], [t1, t2], false);
-  let u2 = await userCreate("Mikayla", "Gerj", "mikaylagerj@stonybrook.edu", "mgerj", "mypassword123", 50, [], [], [], [q2], [a2], [t2, t3, t4], false)
+  let u1 = await userCreate("Mark", "Bern", "mbern@gmail.com", "mbern", "den43", 50, [], [], [], [q1], [a3, a4, a5], [t1, t2], [c1, c3], false);
+  let u2 = await userCreate("Mikayla", "Gerj", "mikaylagerj@stonybrook.edu", "mgerj", "mypassword123", 50, [], [], [], [q2], [a2], [t2, t3, t4], [c2], false);
   let u3 = await userCreate("Jack", "Don", "jackdon@gmail.com", "jackd14", "myPwsrd", 50, [], [], [], [], [a1], [], false)
   let adminUser = await userCreate("administrator", "1", adminEmail, "admin", adminPassword, 50, [], [], [], [], [], [], true);
   if(db) db.close();

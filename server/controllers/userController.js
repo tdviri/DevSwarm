@@ -229,7 +229,11 @@ async switchUser (req, res) {
 },
 
 async deleteUser (req, res){
-  await User.deleteOne({ _id: req.params.userId });
+  const user = await User.findById(req.userId);
+  await Comment.deleteMany({ _id: { $in: user.commentsAdded } });
+  await Answer.deleteMany({ _id: { $in: user.answersAdded } });
+  await Question.deleteMany({ _id: { $in: user.questionsAsked } });
+  await user.remove();
   res.send();
 }
 };
