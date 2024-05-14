@@ -253,7 +253,7 @@ function App() {
           <Navbar setShowUserProfile={setShowUserProfile} goToWelcomePage={goToWelcomePage} isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} setIsGuest={setIsGuest} setSortField={setSortField} setCurrentTag={setCurrentTag} setSearch={setSearch} />
           <div id="main" className="main">
             <Sidebar setViewingUserAnswers={setViewingUserAnswers}  fetchData={fetchData} setClickedOnProfileSidebar={setClickedOnProfileSidebar} toggleDisplayTagsPage={toggleDisplayTagsPage} isLoggedIn={isLoggedIn} setShowUserProfile={setShowUserProfile} />
-            <UserProfile isAdmin={isAdmin} switchUser={switchUser} currentLoggedInUser={currentLoggedInUser} clickedOnProfileSidebar={clickedOnProfileSidebar} setClickedOnProfileSidebar={setClickedOnProfileSidebar} handleAnswerPage={handleAnswerPage} setDisplayUserAnswers={setDisplayUserAnswers} fetchData={fetchData} questions={getSorted()} setDisplayTagsPage={setDisplayTagsPage} showUserProfile={showUserProfile} setShowUserProfile={setShowUserProfile} setSearch={setSearch} setCurrentTag={setCurrentTag} tags={tags}/>
+            <UserProfile setCurrentLoggedInUser={setCurrentLoggedInUser} isAdmin={isAdmin} switchUser={switchUser} currentLoggedInUser={currentLoggedInUser} clickedOnProfileSidebar={clickedOnProfileSidebar} setClickedOnProfileSidebar={setClickedOnProfileSidebar} handleAnswerPage={handleAnswerPage} setDisplayUserAnswers={setDisplayUserAnswers} fetchData={fetchData} questions={getSorted()} setDisplayTagsPage={setDisplayTagsPage} showUserProfile={showUserProfile} setShowUserProfile={setShowUserProfile} setSearch={setSearch} setCurrentTag={setCurrentTag} tags={tags}/>
           </div>
       </div>}
 </div>
