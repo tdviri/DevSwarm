@@ -232,6 +232,15 @@ async deleteUser (req, res){
   const user = await User.findById(req.userId);
   await Comment.deleteMany({ _id: { $in: user.commentsAdded } });
   await Answer.deleteMany({ _id: { $in: user.answersAdded } });
+  for (let tagId of user.tagsCreated) {
+    const isTagUsedByOthers = await User.count({
+        _id: { $ne: user._id }, 
+        tagsCreated: tagId
+    });
+    if (isTagUsedByOthers === 0) {
+        await Tag.findByIdAndDelete(tagId);
+    }
+  }
   await Question.deleteMany({ _id: { $in: user.questionsAsked } });
   await user.remove();
   res.send();
