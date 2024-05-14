@@ -562,6 +562,7 @@
  }
 
  .log-out-btn {
+    cursor: pointer;
     background-color: rgb(68, 68, 210);
     color: white;
     margin-left: 6%;
@@ -621,4 +622,96 @@
     left: 50%;
     transform: translate(-50%, -50%);
  }
+
+ .welcome-page-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 8%;
+ }
+
+ .welcome-page-form-header {
+    font-size: 55px;
+ }
+
+ .welcome-page-register-option, .welcome-page-login-option, .welcome-page-guest-option {
+    cursor: pointer;
+    padding-bottom: 2%;
+    font-size: 40px;
+ }
+
+ .welcome-page-register-option:hover, .welcome-page-login-option:hover, .welcome-page-guest-option:hover {
+    cursor: pointer;
+    text-shadow: 0 0 10px rgba(0, 0, 255, 0.7); 
+    color: rgb(58, 58, 181);
+ }
+
+ .register-page-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+ }
+
+ .register-form-header {
+    font-size: 60px;
+ }
+
+ .register-form-first-name-input-container {
+    margin-bottom: 1%;
+ }
+
+ .register-form-first-name-input-container, .register-form-last-name-input-container,
+ .register-form-email-input-container, .register-form-username-input-container, .register-form-password-input-container,
+ .register-form-verify-password-input-container {
+    display: flex;
+    flex-direction: column;
+ }
+
+ .register-form-input-header {
+    color: rgb(54, 54, 171);
+    font-size: 20px;
+ }
+
+ .signup-btn {
+    font-size: 20px;
+    cursor: pointer;
+    background-color: rgb(30, 30, 196);
+    color: white;
+ }
+
+ .login-page-form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: 8%;
+ }
+
+ .login-form-header {
+    font-size: 60px;
+ }
+
+ .login-form-email-input-container, .login-form-password-input-container {
+    display: flex;
+    flex-direction: column;
+ }
+
+ .login-form-input-header {
+    font-size: 25px;
+ }
+
+ .login-form-input {
+    width: 20vw;
+    height: 2vh;
+ }
+
+ .login-submit-btn {
+    font-size: 20px;
+    cursor: pointer;
+    background-color: rgb(30, 30, 196);
+    color: white
+ }
+
+
+
+
 
