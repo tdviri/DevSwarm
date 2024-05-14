@@ -3,7 +3,6 @@ import '../stylesheets/App.css';
 import { useState } from 'react';
 import axios from 'axios';
 import PropTypes from 'prop-types';
-import questions from '../../../server/models/questions';
 
 export default function AskQuestionForm(props) {
     const [formTitleError, setFormTitleError] = useState(false);
@@ -58,14 +57,15 @@ export default function AskQuestionForm(props) {
         setTagCountError(true);
         valid = false;
     }
-    
+
+    const tagNames = props.tags.map(tag => tag.name);
     for (const tag of questionTags){
         if (tag.length > 20){
             setTagLengthError(true);
             valid = false;
             break;
         }
-        if (loggedInUser.reputation < 50 && props.tags.includes(tag._id)) {
+        if (loggedInUser.reputation < 50 && !tagNames.includes(tag)) {
           setReputationError(true);
           valid = false;
           break;
@@ -103,6 +103,7 @@ export default function AskQuestionForm(props) {
               else {
                 alert('System error');
               }
+              return;
             }
           }
         } 
