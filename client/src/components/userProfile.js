@@ -17,10 +17,11 @@ export default function UserProfile(props) {
     const [showUserTagsPage, setShowUserTagsPage] = useState(false);
     const [showUserAnsweredQuestionsPage, setShowUserAnsweredQuestionsPage] = useState(false);
     const [showNewQuestionForm, setShowNewQuestionForm] = useState(false);
+    const [displayUserDeletionWarning, setDisplayUserDeletionWarning] = useState(false);
+    const [userToWarn, setUserToWarn] = useState(null);
     const [allUsers, setAllUsers] = useState([]);
 
     useEffect(() => {
-        console.log("isAdmin: ", props.currentLoggedInUser.isAdmin)
         fetchUserData();
         if (props.clickedOnProfileSidebar){
             setShowNewQuestionForm(false);
@@ -76,6 +77,8 @@ export default function UserProfile(props) {
     async function deleteUser(user, index){
         await axios.delete(`http://localhost:8000/api/deleteuser/${user._id}`, {withCredentials: true});
         allUsers.splice(index, 1);
+        fetchUserData();
+        props.fetchData();
     }
 
   return (
@@ -93,8 +96,20 @@ export default function UserProfile(props) {
             <h3>View More</h3>
             <div onClick={()=>viewUserTagsPage()}>View Your Tags</div>
             <div onClick={()=>viewUserAnsweredQuestionsPage()}>View Your Answered Questions</div>
-            {props.currentLoggedInUser && props.currentLoggedInUser.isAdmin && <h3>All Users</h3>}
-            {props.currentLoggedInUser && props.currentLoggedInUser.isAdmin && <div className="admin-profile-list-of-users">{allUsers?.map((user, index) => <div className="admin-profile-user-container"><div onClick={()=>{props.switchUser(user); fetchUserData()}}>Username: {user.username}, User ID: {user._id}</div><button onClick={()=>deleteUser(user, index)}>Delete User</button></div>)}</div>}
+            {props.currentLoggedInUser && props.isAdmin && <h3>All Users</h3>} 
+            {props.currentLoggedInUser && props.isAdmin && allUsers?.length > 1 && <div className="admin-profile-list-of-users">
+                {allUsers?.map((user, index) => 
+                <div className="admin-profile-user-container">
+                    <div onClick={()=>{props.switchUser(user); fetchUserData()}}>Username: {user.username}, Email: {user.email}</div>
+                    {user.email !== 'admin@gmail.com' && <button onClick={()=>{setDisplayUserDeletionWarning(true); setUserToWarn(user)}}>Delete User</button>}
+                    {userToWarn === user && displayUserDeletionWarning && <div className="user-deletion-confirmation-container">
+                        <span>Are you sure you want to remove the user?</span>
+                        <button onClick={()=>{deleteUser(user, index); setDisplayUserDeletionWarning(false); setUserToWarn(null)}}>Yes</button>
+                        <button onClick={()=>{setDisplayUserDeletionWarning(false); setUserToWarn(null)}}>No</button>
+                    </div>}
+                </div>)}
+            </div>}
+            {props.currentLoggedInUser && props.isAdmin && allUsers?.length === 1 && <div>No other user accounts created</div>}
         </div>}
         {!props.clickedOnProfileSidebar && showNewQuestionForm && <NewQuestion setUserQuestions={setUserQuestions} userQuestions={userQuestions} setClickedOnProfileSidebar={props.setClickedOnProfileSidebar} tags={props.tags} fetchData={props.fetchData} userQuestion={questionToModify} userTags={userTags}/>}
     </div>

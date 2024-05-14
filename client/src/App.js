@@ -11,7 +11,6 @@ import Login from './components/login.js';
 import UserProfile from './components/userProfile.js';
 import { useState, useEffect } from 'react';
 import axios from 'axios';
-// axios.defaults.withCredentials = true;
 
 function getMostRecentAnswerTime(question, answers) {
     let mostRecentAnswerTime = 0;
@@ -50,6 +49,7 @@ function App() {
   const [clickedOnProfileSidebar, setClickedOnProfileSidebar] = useState(false);
   const [viewingUserAnswers, setViewingUserAnswers] = useState(false);
   const [currentLoggedInUser, setCurrentLoggedInUser] = useState(null);
+  const [isAdmin, setIsAdmin] = useState(false);
   let response;
 
   useEffect(()=> {
@@ -67,7 +67,11 @@ function App() {
       setComments(response.data);
       if (isLoggedIn){
         response = await axios.get('http://localhost:8000/api/getLoggedInUser', {withCredentials: true});
+        if (response.data.email === 'admin@gmail.com'){
+          setIsAdmin(true);
+        }
         setCurrentLoggedInUser(response.data);
+        console.log(response.data.isAdmin)
       }
  }
 
@@ -131,6 +135,7 @@ function App() {
     headers: {
       'Content-Type': 'application/json',
     }});
+    fetchData();
   }
 
   function toggleUnansweredBtnClicked(){
@@ -219,9 +224,11 @@ function App() {
   }
 
   async function switchUser(user){
-    await axios.get(`http://localhost:8000/api/switchuser/${user._id}`, {withCredentials: true});
+    const resp = await axios.get(`http://localhost:8000/api/switchuser/${user._id}`, {withCredentials: true});
     fetchData();
+    setIsAdmin(resp.data.isAdmin);
   }
+
 
   return (
   <div className="body">
@@ -245,7 +252,7 @@ function App() {
           <Navbar setShowUserProfile={setShowUserProfile} goToWelcomePage={goToWelcomePage} isLoggedIn={isLoggedIn} setIsLoggedIn={setIsLoggedIn} setIsGuest={setIsGuest} setSortField={setSortField} setCurrentTag={setCurrentTag} setSearch={setSearch} />
           <div id="main" className="main">
             <Sidebar setViewingUserAnswers={setViewingUserAnswers}  fetchData={fetchData} setClickedOnProfileSidebar={setClickedOnProfileSidebar} toggleDisplayTagsPage={toggleDisplayTagsPage} isLoggedIn={isLoggedIn} setShowUserProfile={setShowUserProfile} />
-            <UserProfile switchUser={switchUser} currentLoggedInUser={currentLoggedInUser} clickedOnProfileSidebar={clickedOnProfileSidebar} setClickedOnProfileSidebar={setClickedOnProfileSidebar} handleAnswerPage={handleAnswerPage} setDisplayUserAnswers={setDisplayUserAnswers} fetchData={fetchData} questions={getSorted()} setDisplayTagsPage={setDisplayTagsPage} showUserProfile={showUserProfile} setShowUserProfile={setShowUserProfile} setSearch={setSearch} setCurrentTag={setCurrentTag} tags={tags}/>
+            <UserProfile isAdmin={isAdmin} switchUser={switchUser} currentLoggedInUser={currentLoggedInUser} clickedOnProfileSidebar={clickedOnProfileSidebar} setClickedOnProfileSidebar={setClickedOnProfileSidebar} handleAnswerPage={handleAnswerPage} setDisplayUserAnswers={setDisplayUserAnswers} fetchData={fetchData} questions={getSorted()} setDisplayTagsPage={setDisplayTagsPage} showUserProfile={showUserProfile} setShowUserProfile={setShowUserProfile} setSearch={setSearch} setCurrentTag={setCurrentTag} tags={tags}/>
           </div>
       </div>}
 </div>
