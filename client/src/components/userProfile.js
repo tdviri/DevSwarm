@@ -100,7 +100,7 @@ export default function UserProfile(props) {
             {props.currentLoggedInUser && props.isAdmin && allUsers?.length > 1 && <div className="admin-profile-list-of-users">
                 {allUsers?.map((user, index) => 
                 <div className="admin-profile-user-container">
-                    <div className="admin-profile-user-info" onClick={()=>{props.switchUser(user); fetchUserData()}}>Username: {user.username}, Email: {user.email}</div>
+                    <div className="admin-profile-user-info" onClick={()=>{props.switchUser(user); fetchUserData()}}>Username: {user.username}, Email: {user.email}</div><span className="admin-profile-user-info-seperator">.......</span>
                     {user.email !== 'admin@gmail.com' && <button className="admin-profile-delete-user-btn" onClick={()=>{setDisplayUserDeletionWarning(true); setUserToWarn(user)}}>Delete User</button>}
                     {userToWarn === user && displayUserDeletionWarning && <div className="user-deletion-confirmation-container">
                         <span>Are you sure you want to remove the user?</span>

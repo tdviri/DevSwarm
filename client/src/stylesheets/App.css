@@ -576,8 +576,12 @@
  }
 
  .admin-profile-user-info {
-    margin-right: 3%;
+    margin-right: 0.5%;
     margin-bottom: 1%;
+ }
+
+ .admin-profile-user-info-seperator {
+    margin-right: 0.5%;
  }
 
  .admin-profile-delete-user-btn {
