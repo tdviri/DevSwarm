@@ -10,13 +10,6 @@ const QuestionController = {
     res.send(questions);
   },
 
-  async updateQuestions(req, res) {
-    const newData = req.body;
-    await Question.deleteMany({}); 
-    await Question.insertMany(newData); 
-    res.send();
-  },
-
   async addQuestion(req, res) {
     const newData = req.body;
     console.log(newData)

@@ -30,7 +30,7 @@ export default function AnswerQuestionForm(props) {
     ansArr.sort(function(a, b){
       return b.ans_date_time - a.ans_date_time;
     })
-    props.handleAnswerPageIndex(props.answerPageIndex, questionsArr, false, false);
+    props.handleAnswerPageIndex(props.answerPageIndex, questionsArr, false);
   }
 
 
