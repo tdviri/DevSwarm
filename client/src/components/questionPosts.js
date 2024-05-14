@@ -192,13 +192,12 @@ export default function QuestionPosts(props) {
               <span className="post-username">{question.postUsername}</span>
               <span className="post-time">{question.postTime}</span>
             </div>
-            {console.log(props.isLoggedIn)}{props.isLoggedIn && <div className="question-comment-form"><QuestionCommentForm question={question} handleFormSubmit={handleFormSubmit}/></div>}
-            {props.isLoggedIn && question.comments.length > 0 && (
+            {props.isLoggedIn && <div className="question-comment-form"><QuestionCommentForm question={question} handleFormSubmit={handleFormSubmit}/></div>}
+            {question.comments.length > 0 && (
               <div className="comments-dropdown">
                 <div className="comments-dropdown-header" onClick={() => toggleDropdown(question._id)}>
                   Show Comments
                 </div>
-              {console.log(getSortedComments(question.comments))}
               {activeDropdownId === question._id && getSortedComments(question.comments).slice(commentStartIndex, commentStartIndex + 3).map((comment, commentIndex) => {
                 if (comment) {
                   return (
