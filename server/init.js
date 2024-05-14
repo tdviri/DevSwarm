@@ -38,7 +38,7 @@ function tagCreate(name) {
   return tag.save();
 }
 
-async function userCreate(firstName, lastName, email, username, password, reputation, votedQuestions, votedAnswers, votedComments, askedQuestions, answersAdded, tagsCreated, commentsAdded, questionsAsked, isAdmin){
+async function userCreate(firstName, lastName, email, username, password, reputation, votedQuestions, votedAnswers, votedComments, askedQuestions, answersAdded, tagsCreated, commentsAdded, isAdmin){
   const salt = await bcrypt.genSalt(saltRounds);
   const passwordHash = await bcrypt.hash(password, salt);
   
@@ -127,8 +127,8 @@ const populate = async () => {
   
   let u1 = await userCreate("Mark", "Bern", "mbern@gmail.com", "mbern", "den43", 50, [], [], [], [q1], [a3, a4, a5], [t1, t2], [c1, c3], false);
   let u2 = await userCreate("Mikayla", "Gerj", "mikaylagerj@stonybrook.edu", "mgerj", "mypassword123", 50, [], [], [], [q2], [a2], [t2, t3, t4], [c2], false);
-  let u3 = await userCreate("Jack", "Don", "jackdon@gmail.com", "jackd14", "myPwsrd", 50, [], [], [], [], [a1], [], false)
-  let adminUser = await userCreate("administrator", "1", adminEmail, "admin", adminPassword, 50, [], [], [], [], [], [], true);
+  let u3 = await userCreate("Jack", "Don", "jackdon@gmail.com", "jackd14", "myPwsrd", 50, [], [], [], [], [a1], [], [], false)
+  let adminUser = await userCreate("administrator", "1", adminEmail, "admin", adminPassword, 50, [], [], [], [], [], [], [], true);
   if(db) db.close();
   console.log('done');
 }

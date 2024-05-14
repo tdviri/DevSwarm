@@ -26,7 +26,9 @@ export default function Answers(props) {
       }
 
       useEffect(()=>{
-        getLoggedInUser();
+        if (!props.isGuest || props.isLoggedIn){
+          getLoggedInUser();
+        }
       }, [])
 
     useEffect(()=>{
@@ -89,10 +91,10 @@ export default function Answers(props) {
     return new Date(b.ans_date_time) - new Date(a.ans_date_time);
   })
 
-  if (!loggedInUser) {
+  if (!loggedInUser && !props.isGuest) {
     return;
   }
-
+  
   if (props.viewingUserAnswers){
     const userAnswers = sortedAnsArray.filter(ans => loggedInUser.answersAdded.includes(ans._id));
     const otherAnswers = sortedAnsArray.filter(ans => !loggedInUser.answersAdded.includes(ans._id));
@@ -154,7 +156,7 @@ export default function Answers(props) {
                   <button className="delete-answer-btn" onClick={() => deleteAnswer(ans)}>Delete</button>
                 </div>
               )}
-          {props.isLoggedIn && ans.comments.length > 0 && (
+          {ans.comments.length > 0 && (
             <div className="comments-dropdown">
               <div className="comments-dropdown-header" onClick={() => toggleDropdown(ans._id)}>
                 Show Comments

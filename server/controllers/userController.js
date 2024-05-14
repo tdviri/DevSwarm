@@ -229,11 +229,11 @@ async switchUser (req, res) {
 },
 
 async deleteUser (req, res){
-  const user = await User.findById(req.userId);
+  const user = await User.findById(req.body.user._id);
   await Comment.deleteMany({ _id: { $in: user.commentsAdded } });
   await Answer.deleteMany({ _id: { $in: user.answersAdded } });
   for (let tagId of user.tagsCreated) {
-    const isTagUsedByOthers = await User.count({
+    const isTagUsedByOthers = await User.countDocuments({
         _id: { $ne: user._id }, 
         tagsCreated: tagId
     });
@@ -241,8 +241,9 @@ async deleteUser (req, res){
         await Tag.findByIdAndDelete(tagId);
     }
   }
-  await Question.deleteMany({ _id: { $in: user.questionsAsked } });
-  await user.remove();
+  console.log("user questions to be deleted: ", user.askedQuestions)
+  await Question.deleteMany({ _id: { $in: user.askedQuestions } });
+  await User.findByIdAndDelete(user._id);
   res.send();
 }
 };
