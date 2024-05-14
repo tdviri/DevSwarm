@@ -31,8 +31,7 @@ const QuestionController = {
 
   async updateQuestions(req, res) {
     const newData = req.body;
-    await Question.deleteMany({}); 
-    await Question.insertMany(newData); 
+    await Question.findOneAndUpdate({ _id: newData._id }, newData);
     res.send();
   },
 
