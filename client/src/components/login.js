@@ -37,11 +37,11 @@ export default function Login(props) {
                 setAccountNotFound(true);
                 valid = false;
             }
-            else if (error.request) {
+            else if (valid && error.request) {
                 alert('Communication error: Unable to connect to the server. Please try again later.');
                 valid = false;
             } 
-            else {
+            else if (valid) {
                 alert('System error: Login failed');
                 valid = false;
             }

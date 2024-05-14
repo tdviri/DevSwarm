@@ -29,11 +29,10 @@ const UserController = {
     const isPasswordContainsEmail = (password.indexOf(emailID) !== -1);
     const isPasswordContainsUsername = (password.indexOf(newUser.username) !== -1);
     const isPasswordContainsName = (password.indexOf(newUser.firstName) !== -1 || password.indexOf(newUser.lastName) !== -1);
-    let user = User.findOne({ email: newUser.email });
-    if (!user){
+    let user = await User.findOne({ email: newUser.email });
+    if (user){
       return res.status(401).json({errorMessage: "Email is already registered."})
     }
-
     if (isInvalidEmail){
       return res.status(401).json({errorMessage: "Email is invalid."})
     }
@@ -43,9 +42,9 @@ const UserController = {
     if (isPasswordContainsEmail){
       return res.status(401).json({errorMessage: "Password cannot contain your email."})
     }
-    if (isPasswordContainsUsername){
-      return res.status(401).json({errorMessage: "Password cannot contain your username."})
-    }
+    // if (isPasswordContainsUsername){
+    //   return res.status(401).json({errorMessage: "Password cannot contain your username."})
+    // }
     if (isPasswordContainsName){
       return res.status(401).json({errorMessage: "Password cannot contain your name."})
     }

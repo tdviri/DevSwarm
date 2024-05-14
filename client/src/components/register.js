@@ -39,7 +39,7 @@ export default function Register(props) {
             reputation: 50
         }
         try {
-            await axios.post('http://localhost:8000/api/register', newUser,  {withCredentials: true,
+            await axios.post('http://localhost:8000/api/register', newUser, {withCredentials: true,
             headers: {
               'Content-Type': 'application/json',
             }});
@@ -69,11 +69,11 @@ export default function Register(props) {
                 setPasswordContainsName(true);
                 valid = false;
             }
-            else if (error.request) {
+            else if (valid === true && error.request) {
                 alert('Communication error: Unable to connect to the server. Please try again later.');
                 valid = false;
             } 
-            else {
+            else if (valid === true) {
                 alert('System error: Registration failed');
                 valid = false;
             }
