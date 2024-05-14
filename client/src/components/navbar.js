@@ -28,8 +28,8 @@ export default function Navbar(props) {
 
   return (
       <div id="header" className="header">
-        {props.isLoggedIn && <btn className="log-out-btn" onClick={logOut}>Log Out</btn>}
-        {!props.isLoggedIn && <btn className="back-to-welcome-btn" onClick={()=>props.goToWelcomePage()}>Go back</btn>}
+        {props.isLoggedIn && <button className="log-out-btn" onClick={logOut}>Log Out</button>}
+        {!props.isLoggedIn && <button className="back-to-welcome-btn" onClick={()=>props.goToWelcomePage()}>Go back</button>}
         <div className="title">
           Fake Stack Overflow
         </div>

@@ -142,8 +142,8 @@ export default function NewQuestion(props) {
       </div>
       <br /><br />
       <div className="submit-form">
-        <input id="submit-btn" className="submit-btn" value="Post Edited Question" onClick={(e)=>handleEditQuestion(new FormData(document.getElementById("ask-question-form")))} />
-        <input id="submit-btn" className="submit-btn" value="Delete Question" onClick={(e)=>handleDeleteQuestion(new FormData(document.getElementById("ask-question-form")))} />
+        <input id="submit-btn" className="submit-btn-post" value="Post Edited Question" onClick={(e)=>handleEditQuestion(new FormData(document.getElementById("ask-question-form")))} />
+        <input id="submit-btn" className="submit-btn-delete" value="Delete Question" onClick={(e)=>handleDeleteQuestion(new FormData(document.getElementById("ask-question-form")))} />
         <span className="mandatory-fields-message">* indicates mandatory fields</span>
       </div>
       <div className="ask-question-form-error-message">

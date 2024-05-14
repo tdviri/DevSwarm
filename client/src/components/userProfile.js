@@ -85,14 +85,14 @@ export default function UserProfile(props) {
     <div className="user-profile">
         {!props.clickedOnProfileSidebar && !showNewQuestionForm && showUserTagsPage && <UserTags fetchUserData={fetchUserData} fetchData={props.fetchData} questions={props.questions} setDisplayTagsPage={props.setDisplayTagsPage} setShowUserProfile={props.setShowUserProfile} setSearch={props.setSearch} setCurrentTag={props.setCurrentTag} userTags={userTags}/>}
         {!props.clickedOnProfileSidebar && !showNewQuestionForm && showUserAnsweredQuestionsPage && <UserAnsweredQuestions handleAnswerPage={props.handleAnswerPage} setDisplayUserAnswers={props.setDisplayUserAnswers} fetchUserData={fetchUserData} tags={props.tags} userAnsweredQuestions={userAnsweredQuestions}/>}
-        {props.clickedOnProfileSidebar && <div className="user-profile-containter">
+        {props.clickedOnProfileSidebar && <div className="user-profile-container">
             <h1 className="user-profile-main-header">Profile</h1>
             <h3 className="user-profile-account-details-header">Account Details</h3>
             <div className="user-profile-reputation">Reputation: {userReputation}</div>
             <div className="user-profile-account-duration">Account created {userAccountDuration} days ago</div>
             <h3 className="user-profile-questions-asked-header">Questions Asked</h3>
             {userQuestions && userQuestions.length === 0 && <div className="user-profile-no-questions-asked">Currently no questions asked</div>}
-            <div className="user-profile-asked-questions-list">{userQuestions && userQuestions.map(userQuestion =>{return <div onClick={()=>viewNewQuestionForm(userQuestion)}>{userQuestion?.title}</div>})}</div>
+            <div className="user-profile-asked-questions-list">{userQuestions && userQuestions.map(userQuestion =>{return <div className="user-profile-asked-question" onClick={()=>viewNewQuestionForm(userQuestion)}>{userQuestion?.title}</div>})}</div>
             <h3 className="user-profile-view-more-header">View More</h3>
             <div className="user-profile-view-tags" onClick={()=>viewUserTagsPage()}>View Your Tags</div>
             <div className="user-profile-answered-questions" onClick={()=>viewUserAnsweredQuestionsPage()}>View Your Answered Questions</div>
