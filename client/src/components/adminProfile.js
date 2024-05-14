@@ -32,7 +32,6 @@ export default function UserProfile(props) {
         setUserQuestions(resp.data);
         resp = await axios.get('http://localhost:8000/api/getusertags',  {withCredentials: true}); 
         setUserTags(resp.data);
-        console.log("fetching user tags in userProfile.js", resp.data)
         resp = await axios.get('http://localhost:8000/api/getuseransweredquestions',  { withCredentials: true });
         setUserAnsweredQuestions(resp.data);
 

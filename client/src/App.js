@@ -71,7 +71,6 @@ function App() {
           setIsAdmin(true);
         }
         setCurrentLoggedInUser(response.data);
-        console.log(response.data.isAdmin)
       }
  }
 
@@ -191,7 +190,6 @@ function App() {
         return mostRecentTime2 - mostRecentTime1;
       }
     })
-    console.log("sorted questions", sorted)
     return sorted;
   }
 

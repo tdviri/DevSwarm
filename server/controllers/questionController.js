@@ -12,7 +12,6 @@ const QuestionController = {
 
   async addQuestion(req, res) {
     const newData = req.body;
-    console.log(newData)
     const insertedQuestion = await Question.create(newData);
     const user = await User.findById(req.userId);
     user.askedQuestions.push(insertedQuestion);
@@ -31,7 +30,6 @@ const QuestionController = {
   },
 
 async deleteQuestion(req, res){
-  console.log("deleting question")   
   await Tag.deleteMany({ _id: { $in: req.body.tags } });
   await User.findOneAndUpdate(
       { votedQuestions: req.body._id },

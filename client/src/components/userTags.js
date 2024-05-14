@@ -120,7 +120,7 @@ export default function UserTags(props) {
                         <div id="num-of-tags-header">{tags && tags.length} Tags</div>
                     </div>
                     <div id="tags-container">
-                        {console.log("maptags", mapTags)}{mapTags && mapTags.map((tag) => (
+                        {mapTags && mapTags.map((tag) => (
                             <div key={tag._id} className="tag-container">
                                 <div className="tag-name" onClick={() => !editingTagId && showTaggedQuestions(tag._id)}>
                                     {editingTagId === tag._id ? (

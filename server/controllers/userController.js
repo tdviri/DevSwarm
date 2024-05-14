@@ -241,7 +241,6 @@ async deleteUser (req, res){
         await Tag.findByIdAndDelete(tagId);
     }
   }
-  console.log("user questions to be deleted: ", user.askedQuestions)
   await Question.deleteMany({ _id: { $in: user.askedQuestions } });
   await User.findByIdAndDelete(user._id);
   res.send();
