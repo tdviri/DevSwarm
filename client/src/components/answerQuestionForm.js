@@ -8,31 +8,44 @@ export default function AnswerQuestionForm(props) {
     e.preventDefault();
     const formValues = new FormData(e.target);
     const answerText = formValues.get('text');
-    const loggedInUser = await axios.get('http://localhost:8000/api/getLoggedInUser', {withCredentials: true,
-    headers: {
-      'Content-Type': 'application/json',
-    }});
-    let newAnswer = {
-      text: answerText,
-      ans_by: loggedInUser.data.username,
-      ans_date_time: new Date(),
-      comments: [],
-      votes: 0
+    try {
+      const loggedInUser = await axios.get('http://localhost:8000/api/getLoggedInUser', {
+        withCredentials: true,
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
+
+      let newAnswer = {
+        text: answerText,
+        ans_by: loggedInUser.data.username,
+        ans_date_time: new Date(),
+        comments: [],
+        votes: 0
+      };
+
+      const ansArr = [...props.answers];
+      ansArr.push(newAnswer);
+      
+      const resp = await axios.post('http://localhost:8000/api/updateanswers', newAnswer, {
+        withCredentials: true,
+        headers: {
+          'Content-Type': 'application/json',
+        }
+      });
+
+      const questionsArr = [...props.questions];
+      questionsArr[props.answerPageIndex].answers.push(resp.data._id);
+      
+      ansArr.sort((a, b) => b.ans_date_time - a.ans_date_time);
+
+      props.handleAnswerPageIndex(props.answerPageIndex, questionsArr, false, false);
+      props.setDisplayAnswers(true);
+      props.setDisplayAnswerForm(false);
+
+    } catch (error) {
+      alert("An error occurred while submitting your answer. Please try again.");  
     }
-    const ansArr = [...props.answers];
-    const questionsArr = [...props.questions];
-    ansArr.push(newAnswer);
-    const resp = await axios.post('http://localhost:8000/api/updateanswers', newAnswer, {withCredentials: true,
-    headers: {
-      'Content-Type': 'application/json',
-    }});
-    questionsArr[props.answerPageIndex].answers.push(resp.data._id);
-    ansArr.sort(function(a, b){
-      return b.ans_date_time - a.ans_date_time;
-    })
-    props.handleAnswerPageIndex(props.answerPageIndex, questionsArr, false, false);
-    props.setDisplayAnswers(true);
-    props.setDisplayAnswerForm(false);
   }
 
 

@@ -36,7 +36,6 @@ const QuestionController = {
   },
 
 async deleteQuestion(req, res){
-  // await Tag.deleteMany({ _id: { $in: req.body.tags } });
   for (let tagId of req.body.tags) {
     const isTagUsedByOtherQuestions = await Question.countDocuments({
         _id: { $ne: req.body._id }, 
