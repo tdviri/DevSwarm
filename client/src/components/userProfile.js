@@ -85,31 +85,31 @@ export default function UserProfile(props) {
     <div className="user-profile">
         {!props.clickedOnProfileSidebar && !showNewQuestionForm && showUserTagsPage && <UserTags fetchUserData={fetchUserData} fetchData={props.fetchData} questions={props.questions} setDisplayTagsPage={props.setDisplayTagsPage} setShowUserProfile={props.setShowUserProfile} setSearch={props.setSearch} setCurrentTag={props.setCurrentTag} userTags={userTags}/>}
         {!props.clickedOnProfileSidebar && !showNewQuestionForm && showUserAnsweredQuestionsPage && <UserAnsweredQuestions handleAnswerPage={props.handleAnswerPage} setDisplayUserAnswers={props.setDisplayUserAnswers} fetchUserData={fetchUserData} tags={props.tags} userAnsweredQuestions={userAnsweredQuestions}/>}
-        {props.clickedOnProfileSidebar && <div>
-            <h1>Profile</h1>
-            <h3>Account Details</h3>
-            <div>Reputation: {userReputation}</div>
-            <div>Account created {userAccountDuration} days ago</div>
-            <h3>Questions Asked</h3>
-            {userQuestions && userQuestions.length === 0 && <div>Currently no questions asked</div>}
-            <div>{userQuestions && userQuestions.map(userQuestion =>{return <div onClick={()=>viewNewQuestionForm(userQuestion)}>{userQuestion?.title}</div>})}</div>
-            <h3>View More</h3>
-            <div onClick={()=>viewUserTagsPage()}>View Your Tags</div>
-            <div onClick={()=>viewUserAnsweredQuestionsPage()}>View Your Answered Questions</div>
-            {props.currentLoggedInUser && props.isAdmin && <h3>All Users</h3>} 
+        {props.clickedOnProfileSidebar && <div className="user-profile-containter">
+            <h1 className="user-profile-main-header">Profile</h1>
+            <h3 className="user-profile-account-details-header">Account Details</h3>
+            <div className="user-profile-reputation">Reputation: {userReputation}</div>
+            <div className="user-profile-account-duration">Account created {userAccountDuration} days ago</div>
+            <h3 className="user-profile-questions-asked-header">Questions Asked</h3>
+            {userQuestions && userQuestions.length === 0 && <div className="user-profile-no-questions-asked">Currently no questions asked</div>}
+            <div className="user-profile-asked-questions-list">{userQuestions && userQuestions.map(userQuestion =>{return <div onClick={()=>viewNewQuestionForm(userQuestion)}>{userQuestion?.title}</div>})}</div>
+            <h3 className="user-profile-view-more-header">View More</h3>
+            <div className="user-profile-view-tags" onClick={()=>viewUserTagsPage()}>View Your Tags</div>
+            <div className="user-profile-answered-questions" onClick={()=>viewUserAnsweredQuestionsPage()}>View Your Answered Questions</div>
+            {props.currentLoggedInUser && props.isAdmin && <h3 className="admin-profile-all-users-header">All Users</h3>} 
             {props.currentLoggedInUser && props.isAdmin && allUsers?.length > 1 && <div className="admin-profile-list-of-users">
                 {allUsers?.map((user, index) => 
                 <div className="admin-profile-user-container">
-                    <div onClick={()=>{props.switchUser(user); fetchUserData()}}>Username: {user.username}, Email: {user.email}</div>
-                    {user.email !== 'admin@gmail.com' && <button onClick={()=>{setDisplayUserDeletionWarning(true); setUserToWarn(user)}}>Delete User</button>}
+                    <div className="admin-profile-user-info" onClick={()=>{props.switchUser(user); fetchUserData()}}>Username: {user.username}, Email: {user.email}</div>
+                    {user.email !== 'admin@gmail.com' && <button className="admin-profile-delete-user-btn" onClick={()=>{setDisplayUserDeletionWarning(true); setUserToWarn(user)}}>Delete User</button>}
                     {userToWarn === user && displayUserDeletionWarning && <div className="user-deletion-confirmation-container">
                         <span>Are you sure you want to remove the user?</span>
-                        <button onClick={()=>{deleteUser(user, index); setDisplayUserDeletionWarning(false); setUserToWarn(null)}}>Yes</button>
-                        <button onClick={()=>{setDisplayUserDeletionWarning(false); setUserToWarn(null)}}>No</button>
+                        <button className="delete-user-yes-option-btn" onClick={()=>{deleteUser(user, index); setDisplayUserDeletionWarning(false); setUserToWarn(null)}}>Yes</button>
+                        <button className="delete-user-no-option-btn" onClick={()=>{setDisplayUserDeletionWarning(false); setUserToWarn(null)}}>No</button>
                     </div>}
                 </div>)}
             </div>}
-            {props.currentLoggedInUser && props.isAdmin && allUsers?.length === 1 && <div>No other user accounts created</div>}
+            {props.currentLoggedInUser && props.isAdmin && allUsers?.length === 1 && <div className="admin-profile-no-users-message">No other user accounts created</div>}
         </div>}
         {!props.clickedOnProfileSidebar && showNewQuestionForm && <NewQuestion setUserQuestions={setUserQuestions} userQuestions={userQuestions} setClickedOnProfileSidebar={props.setClickedOnProfileSidebar} tags={props.tags} fetchData={props.fetchData} userQuestion={questionToModify} userTags={userTags}/>}
     </div>

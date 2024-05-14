@@ -527,6 +527,13 @@
     align-content: center;
   }
 
+  .comments-dropdown-header:hover {
+    cursor: pointer;
+    background-color: rgb(199, 199, 244);
+    box-shadow: 0 0 8px rgba(0,0,0,0.6);
+    text-decoration: white;
+  }
+
   .answer-modification-buttons {
     grid-column: 4;
     justify-self: right;
