@@ -42,11 +42,45 @@ async deleteQuestion(req, res){
         tags: tagId
     });
     if (isTagUsedByOtherQuestions === 0) {
-        await Tag.findByIdAndDelete(tagId);
+      await User.findOneAndUpdate(
+        { tagsCreated: tagId },
+        { $pull: { tagsCreated: tagId } }, 
+        { new: true } 
+      )
+      await Question.findOneAndUpdate(
+        {tags: tagId},
+        { $pull: {tags: tagId}},
+        {new: true}
+      )
+      await Tag.findByIdAndDelete(tagId);
     }
   }
+
+  const answerIds = req.body.answers;
   await Answer.deleteMany({_id: { $in: req.body.answers }});
+  for (const answerId of answerIds) {
+    await User.updateMany(
+      {votedAnswers: answerId},
+      {$pull: {votedAnswers: answerId}}
+    )
+    await User.updateMany(
+        { answersAdded: answerId }, 
+        { $pull: { answersAdded: answerId } }
+    );
+}
+
+  const commentIds = req.body.comments;
   await Comment.deleteMany({ _id: { $in: req.body.comments }});
+  for (const commentId of commentIds){
+    await User.updateMany(
+      {votedComments: commentId},
+      { $pull: {votedComments: commentId}}
+    )
+    await User.updateMany(
+      {commentsAdded: commentId},
+      { $pull: {commentsAdded: commentId}}
+    )
+  }
   await User.findOneAndUpdate(
       { votedQuestions: req.body._id },
       { $pull: { votedQuestions: req.body._id } }, 

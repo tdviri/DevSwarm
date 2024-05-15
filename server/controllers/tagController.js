@@ -25,6 +25,10 @@ const TagController = {
   },
 
   async deleteTag(req, res){
+    //delete tag from question it belongs to (only if they are unique)
+    //delete tag from tagsCreated in user document
+    //delete tag document itself
+
     const tagId = req.body.tagId; 
     await Question.updateMany(
         { tags: tagId },

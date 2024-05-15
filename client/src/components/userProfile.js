@@ -102,7 +102,7 @@ export default function UserProfile(props) {
             {userQuestions && userQuestions.length === 0 && <div className="user-profile-no-questions-asked">Currently no questions asked</div>}
             <div className="user-profile-asked-questions-list">{userQuestions && userQuestions.map(userQuestion =>{return <div className="user-profile-asked-question" onClick={()=>viewNewQuestionForm(userQuestion)}>{userQuestion?.title}</div>})}</div>
             <h3 className="user-profile-view-more-header">View More</h3>
-            <div className="user-profile-view-tags" onClick={()=>{fetchUserData();viewUserTagsPage()}}>View Your Tags</div>
+            <div className="user-profile-view-tags" onClick={()=>{viewUserTagsPage()}}>View Your Tags</div>
             <div className="user-profile-answered-questions" onClick={()=>viewUserAnsweredQuestionsPage()}>View Your Answered Questions</div>
             {props.currentLoggedInUser && props.isAdmin && <h3 className="admin-profile-all-users-header">All Users</h3>} 
             {props.currentLoggedInUser && props.isAdmin && allUsers?.length > 1 && <div className="admin-profile-list-of-users">
@@ -119,7 +119,7 @@ export default function UserProfile(props) {
             </div>}
             {props.currentLoggedInUser && props.isAdmin && allUsers?.length === 1 && <div className="admin-profile-no-users-message">No other user accounts created</div>}
         </div>}
-        {!props.clickedOnProfileSidebar && showNewQuestionForm && <NewQuestion setUserQuestions={setUserQuestions} userQuestions={userQuestions} setClickedOnProfileSidebar={props.setClickedOnProfileSidebar} tags={props.tags} fetchData={props.fetchData} userQuestion={questionToModify} userTags={userTags}/>}
+        {!props.clickedOnProfileSidebar && showNewQuestionForm && <NewQuestion fetchUserData={fetchUserData} setUserQuestions={setUserQuestions} userQuestions={userQuestions} setClickedOnProfileSidebar={props.setClickedOnProfileSidebar} tags={props.tags} fetchData={props.fetchData} userQuestion={questionToModify} userTags={userTags}/>}
     </div>
   );
 }

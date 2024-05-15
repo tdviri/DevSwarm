@@ -105,6 +105,7 @@ export default function NewQuestion(props) {
             props.setUserQuestions(updatedUserQuestions);
             props.setClickedOnProfileSidebar(true);
             props.fetchData();
+            props.fetchUserData();
         }
 
     async function handleDeleteQuestion(formData){
@@ -112,7 +113,8 @@ export default function NewQuestion(props) {
         const updatedUserQuestions = props.userQuestions.filter(question => question._id !== props.userQuestion._id);
         props.setUserQuestions(updatedUserQuestions);
         props.setClickedOnProfileSidebar(true);
-        props.fetchData()
+        props.fetchData();
+        props.fetchUserData();
     }
 
   return (
