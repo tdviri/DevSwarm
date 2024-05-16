@@ -228,9 +228,6 @@ async switchUser (req, res) {
 },
 
 async deleteUser (req, res){
-  //go through the tags, answers, questions, and comments created by user - delete all of their documents
-  //delete user document itself
-
   const user = await User.findById(req.body.user._id);
   await Comment.deleteMany({ _id: { $in: user.commentsAdded } });
   await Answer.deleteMany({ _id: { $in: user.answersAdded } });

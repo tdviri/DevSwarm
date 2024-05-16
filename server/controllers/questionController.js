@@ -41,19 +41,32 @@ async deleteQuestion(req, res){
         _id: { $ne: req.body._id }, 
         tags: tagId
     });
+    await User.findOneAndUpdate(
+      { tagsCreated: tagId },
+      { $pull: { tagsCreated: tagId } }, 
+      { new: true } 
+    )
+    await Question.findOneAndUpdate(
+      {tags: tagId},
+      { $pull: {tags: tagId}},
+      {new: true}
+    )
     if (isTagUsedByOtherQuestions === 0) {
-      await User.findOneAndUpdate(
-        { tagsCreated: tagId },
-        { $pull: { tagsCreated: tagId } }, 
-        { new: true } 
-      )
-      await Question.findOneAndUpdate(
-        {tags: tagId},
-        { $pull: {tags: tagId}},
-        {new: true}
-      )
       await Tag.findByIdAndDelete(tagId);
     }
+  }
+
+  const commentIds = req.body.comments;
+  await Comment.deleteMany({ _id: { $in: req.body.comments }});
+  for (const commentId of commentIds){
+    await User.updateMany(
+      {votedComments: commentId},
+      { $pull: {votedComments: commentId}}
+    )
+    await User.updateMany(
+      {commentsAdded: commentId},
+      { $pull: {commentsAdded: commentId}}
+    )
   }
 
   const answerIds = req.body.answers;
@@ -68,19 +81,6 @@ async deleteQuestion(req, res){
         { $pull: { answersAdded: answerId } }
     );
 }
-
-  const commentIds = req.body.comments;
-  await Comment.deleteMany({ _id: { $in: req.body.comments }});
-  for (const commentId of commentIds){
-    await User.updateMany(
-      {votedComments: commentId},
-      { $pull: {votedComments: commentId}}
-    )
-    await User.updateMany(
-      {commentsAdded: commentId},
-      { $pull: {commentsAdded: commentId}}
-    )
-  }
   await User.findOneAndUpdate(
       { votedQuestions: req.body._id },
       { $pull: { votedQuestions: req.body._id } }, 

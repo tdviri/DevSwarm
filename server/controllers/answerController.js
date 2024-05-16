@@ -33,16 +33,24 @@ const AnswerController = {
   },
 
   async deleteAnswer(req, res){
-    //delete answer from the question it belongs to 
-    //delete all comments that belong to the answer
-    //delete answer from votedanswers and addedanswers from user documents
-    //delete answer document itself
-
     await Question.findOneAndUpdate(
       { answers: req.body._id },
       { $pull: { answers: req.body._id } }, 
       { new: true } 
     );    
+    const commentIds = req.body.comments;
+    for (const commentId of commentIds){
+      await User.findOneAndUpdate(
+        { commentsAdded: commentId },
+        { $pull: {commentsAdded: commentId }},
+        { new: true }
+      )
+      await User.findOneAndUpdate(
+        {votedComments: commentId},
+        { $pull: {votedComments: commentId}},
+        { new: true }
+      )
+    }
     await Comment.deleteMany({_id: { $in: req.body.comments }});
     await User.findOneAndUpdate(
       { votedAnswers: req.body._id },
