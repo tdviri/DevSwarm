@@ -30,7 +30,7 @@ const TagController = {
         { tags: tagId },
         { $pull: { tags: tagId } } 
     );
-    await User.findOneAndUpdate(
+    await User.updateMany(
       { tagsCreated: tagId },
       { $pull: { tagsCreated: tagId } }, 
       { new: true } 

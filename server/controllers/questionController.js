@@ -41,15 +41,11 @@ async deleteQuestion(req, res){
         _id: { $ne: req.body._id }, 
         tags: tagId
     });
+
     await User.findOneAndUpdate(
       { tagsCreated: tagId },
       { $pull: { tagsCreated: tagId } }, 
       { new: true } 
-    )
-    await Question.findOneAndUpdate(
-      {tags: tagId},
-      { $pull: {tags: tagId}},
-      {new: true}
     )
     if (isTagUsedByOtherQuestions === 0) {
       await Tag.findByIdAndDelete(tagId);

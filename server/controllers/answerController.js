@@ -45,17 +45,15 @@ const AnswerController = {
         { $pull: {commentsAdded: commentId }},
         { new: true }
       )
-      await User.findOneAndUpdate(
+      await User.updateMany(
         {votedComments: commentId},
-        { $pull: {votedComments: commentId}},
-        { new: true }
+        { $pull: {votedComments: commentId}}
       )
     }
     await Comment.deleteMany({_id: { $in: req.body.comments }});
-    await User.findOneAndUpdate(
+    await User.updateMany(
       { votedAnswers: req.body._id },
-      { $pull: { votedAnswers: req.body._id } }, 
-      { new: true } 
+      { $pull: { votedAnswers: req.body._id } }
     )
     await User.findOneAndUpdate(
       { answersAdded: req.body._id },
