@@ -77,7 +77,7 @@ async deleteQuestion(req, res){
         { $pull: { answersAdded: answerId } }
     );
 }
-  await User.findOneAndUpdate(
+  await User.updateMany(
       { votedQuestions: req.body._id },
       { $pull: { votedQuestions: req.body._id } }, 
       { new: true } 
