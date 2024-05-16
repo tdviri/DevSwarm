@@ -63,6 +63,7 @@ const AnswerController = {
     await Answer.deleteOne(req.body);
     res.send();
   }
+  
 };
 
 module.exports = AnswerController;

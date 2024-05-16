@@ -244,6 +244,7 @@ async deleteUser (req, res){
   await User.findByIdAndDelete(user._id);
   res.send();
 }
+
 };
 
 module.exports = UserController;
