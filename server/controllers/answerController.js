@@ -2,6 +2,7 @@ const Answer = require('../models/answers');
 const User = require('../models/users');
 const Question = require('../models/questions');
 const Comment = require('../models/comments');
+const mongoose = require('mongoose'); 
 
 const AnswerController = {
   async retrieveAnswers(req, res) {
@@ -33,11 +34,21 @@ const AnswerController = {
   },
 
   async deleteAnswer(req, res){
+    //delete answer from the question it belongs to 
+    //delete answer from user who created the answer (can ignore votes field)
+    //loop through the comments in answer - delete each comment from user (ignore votes field) that belongs to answer, then delete comment from answer
+    //delete answer itself
+
     await Question.findOneAndUpdate(
       { answers: req.body._id },
       { $pull: { answers: req.body._id } }, 
       { new: true } 
     );    
+    await User.findOneAndUpdate(
+      { answers: req.body._id },
+      { $pull: { answersAdded: req.body._id } }, 
+      { new: true }
+    );
     const commentIds = req.body.comments;
     for (const commentId of commentIds){
       await User.findOneAndUpdate(
@@ -45,21 +56,8 @@ const AnswerController = {
         { $pull: {commentsAdded: commentId }},
         { new: true }
       )
-      await User.updateMany(
-        {votedComments: commentId},
-        { $pull: {votedComments: commentId}}
-      )
     }
     await Comment.deleteMany({_id: { $in: req.body.comments }});
-    await User.updateMany(
-      { votedAnswers: req.body._id },
-      { $pull: { votedAnswers: req.body._id } }
-    )
-    await User.findOneAndUpdate(
-      { answersAdded: req.body._id },
-      { $pull: { answersAdded: req.body._id } }, 
-      { new: true } 
-    )
     await Answer.deleteOne(req.body);
     res.send();
   }

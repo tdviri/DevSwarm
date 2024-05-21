@@ -147,7 +147,6 @@ function App() {
     setDisplayAnswers(showAnswers);
     setAnswerPageIndex(index);
     questionsArr[index].views++;
-    console.log(questionsArr[index]);
     const question = questionsArr[index];
     await axios.put('http://localhost:8000/api/updatequestions', question, {withCredentials: true,
       headers: {

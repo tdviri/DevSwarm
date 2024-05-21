@@ -5,6 +5,7 @@ const Tag = require('../models/tags');
 const Comment = require('../models/comments');
 const jwt = require('jsonwebtoken'); 
 const bcrypt = require('bcrypt');
+const mongoose = require('mongoose'); 
 
 const UserController = {
   async registerUser(req, res) {
@@ -228,23 +229,118 @@ async switchUser (req, res) {
 },
 
 async deleteUser (req, res){
+  //loop through tags created by user - delete *unique tags created by user
+  //loop through comments created by user - check if comment belongs to question or an answer, then delete the comment from either question or answer; then delete comment itself 
+  //loop through answers created by user - loop through comments that belong to answer - delete comment from user, then delete the comment from answer, then delete comment - then delete answer from question it belongs to, then delete answer itself
+  //loop through questions created by user - loop through answers that belong to question - loop through comments that belong to question - delete comment from user that belongs to answer delete each question, then delete comment from answer, then delete comment itself - delete answer from user that created it, delete answer from question it belongs to, then delete answer itself - delete question itself finally
+  //then delete user
   const user = await User.findById(req.body.user._id);
-  await Comment.deleteMany({ _id: { $in: user.commentsAdded } });
-  await Answer.deleteMany({ _id: { $in: user.answersAdded } });
+  console.log("user: ", user);
   for (let tagId of user.tagsCreated) {
-    const isTagUsedByOthers = await User.countDocuments({
+    const isTagUsedByOtherUsers = await User.countDocuments({
         _id: { $ne: user._id }, 
-        tagsCreated: tagId
+        tags: tagId
     });
-    if (isTagUsedByOthers === 0) {
-        await Tag.findByIdAndDelete(tagId);
+
+    if (isTagUsedByOtherUsers === 0) {
+      await Tag.findByIdAndDelete(tagId);
     }
   }
-  await Question.deleteMany({ _id: { $in: user.askedQuestions } });
+  for (let commentId of user.commentsAdded){
+    const commentExistsInQuestion = await Question.findOne({ comments: commentId }).lean();
+    const commentExistsInAnswer = await Question.findOne({ comments: commentId }).lean();
+    if (commentExistsInQuestion){
+      await Question.findOneAndUpdate(
+        {comments: commentId},
+        {$pull: {comments: commentId}}
+      )
+    }
+    else if (commentExistsInAnswer){
+      await Answer.findOneAndUpdate(
+        {comments: commentId},
+        {$pull: {comments: commentId}}
+      )
+    }
+    await Comment.findByIdAndDelete(commentId);
+  }
+
+  //something wrong with this for loop block of code
+  // for (const answerId of user.answersAdded){
+  //   const answer = await Answer.findById(answerId);
+  //   for (const commentId of answer.comments){
+  //     await User.findOneAndUpdate(
+  //       {commentsAdded: commentId},
+  //       {$pull: {commentsAdded: commentId}}
+  //     )
+  //     await Answer.findOneAndUpdate(
+  //       {comments: commentId},
+  //       {$pull: {comments: commentId}}
+  //     )
+  //     await Comment.findByIdAndDelete(commentId);
+  //   }
+  //   await Question.findByIdAndUpdate(
+  //     {answers: answerId},
+  //     {$pull: {answers: answerId}}
+  //   )
+  //   await Answer.findByIdAndDelete(answerId);
+  // }
+  for (const answerId of user.answersAdded) {
+    try {
+        const answer = await Answer.findById(answerId).lean();
+        if (answer && answer.comments.length) {
+            await Promise.all(answer.comments.map(async (commentId) => {
+                await User.findOneAndUpdate(
+                    { commentsAdded: commentId },
+                    { $pull: { commentsAdded: commentId } }
+                );
+                await Answer.findOneAndUpdate(
+                    { commentsAdded: commentId },
+                    { $pull: { comments: commentId } }
+                );
+                await Comment.findByIdAndDelete(commentId);
+            }));
+        }
+        await Question.findOneAndUpdate(
+            { answers: answerId },
+            { $pull: { answers: answerId } }
+        );
+        await Answer.findByIdAndDelete(answerId);
+    } catch (error) {
+        console.error(`Error deleting answer and related comments for answerId: ${answerId}`, error);
+    }
+  }
+
+  for (const questionId of user.askedQuestions){
+    const question = await Question.findById(questionId);
+    for (const answerId of question.comments){
+      const answer = await Answer.findById(answerId);
+      for (const commentId of answer.comments){
+        await User.findOneAndUpdate(
+          {commentsAdded: commentId},
+          {$pull: {commentsAdded: commentId}}
+        )
+        await Answer.findOneAndUpdate(
+          {comments: commentId},
+          {$pull: {comments: commentId}}
+        )
+        await Comment.findByIdAndDelete(commentId);
+      }
+      await User.findByIdAndUpdate(
+        {answersAdded: answerId},
+        {$pull: {answers: answerId}}
+      )
+      await Question.findByIdAndUpdate(
+        {answers: answerId},
+        {$pull: {answers: answerId}}
+      )
+      await Answer.findByIdAndDelete(answerId);
+    }
+    await Question.findByIdAndDelete(questionId);
+  }
+
   await User.findByIdAndDelete(user._id);
   res.send();
 }
-
 };
 
 module.exports = UserController;

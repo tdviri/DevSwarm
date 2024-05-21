@@ -1,5 +1,6 @@
 const Comment = require('../models/comments');
 const User = require('../models/users');
+const mongoose = require('mongoose'); 
 
 const CommentController = {
     async retrieveComments(req, res) {

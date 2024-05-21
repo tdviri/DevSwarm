@@ -1,6 +1,7 @@
 const Tag = require('../models/tags');
 const Question = require('../models/questions');
 const User = require('../models/users');
+const mongoose = require('mongoose'); 
 
 const TagController = {
   async retrieveTags(req, res) {
