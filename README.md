@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This is a MERN stack application that serves as a technical hub that allows developers to ask each other questions, provide answers, add comments on posts, and learn all while being part of an immersive developer community. The app is built using MongoDB, Express.js, React, and Node.js.
+This is a MERN stack application that serves as a technical hub that allows developers to ask each other questions, provide answers, comment on posts, all while being part of an immersive developer community. The app is built using MongoDB, Express.js, React, and Node.js.
 
 ## Table of Contents
 
