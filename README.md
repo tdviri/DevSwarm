@@ -17,19 +17,26 @@ This is a MERN stack application that serves as a technical hub where developers
 
 To get started with DevSwarm, follow these steps:
 
-1. Clone the repository to your local machine:
+1. **Install Node.js** (if not already installed):
+   Download and install Node.js from [nodejs.org](https://nodejs.org/).
+
+2. **Install nodemon** globally:
+   ```bash
+   npm install -g nodemon
+
+3. Clone the repository to your local machine:
     ```sh
     git clone https://github.com/yourusername/devswarm.git
     cd devswarm
     ```
 
-2. Install server-side dependencies:
+4. Install server-side dependencies:
     ```sh
     cd server
     npm install
     ```
 
-3. Install client-side dependencies:
+5. Install client-side dependencies:
     ```sh
     cd ../client
     npm install
