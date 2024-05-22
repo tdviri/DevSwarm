@@ -235,6 +235,8 @@ async deleteUser (req, res){
   //loop through questions created by user - loop through answers that belong to question - loop through comments that belong to question - delete comment from user that belongs to answer delete each question, then delete comment from answer, then delete comment itself - delete answer from user that created it, delete answer from question it belongs to, then delete answer itself - delete question itself finally
   //then delete user
 
+  console.log(req.body.user.email);
+  console.log(req.body.user.tagsCreated)
   try {
     const user = await User.findById(req.body.user._id);
     await Promise.all(user.tagsCreated.map(async (tagId) => {

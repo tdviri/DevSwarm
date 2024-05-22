@@ -16,6 +16,9 @@ const QuestionController = {
     const insertedQuestion = await Question.create(newData);
     const user = await User.findById(req.userId);
     user.askedQuestions.push(insertedQuestion);
+    insertedQuestion.tags.forEach(tagId => {
+      user.tagsCreated.push(tagId);
+    })
     user.save();
     res.send(insertedQuestion._id); 
   },
