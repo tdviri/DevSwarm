@@ -50,7 +50,7 @@ To get started with DevSwarm, follow these steps:
 - Question and answer posting
 - Commenting on questions and answers
 - Tagging system
-- Voting for questions and answers
+- Voting for questions, answers, and comments
 - User reputation scoring system
 - Special admin privileges for managing the platform
 - Seamless integrations including search, filter, question sorting, etc.
