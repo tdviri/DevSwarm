@@ -8,11 +8,12 @@ This is a MERN stack application that serves as a technical hub where developers
 
 1. [Installation](#installation)
 2. [Features](#features)
-3. [Dependencies](#dependencies)
-4. [Database Initialization](#database-initialization)
-5. [Running the Application](#running-the-application)
-6. [Troubleshooting](#troubleshooting)
-7. [Admin Login Credentials](#admin-login-credentials)
+3. [Usage](#usage)
+4. [Dependencies](#dependencies)
+5. [Database Initialization](#database-initialization)
+6. [Running the Application](#running-the-application)
+7. [Troubleshooting](#troubleshooting)
+8. [Admin Login Credentials](#admin-login-credentials)
 
 ## Installation
 
@@ -49,7 +50,23 @@ To get started with DevSwarm, follow these steps:
 - Question and answer posting
 - Commenting on questions and answers
 - Tagging system
+- Voting for questions and answers
+- User reputation scoring system
 - Special admin privileges for managing the platform
+- Seamless integrations including search, filter, question sorting, etc.
+
+## Usage
+
+Key Notes:
+- Links (text/titles colored in blue) will glow when you hover over them before clicking.
+- Can search for tag names, question title/text terms, or both. Search for tags by enclosing search term in brackets (e.g. '[android-studio]'). Seperate search terms by a single space.
+- Three sort/filter options:
+     - Newest: Sort questions by most recently asked
+     - Active: Sort questions by most recently answered
+     - Unanswered: Filter for unanswered questions
+- User must have at least 50 reputation points to vote, comment, or create a new tag name.
+- Downvoting results in -10 reputation points and upvoting results in +5 reputation points. However, comment voting does not affect reputation.
+- The rest you will figure out as you use the app.
 
 ## Dependencies
 
