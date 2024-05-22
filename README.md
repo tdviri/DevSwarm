@@ -12,6 +12,7 @@ This is a MERN stack application that serves as a technical hub where developers
 4. [Database Initialization](#database-initialization)
 5. [Running the Application](#running-the-application)
 6. [Troubleshooting](#troubleshooting)
+7. [Admin Login Credentials](#admin-login-credentials)
 
 ## Installation
 
@@ -108,4 +109,9 @@ If you encounter any issues, ensure that:
 
 - Ensure MongoDB is running on your machine.
 - Check for any errors in the terminal and resolve dependencies issues if any.
+
+## Admin Login Credentials
+
+Email: admin@gmail.com
+Password: secretAdmin
 
