@@ -77,6 +77,7 @@ Key Notes:
 - dotenv
 - cors
 - cookie-parser
+- jsonwebtoken
 - body-parser
 - bcrypt
 
