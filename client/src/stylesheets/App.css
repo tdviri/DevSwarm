@@ -163,11 +163,17 @@
   padding: 3px;
 }
 
+.tag-name:hover {
+  text-shadow: 0 0 10px rgba(0, 0, 255, 0.7);
+  color: blue;
+}
+
 .post-time {
   color: gray;
   margin-right: 2%;
 }
-*/ .post-info {
+
+.post-info {
   grid-column: 5;
   justify-self: center;
 }
