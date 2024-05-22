@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This is a MERN stack application that serves as a technical hub where developers can ask questions, provide answers, add comments, and manage tags. The app is built using MongoDB, Express.js, React, and Node.js.
+This is a MERN stack application that serves as a technical hub that allows developers to ask each other questions, provide answers, comment on posts, all while being part of an immersive developer community. The app is built using MongoDB, Express.js, React, and Node.js.
 
 ## Table of Contents
 
@@ -77,6 +77,7 @@ Key Notes:
 - dotenv
 - cors
 - cookie-parser
+- jsonwebtoken
 - body-parser
 - bcrypt
 
@@ -86,6 +87,9 @@ Key Notes:
 - react-dom
 - axios
 - react-router-dom
+- moment
+- prettier
+- react-icons
 
 ## Database Initialization
 
