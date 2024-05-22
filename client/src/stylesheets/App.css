@@ -14,7 +14,7 @@
   position: absolute;
   font-size: 50px;
   margin-right: auto;
-  margin-left: 38%;
+  margin-left: 45%;
 }
 
 .search-bar {
@@ -120,12 +120,12 @@
 }
 
 .post {
-  display: grid;
-  grid-template-columns: 1fr 1fr 2fr 6fr 3fr;
-  padding: 1%;
-  border-top: 1px dotted;
-  border-bottom: 1px dotted;
-  position: relative;
+    display: grid;
+    grid-template-columns: 1fr 1fr 4fr 7fr 3fr;
+    padding: 1%;
+    border-top: 1px dotted;
+    border-bottom: 1px dotted;
+    position: relative;
 }
 
 .view-and-answer-count {
@@ -426,6 +426,10 @@
   font-weight: bold;
   font-size: 26px;
   margin-left: 30%;
+}
+
+.tags {
+    margin-top: 7%;
 }
 
 #tags-page-ask-question-btn {
