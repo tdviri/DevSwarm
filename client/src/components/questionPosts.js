@@ -154,14 +154,19 @@ export default function QuestionPosts(props) {
       });
       props.fetchData();
     } catch (error) {
-      if (error.request) {
+      if (
+        error.response &&
+        error.response.data.errorMessage ===
+          "Must have at least 50 reputation points to vote."
+      ) {
+        alert("Must have at least 50 reputation points to vote.");
+      } else if (error.request) {
         alert(
           "Communication error: Unable to connect to the server. Please try again later.",
         );
       } else {
         alert("System error");
       }
-      props.goToWelcomePage();
     }
   }
 
