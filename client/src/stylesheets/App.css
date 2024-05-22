@@ -1,253 +1,252 @@
 .body {
-    margin: 0;
+  margin: 0;
 }
 
 .header {
-    background-color: rgb(140, 140, 140);
-    display: flex;
-    flex-direction: row;
-    height: 10vh;
-    align-items: center;
+  background-color: rgb(140, 140, 140);
+  display: flex;
+  flex-direction: row;
+  height: 10vh;
+  align-items: center;
 }
 
 .title {
-    position: absolute;
-    font-size: 50px;
-    margin-right: auto;
-    margin-left: 38%;
+  position: absolute;
+  font-size: 50px;
+  margin-right: auto;
+  margin-left: 38%;
 }
 
 .search-bar {
-    position: absolute;
-    margin-right: auto;
-    margin-left: 85%;
+  position: absolute;
+  margin-right: auto;
+  margin-left: 85%;
 }
 
 .main {
-    background-color: rgb(248, 249, 244);
-    display: flex;
-    height: 90vh;
+  background-color: rgb(248, 249, 244);
+  display: flex;
+  height: 90vh;
 }
 
 .sidebar {
-    background-color: rgb(229, 229, 242);
-    flex: 1;
-    border-right: 2px dotted;
+  background-color: rgb(229, 229, 242);
+  flex: 1;
+  border-right: 2px dotted;
 }
 
 #questions-sidebar {
-    border-bottom: 2px solid black;
-    margin-top: 15%;
-    width: 100%;
-    display: flex; 
-    flex-direction: column; 
-    align-items: center; 
+  border-bottom: 2px solid black;
+  margin-top: 15%;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 #tags-sidebar {
-    border-bottom: 2px solid black;
-    width: 100%;
-    display: flex; 
-    flex-direction: column; 
-    align-items: center; 
+  border-bottom: 2px solid black;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 #user-profile-sidebar {
-    border-bottom: 2px solid black;
-    width: 100%;
-    display: flex; 
-    flex-direction: column; 
-    align-items: center; 
+  border-bottom: 2px solid black;
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .questions-sidebar-header {
-    color: rgb(8, 8, 197);
+  color: rgb(8, 8, 197);
 }
 
 .tags-sidebar-header {
-    color: rgb(8, 8, 197);
+  color: rgb(8, 8, 197);
 }
 
-#tags-sidebar:hover, #questions-sidebar:hover, #user-profile-sidebar:hover {
-    background-color: gray;
-    cursor: pointer;
+#tags-sidebar:hover,
+#questions-sidebar:hover,
+#user-profile-sidebar:hover {
+  background-color: gray;
+  cursor: pointer;
 }
 
 .forum {
-    flex: 4;
+  flex: 4;
 }
 
 .forum-1 {
-    display: flex;
-    flex-direction: row;
+  display: flex;
+  flex-direction: row;
 }
 
 .forum-title {
-    margin-right: auto;
-    margin-left: 5%;
+  margin-right: auto;
+  margin-left: 5%;
 }
 
 .ask-question-btn {
-    margin-left: auto;
-    margin-bottom: auto;
-    margin-top: 20%;
-    margin-right: 10%;
-    align-self: center;
-    background-color: rgb(68, 68, 210);
-    color: white;
+  margin-left: auto;
+  margin-bottom: auto;
+  margin-top: 20%;
+  margin-right: 10%;
+  align-self: center;
+  background-color: rgb(68, 68, 210);
+  color: white;
 }
 
 .ask-question-btn:hover {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .forum-2 {
-    display: flex;
-    flex-direction: row;
+  display: flex;
+  flex-direction: row;
 }
 
 .num-of-questions-header {
-    margin-right: auto;
-    margin-left: 5%;
+  margin-right: auto;
+  margin-left: 5%;
 }
 
 .question-btn-container {
-    margin-left: auto;
-    margin-right: 10%;
-    align-self: center;
+  margin-left: auto;
+  margin-right: 10%;
+  align-self: center;
 }
 
 .post {
-    display: grid;
-    grid-template-columns: 1fr 1fr 2fr 6fr 3fr; 
-    padding: 1%; 
-    border-top: 1px dotted;
-    border-bottom: 1px dotted;
-    position: relative; 
+  display: grid;
+  grid-template-columns: 1fr 1fr 2fr 6fr 3fr;
+  padding: 1%;
+  border-top: 1px dotted;
+  border-bottom: 1px dotted;
+  position: relative;
 }
 
 .view-and-answer-count {
-    grid-column: 2;
-    display: flex;
-    flex-direction: column;
-    color: gray;
+  grid-column: 2;
+  display: flex;
+  flex-direction: column;
+  color: gray;
 }
 
 .question-comment-form {
-    grid-column: 3;
+  grid-column: 3;
 }
 
-
 .title-and-tags {
-    grid-column: 4;
-    justify-self: left;
-    
+  grid-column: 4;
+  justify-self: left;
 }
 
 .post-title {
-    color: rgb(8, 8, 197);
+  color: rgb(8, 8, 197);
 }
 
 .post-title:hover {
-    text-shadow: 0 0 10px rgba(0, 0, 255, 0.7); 
-    color: blue;
+  text-shadow: 0 0 10px rgba(0, 0, 255, 0.7);
+  color: blue;
 }
 
 .tags {
-    /* margin-top: auto;
+  /* margin-top: auto;
     margin-left: 70px; */
 }
 
 .tag {
-    background-color: gray;
-    color: white;
-    border: 1px solid;
-    margin-bottom: 5px;
-    margin-right: 10px;
-    border-radius: 5px;
-    padding: 3px;
+  background-color: gray;
+  color: white;
+  border: 1px solid;
+  margin-bottom: 5px;
+  margin-right: 10px;
+  border-radius: 5px;
+  padding: 3px;
 }
 
 .post-time {
-    color: gray;
-    margin-right: 2%
-} */
-
-.post-info {
-    grid-column: 5;
-    justify-self: center;
+  color: gray;
+  margin-right: 2%;
+}
+*/ .post-info {
+  grid-column: 5;
+  justify-self: center;
 }
 
 .post-username {
-    color: rgb(249, 4, 4);
+  color: rgb(249, 4, 4);
 }
 
 .post-time {
-    color: gray;
-    margin-left: 4px;
+  color: gray;
+  margin-left: 4px;
 }
 
 .ask-question-form {
-    display: flex;
-    flex-direction: column;
-    align-items: left;
-    margin-left: 15%;
-    margin-top: 6%;
+  display: flex;
+  flex-direction: column;
+  align-items: left;
+  margin-left: 15%;
+  margin-top: 6%;
 }
 
 .form-question-subheader-container {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 10px;
 }
 
 .form-label {
-    font-size: 30px;
-    margin-bottom: 10px;
+  font-size: 30px;
+  margin-bottom: 10px;
 }
 
 .form-input {
-    width: 80%;
+  width: 80%;
 }
 
 .form-submessage {
-    margin-bottom: 7px;
-    font-style: italic;
+  margin-bottom: 7px;
+  font-style: italic;
 }
 
 .submit-form {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
 }
 
 #no-questions-found {
-    font-weight: bold;
-    font-size: 26px;
-    position: absolute;
-    margin-right: auto;
-    margin-left: 30%;
-    margin-top: 3%;
+  font-weight: bold;
+  font-size: 26px;
+  position: absolute;
+  margin-right: auto;
+  margin-left: 30%;
+  margin-top: 3%;
 }
 
 .mandatory-fields-message {
-    margin-left: auto;
-    margin-right: 20%;
-    color: red;
+  margin-left: auto;
+  margin-right: 20%;
+  color: red;
 }
 
 .submit-btn {
-    width: 10%;
-    background-color: rgb(63, 63, 189);
-    color: white;
+  width: 10%;
+  background-color: rgb(63, 63, 189);
+  color: white;
 }
 
 .submit-btn:hover {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .post-title:hover {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 /* .answer-page {
@@ -256,478 +255,503 @@
 } */
 
 .answers-header {
-    display: grid;
-    grid-template-columns: 0.3fr 2fr 0.3fr;
-    margin-top: 2%;
-    justify-items: center;
+  display: grid;
+  grid-template-columns: 0.3fr 2fr 0.3fr;
+  margin-top: 2%;
+  justify-items: center;
 }
 
 .question-details-answers-page {
-    display: grid;
-    grid-template-columns: 0.2fr 1fr 0.5fr;
-    position: absolute;
-    margin-top: 5%;
-    border-bottom: 1px black dotted;
-    gap: 3%;
-    justify-items: center;
+  display: grid;
+  grid-template-columns: 0.2fr 1fr 0.5fr;
+  position: absolute;
+  margin-top: 5%;
+  border-bottom: 1px black dotted;
+  gap: 3%;
+  justify-items: center;
 }
 
 .views-count-answers-page {
-   color: gray;
+  color: gray;
 }
 
 .answer-posts {
-    margin-top: 15%;
-    margin-bottom: 5%;
+  margin-top: 15%;
+  margin-bottom: 5%;
 }
 
 .answer-post {
-    display: grid;
-    grid-template-columns: 1fr 2fr 6fr 4fr; 
-    padding: 1%; 
-    border-bottom: 1px black dotted;
-    position: relative; 
+  display: grid;
+  grid-template-columns: 1fr 2fr 6fr 4fr;
+  padding: 1%;
+  border-bottom: 1px black dotted;
+  position: relative;
 }
 
 .question-title-answers-page {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 .answer-count-answers-page {
-    font-weight: bold;
+  font-weight: bold;
 }
 
 #answer-question-btn {
-    background-color: rgb(76, 76, 204);
-    color: white;
-    position: relative;
-    margin-right: auto;
-    margin-left: 40%;
+  background-color: rgb(76, 76, 204);
+  color: white;
+  position: relative;
+  margin-right: auto;
+  margin-left: 40%;
 }
 
 #answer-question-btn:hover {
-    cursor: pointer
+  cursor: pointer;
 }
 
 .post-username-question-answers-page {
-    color: red;
+  color: red;
 }
 
 .post-username-answers-page {
-    color: green;
+  color: green;
 }
 
 .post-time-answers-page {
-   margin-left: 6px;
+  margin-left: 6px;
 }
 
 .answer-form {
-    display: flex;
-    flex-direction: column;
-    margin-left: 10%;
+  display: flex;
+  flex-direction: column;
+  margin-left: 10%;
 }
 
 .answer-form-label {
-    font-size: 40px;
+  font-size: 40px;
 }
 
 .answer-question-form-subheader-container {
-    display: flex;
-    flex-direction: column;
-    margin-top: 5%;
+  display: flex;
+  flex-direction: column;
+  margin-top: 5%;
 }
 
 .username-field-answer-form {
-   display: flex;
-   flex-direction: column;
-   margin-bottom: 3%;
+  display: flex;
+  flex-direction: column;
+  margin-bottom: 3%;
 }
 
 .text-field-answer-form {
-    display: flex;
-    flex-direction: column; 
+  display: flex;
+  flex-direction: column;
 }
 
-#answer-form-username-input, #answer-form-text-input {
-    width: 40%;
+#answer-form-username-input,
+#answer-form-text-input {
+  width: 40%;
 }
 
 .submit-answer-form {
-    display: flex;
-    flex-direction: row;
+  display: flex;
+  flex-direction: row;
 }
 
 .mandatory-fields-message-answer-form {
-    color: red;
-    margin-left: auto;
-    margin-right: 60%;
-    font-size: 15px;
+  color: red;
+  margin-left: auto;
+  margin-right: 60%;
+  font-size: 15px;
 }
 
 .submit-btn-answer-form {
-    background-color: rgb(65, 65, 210);
-    color: white;
-    margin-right: auto;
-    height: 40;
-    width: 100;
+  background-color: rgb(65, 65, 210);
+  color: white;
+  margin-right: auto;
+  height: 40;
+  width: 100;
 }
 
 .submit-btn-answer-form:hover {
-    cursor: pointer;
+  cursor: pointer;
 }
 
-#active-btn, #newest-btn, #unanswered-btn {
-    background-color: rgb(205, 204, 204);
+#active-btn,
+#newest-btn,
+#unanswered-btn {
+  background-color: rgb(205, 204, 204);
 }
 
-#active-btn:hover, #newest-btn:hover, #unanswered-btn:hover {
-    cursor: pointer;
+#active-btn:hover,
+#newest-btn:hover,
+#unanswered-btn:hover {
+  cursor: pointer;
 }
 
 #tags-container {
-    display: grid;
-    grid-template-columns: repeat(3, 1fr); 
-    grid-auto-rows: auto; 
-    grid-gap: 10px;
-    margin-right: auto;
-    margin-left: 10%;
-    margin-top: 5%;
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  grid-auto-rows: auto;
+  grid-gap: 10px;
+  margin-right: auto;
+  margin-left: 10%;
+  margin-top: 5%;
 }
 
 .tag-container {
-    display: flex;
-    flex-direction: column;
-    border: 2px black dotted;
-    width: 160px;
-    height: 90px;
-    margin-bottom: 10%;
-    align-items: center;
-    justify-content: center;
+  display: flex;
+  flex-direction: column;
+  border: 2px black dotted;
+  width: 160px;
+  height: 90px;
+  margin-bottom: 10%;
+  align-items: center;
+  justify-content: center;
 }
 
 .tag-name {
-    font-size: 18px;
-    color: blue;
+  font-size: 18px;
+  color: blue;
 }
 
 .tags-page-header {
-    display: flex;
-    flex-direction: row;
-    justify-content: center;
-    align-items: center;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+  align-items: center;
 }
 
 #num-of-tags-header {
-    font-size: 26px;
-    font-weight: bold;
-    margin-left: 5%;
+  font-size: 26px;
+  font-weight: bold;
+  margin-left: 5%;
 }
 
 .tags-page-title {
-    font-weight: bold;
-    font-size: 26px;
-    margin-left: 30%;
+  font-weight: bold;
+  font-size: 26px;
+  margin-left: 30%;
 }
 
 #tags-page-ask-question-btn {
-    margin-left: 40%;
+  margin-left: 40%;
 }
 
 .tag-name:hover {
-    cursor: pointer;
+  cursor: pointer;
 }
 
 .tag-num-of-questions {
-    font-size: 18px;
+  font-size: 18px;
 }
 
 .answer-upvote-downvote-arrows {
-    grid-column: 1;
-    justify-self: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  grid-column: 1;
+  justify-self: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .answer-upvote-arrow,
 .downvote-arrow {
-    grid-column: 1;
-    justify-self: center;
-    width: 1; 
-    height: 1px;
+  grid-column: 1;
+  justify-self: center;
+  width: 1;
+  height: 1px;
 }
 
 .answer-vote-count {
-    grid-column: 1;
-    justify-self: center;
-    margin-top: 90%
+  grid-column: 1;
+  justify-self: center;
+  margin-top: 90%;
 }
 
 .comment-upvote {
-    grid-column: 1;
-    justify-self: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+  grid-column: 1;
+  justify-self: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
 }
 
 .comment-upvote-arrow {
-    grid-column: 1;
-    justify-self: center;
+  grid-column: 1;
+  justify-self: center;
 }
 
 .comment-vote-count {
-    grid-column: 1;
-    justify-self: center;
+  grid-column: 1;
+  justify-self: center;
 }
 
 .upvote-downvote-arrows {
-    grid-column: 1;
-    justify-self: center;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+  grid-column: 1;
+  justify-self: center;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
 }
 
 .upvote-arrow,
 .downvote-arrow {
-    width: 1; 
-    height: 1px;
+  width: 1;
+  height: 1px;
 }
 
 .vote-count {
-    margin-top: 90%
+  margin-top: 90%;
 }
 
-.guest-upvote, .guest-downvote, .authenticated-downvote, .authenticated-upvote {
-    color: gray; 
+.guest-upvote,
+.guest-downvote,
+.authenticated-downvote,
+.authenticated-upvote {
+  color: gray;
 }
-  
-  .authenticated-upvote:hover {
-    color: green; 
-    cursor: pointer;
-  }
 
-  .authenticated-downvote:hover {
-    color: red; 
-    cursor: pointer;
-  }
+.authenticated-upvote:hover {
+  color: green;
+  cursor: pointer;
+}
 
-  .user-profile {
-    flex: 4 1;
-    position: relative;
-  }
+.authenticated-downvote:hover {
+  color: red;
+  cursor: pointer;
+}
 
-  .answer-text {
-    grid-column: 3;
-    justify-self: center;
-  }
+.user-profile {
+  flex: 4 1;
+  position: relative;
+}
 
-  .answer-info2 {
-    grid-column: 4;
-    justify-self: right;
-  }
+.answer-text {
+  grid-column: 3;
+  justify-self: center;
+}
 
-  .comment-form {
-    grid-column: 2;
-    justify-self: left;
-  }
+.answer-info2 {
+  grid-column: 4;
+  justify-self: right;
+}
 
-  .comments-dropdown-header {
-    align-content: center;
-  }
+.comment-form {
+  grid-column: 2;
+  justify-self: left;
+}
 
-  .comments-dropdown-header:hover {
-    cursor: pointer;
-    background-color: rgb(199, 199, 244);
-    box-shadow: 0 0 8px rgba(0,0,0,0.6);
-    text-decoration: white;
-  }
+.comments-dropdown-header {
+  align-content: center;
+}
 
-  .answer-modification-buttons {
-    grid-column: 4;
-    justify-self: right;
-  }
+.comments-dropdown-header:hover {
+  cursor: pointer;
+  background-color: rgb(199, 199, 244);
+  box-shadow: 0 0 8px rgba(0, 0, 0, 0.6);
+  text-decoration: white;
+}
 
-  .comments-dropdown {
-    grid-column: 1 / -1; 
-    width: 100%; 
-    background: #e6e9f6;
-    box-shadow: 0 3px 5px rgba(0,0,0,0.1);
-    padding: 0.5%;
-    margin-top: 1%;
-  }
+.answer-modification-buttons {
+  grid-column: 4;
+  justify-self: right;
+}
 
- .comment-post {
-    display: grid;
-    grid-template-columns: 1fr 4fr 2fr;
-    border-top: 1px dotted black;
-    padding: 0.5%;
- }
+.comments-dropdown {
+  grid-column: 1 / -1;
+  width: 100%;
+  background: #e6e9f6;
+  box-shadow: 0 3px 5px rgba(0, 0, 0, 0.1);
+  padding: 0.5%;
+  margin-top: 1%;
+}
 
- .log-out-btn {
-    cursor: pointer;
-    background-color: rgb(68, 68, 210);
-    color: white;
-    margin-left: 6%;
- }
+.comment-post {
+  display: grid;
+  grid-template-columns: 1fr 4fr 2fr;
+  border-top: 1px dotted black;
+  padding: 0.5%;
+}
 
- .user-profile-container {
-    margin-left: 3%;
- }
+.log-out-btn {
+  cursor: pointer;
+  background-color: rgb(68, 68, 210);
+  color: white;
+  margin-left: 6%;
+}
 
- .admin-profile-user-container {
-    display: flex;
-    flex-direction: row;
- }
+.user-profile-container {
+  margin-left: 3%;
+}
 
- .admin-profile-user-info {
-    margin-right: 0.5%;
-    margin-bottom: 1%;
- }
+.admin-profile-user-container {
+  display: flex;
+  flex-direction: row;
+}
 
- .admin-profile-user-info-seperator {
-    margin-right: 0.5%;
- }
+.admin-profile-user-info {
+  margin-right: 0.5%;
+  margin-bottom: 1%;
+}
 
- .admin-profile-delete-user-btn {
-    height: 0.3%;
- }
+.admin-profile-user-info-seperator {
+  margin-right: 0.5%;
+}
 
- #submit-btn.submit-btn-post {
-    cursor: pointer;
-    width: 12.3%;
-    background-color: rgb(68, 68, 210);
-    color: white;
- }
+.admin-profile-delete-user-btn {
+  height: 0.3%;
+}
 
- #submit-btn.submit-btn-delete {
-    cursor: pointer;
-    width: 9.5%;
-    margin-left: 1%;
-    background-color: rgb(68, 68, 210);
-    color: white;
- }
+#submit-btn.submit-btn-post {
+  cursor: pointer;
+  width: 12.3%;
+  background-color: rgb(68, 68, 210);
+  color: white;
+}
 
- .user-profile-view-tags, .user-profile-answered-questions, .admin-profile-user-info, .user-profile-asked-question {
-    color: blue;
- }
+#submit-btn.submit-btn-delete {
+  cursor: pointer;
+  width: 9.5%;
+  margin-left: 1%;
+  background-color: rgb(68, 68, 210);
+  color: white;
+}
 
- .user-profile-view-tags:hover, .user-profile-answered-questions:hover, .admin-profile-user-info:hover, .user-profile-asked-question:hover {
-    text-shadow: 0 0 10px rgba(0, 0, 255, 0.7); 
-    cursor: pointer;
-    color: blue;
- }
+.user-profile-view-tags,
+.user-profile-answered-questions,
+.admin-profile-user-info,
+.user-profile-asked-question {
+  color: blue;
+}
 
- .no-questions-answered-message, .no-tags-created-message {
-    font-size: 50px;
-    position: absolute;
-    top: 35%;
-    left: 50%;
-    transform: translate(-50%, -50%);
- }
+.user-profile-view-tags:hover,
+.user-profile-answered-questions:hover,
+.admin-profile-user-info:hover,
+.user-profile-asked-question:hover {
+  text-shadow: 0 0 10px rgba(0, 0, 255, 0.7);
+  cursor: pointer;
+  color: blue;
+}
 
- .welcome-page-form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 8%;
- }
+.no-questions-answered-message,
+.no-tags-created-message {
+  font-size: 50px;
+  position: absolute;
+  top: 35%;
+  left: 50%;
+  transform: translate(-50%, -50%);
+}
 
- .welcome-page-form-header {
-    font-size: 55px;
- }
+.welcome-page-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 8%;
+}
 
- .welcome-page-register-option, .welcome-page-login-option, .welcome-page-guest-option {
-    cursor: pointer;
-    padding-bottom: 2%;
-    font-size: 40px;
- }
+.welcome-page-form-header {
+  font-size: 55px;
+}
 
- .welcome-page-register-option:hover, .welcome-page-login-option:hover, .welcome-page-guest-option:hover {
-    cursor: pointer;
-    text-shadow: 0 0 10px rgba(0, 0, 255, 0.7); 
-    color: rgb(58, 58, 181);
- }
+.welcome-page-register-option,
+.welcome-page-login-option,
+.welcome-page-guest-option {
+  cursor: pointer;
+  padding-bottom: 2%;
+  font-size: 40px;
+}
 
- .register-page-form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
- }
+.welcome-page-register-option:hover,
+.welcome-page-login-option:hover,
+.welcome-page-guest-option:hover {
+  cursor: pointer;
+  text-shadow: 0 0 10px rgba(0, 0, 255, 0.7);
+  color: rgb(58, 58, 181);
+}
 
- .register-form-header {
-    font-size: 60px;
- }
+.register-page-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
 
- .register-form-first-name-input-container {
-    margin-bottom: 1%;
- }
+.register-form-header {
+  font-size: 60px;
+}
 
- .register-form-first-name-input-container, .register-form-last-name-input-container,
- .register-form-email-input-container, .register-form-username-input-container, .register-form-password-input-container,
- .register-form-verify-password-input-container {
-    display: flex;
-    flex-direction: column;
- }
+.register-form-first-name-input-container {
+  margin-bottom: 1%;
+}
 
- .register-form-input-header {
-    color: rgb(54, 54, 171);
-    font-size: 20px;
- }
+.register-form-first-name-input-container,
+.register-form-last-name-input-container,
+.register-form-email-input-container,
+.register-form-username-input-container,
+.register-form-password-input-container,
+.register-form-verify-password-input-container {
+  display: flex;
+  flex-direction: column;
+}
 
- .register-form-input {
-    width: 20vw;
-    height: 2vh;
- }
+.register-form-input-header {
+  color: rgb(54, 54, 171);
+  font-size: 20px;
+}
 
- .signup-btn {
-    font-size: 20px;
-    cursor: pointer;
-    background-color: rgb(30, 30, 196);
-    color: white;
- }
+.register-form-input {
+  width: 20vw;
+  height: 2vh;
+}
 
- .login-page-form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    margin-top: 8%;
- }
+.signup-btn {
+  font-size: 20px;
+  cursor: pointer;
+  background-color: rgb(30, 30, 196);
+  color: white;
+}
 
- .login-form-header {
-    font-size: 60px;
- }
+.login-page-form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  margin-top: 8%;
+}
 
- .login-form-email-input-container, .login-form-password-input-container {
-    display: flex;
-    flex-direction: column;
- }
+.login-form-header {
+  font-size: 60px;
+}
 
- .login-form-input-header {
-    font-size: 25px;
- }
+.login-form-email-input-container,
+.login-form-password-input-container {
+  display: flex;
+  flex-direction: column;
+}
 
- .login-form-input {
-    width: 20vw;
-    height: 2vh;
- }
+.login-form-input-header {
+  font-size: 25px;
+}
 
- .login-submit-btn {
-    font-size: 20px;
-    cursor: pointer;
-    background-color: rgb(30, 30, 196);
-    color: white
- }
+.login-form-input {
+  width: 20vw;
+  height: 2vh;
+}
 
- .register-error-message {
-    color: rgb(225, 37, 37);
-    padding-top: 5%;
-    font-size: 20px;
- }
+.login-submit-btn {
+  font-size: 20px;
+  cursor: pointer;
+  background-color: rgb(30, 30, 196);
+  color: white;
+}
 
+.register-error-message {
+  color: rgb(225, 37, 37);
+  padding-top: 5%;
+  font-size: 20px;
+}
 
-
-
-
+.back-to-welcome-btn {
+  cursor: pointer;
+  background-color: rgb(68, 68, 210);
+  color: white;
+  margin-left: 6%;
+}

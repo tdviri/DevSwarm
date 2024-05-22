@@ -1,13 +1,17 @@
-import React, { useState } from 'react';
-import '../stylesheets/App.css';
-import axios from 'axios';
+import React, { useState } from "react";
+import "../stylesheets/App.css";
+import axios from "axios";
 
 export default function EditAnswerForm(props) {
   const [ansText, setAnsText] = useState(props.answerToEdit.text);
 
   async function handleSubmit(e) {
     e.preventDefault();
-    const resp = await axios.put('http://localhost:8000/api/editanswer', { origAns: props.answerToEdit, newAnsText: ansText }, { withCredentials: true });
+    const resp = await axios.put(
+      "http://localhost:8000/api/editanswer",
+      { origAns: props.answerToEdit, newAnsText: ansText },
+      { withCredentials: true },
+    );
     props.replaceWithEditedAnswer(resp.data);
     props.setDisplayEditAnswerForm(false);
     props.fetchData();
@@ -22,13 +26,23 @@ export default function EditAnswerForm(props) {
       <div className="answer-question-form-subheader-container">
         <div className="text-field-answer-form">
           <label className="answer-form-label">Answer Text*</label>
-          <textarea id="answer-form-text-input" value={ansText} onChange={handleChange} type="text" required name="text"></textarea>
+          <textarea
+            id="answer-form-text-input"
+            value={ansText}
+            onChange={handleChange}
+            type="text"
+            required
+            name="text"
+          ></textarea>
         </div>
       </div>
-      <br /><br />
+      <br />
+      <br />
       <div className="submit-answer-form">
         <input className="submit-btn-answer-form" type="submit" />
-        <span className="mandatory-fields-message-answer-form">* indicates mandatory fields</span>
+        <span className="mandatory-fields-message-answer-form">
+          * indicates mandatory fields
+        </span>
       </div>
     </form>
   );

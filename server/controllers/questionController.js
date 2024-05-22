@@ -43,57 +43,6 @@ async deleteQuestion(req, res){
   //delete question from user
   //delete question itself
 
-  // const answerIds = req.body.answers;
-  // for (const answerId of answerIds){
-  //   const answer = await Answer.findById(answerId);
-  //   const answerCommentIds = answer.comments;
-  //   for (const answerCommentId of answerCommentIds){
-  //     await User.findOneAndUpdate(
-  //       { commentsAdded: answerCommentId },
-  //       {$pull: { commentsAdded: answerCommentId }},
-  //       { new: true }
-  //     )
-  //     await Answer.findOneAndUpdate(
-  //       { comments: answerCommentId },
-  //       {$pull: { comments: answerCommentId }}
-  //     )
-  //     await Comment.findByIdAndDelete(answerCommentId);
-  //   }
-  //   await Answer.findByIdAndDelete(answerId);
-  // }
-
-  // for (const questionCommentId of req.comments){
-  //   await User.findOneAndUpdate(
-  //     { commentsAdded: questionCommentId },
-  //     {$pull: { commentsAdded: questionCommentId }},
-  //     { new: true }
-  //   )
-  //   await Question.findOneAndUpdate(
-  //     { comments: questionCommentId },
-  //     {$pull: { comments: questionCommentId }}
-  //   )
-  //   await Comment.findByIdAndDelete(questionCommentId);
-  // }
-  
-  // for (let tagId of req.body.tags) {
-  //   const isTagUsedByOtherQuestions = await Question.countDocuments({
-  //       _id: { $ne: req.body._id }, 
-  //       tags: tagId
-  //   });
-
-  //   if (isTagUsedByOtherQuestions === 0) {
-  //     await Tag.findByIdAndDelete(tagId);
-  //   }
-  // }
-
-  // await User.findOneAndUpdate(
-  //   { askedQuestions: req.body._id },
-  //   { $pull: {askedQuestions: req.body._id }}
-  // )
-
-  //   await Question.deleteOne(req.body);
-  //   res.send();
-
   try {
     const answerIds = req.body.answers;
     await Promise.all(answerIds.map(async (answerId) => {

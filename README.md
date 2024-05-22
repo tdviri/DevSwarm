@@ -1,8 +1,19 @@
-[![Review Assignment Due Date](https://classroom.github.com/assets/deadline-readme-button-24ddc0f5d75046c5622901739e7c5dd533143b0c8e959d652212380cedb1ea36.svg)](https://classroom.github.com/a/tRxoBzS5)
-Add design docs in *images/*
+# DevSwarm Application
 
-## Instructions to setup and run project
+## Introduction
 
-## Team Member 1 Contribution
+This is a MERN stack application that provides developers with a technical hub where they can ask questions, provide answers, add comments, and manage tags. The app is built using MongoDB, Express.js, React, and Node.js.
 
-## Team Member 2 Contribution
+## Table of Contents
+
+1. [Installation](#installation)
+2. [Usage](#usage)
+3. [Features](#features)
+4. [Dependencies](#dependencies)
+5. [Configuration](#configuration)
+6. [Database Initialization](#database-initialization)
+7. [Running the Application](#running-the-application)
+8. [Troubleshooting](#troubleshooting)
+9. [Contributors](#contributors)
+10. [License](#license)
+
