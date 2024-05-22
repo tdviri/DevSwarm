@@ -7,13 +7,11 @@ This is a MERN stack application that serves as a technical hub where developers
 ## Table of Contents
 
 1. [Installation](#installation)
-2. [Usage](#usage)
-3. [Features](#features)
-4. [Dependencies](#dependencies)
-5. [Configuration](#configuration)
-6. [Database Initialization](#database-initialization)
-7. [Running the Application](#running-the-application)
-8. [Troubleshooting](#troubleshooting)
+2. [Features](#features)
+3. [Dependencies](#dependencies)
+4. [Database Initialization](#database-initialization)
+5. [Running the Application](#running-the-application)
+6. [Troubleshooting](#troubleshooting)
 
 ## Installation
 
@@ -36,8 +34,6 @@ To get started with DevSwarm, follow these steps:
     cd ../client
     npm install
     ```
-
-## Usage
 
 ## Features
 
