@@ -57,7 +57,47 @@ To get started with DevSwarm, follow these steps:
 - Node.js
 - Other dependencies specified in `package.json`
 
-### Configuration
+## Database Initialization
 
-Ensure you have a `.env` file in the `server` directory with the following environment variables:
+To populate the database with initial test data and create an admin user, run the following command from the root directory of the project:
+
+```sh
+node server/init.js admin@gmail.com:secretAdmin mongodb://127.0.0.1:27017/fake_so
+
+
+To populate the database with initial test data and create an admin user, run the following command from the root directory of the project:
+
+```sh
+
+To delete all data from the database, run the following command:
+
+```sh
+node server/deleteData.js
+
+## Running the Application
+
+### Start the Server
+
+From the root directory of the project, run:
+
+```sh
+nodemon server/server.js
+
+### Start the Client
+
+Navigate to the `client` directory and start the client:
+
+```sh
+cd client
+npm start
+
+## Troubleshooting
+
+If you encounter any issues, ensure that:
+
+- MongoDB is running on your machine.
+- You have the correct environment variables set up in your `.env` file.
+- All dependencies are properly installed.
+
+node server/init.js admin@gmail.com:secretAdmin mongodb://127.0.0.1:27017/fake_so
 
