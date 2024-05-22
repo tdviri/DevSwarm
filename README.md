@@ -87,6 +87,8 @@ Key Notes:
 - react-dom
 - axios
 - react-router-dom
+- moment
+- react-icons
 
 ## Database Initialization
 
