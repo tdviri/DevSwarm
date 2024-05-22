@@ -2,7 +2,7 @@
 
 ## Introduction
 
-This is a MERN stack application that provides developers with a technical hub where they can ask questions, provide answers, add comments, and manage tags. The app is built using MongoDB, Express.js, React, and Node.js.
+This is a MERN stack application that serves as a technical hub where developers can ask questions, provide answers, add comments, and manage tags. The app is built using MongoDB, Express.js, React, and Node.js.
 
 ## Table of Contents
 
@@ -41,19 +41,30 @@ To get started with DevSwarm, follow these steps:
 
 ## Features
 
-- Ask questions
-- Provide answers
-- Add comments
-- Manage tags
-- Admin privileges
+- User authentication and authorization
+- Question and answer posting
+- Commenting on questions and answers
+- Tagging system
+- Admin privileges for managing the platform
 
 ## Dependencies
 
-- MongoDB
-- Express.js
-- React
-- Node.js
-- Other dependencies specified in `package.json`
+### Server
+
+- express
+- mongoose
+- dotenv
+- cors
+- cookie-parser
+- body-parser
+- bcrypt
+
+### Client
+
+- react
+- react-dom
+- axios
+- react-router-dom
 
 ## Database Initialization
 
@@ -92,8 +103,6 @@ npm start
 
 If you encounter any issues, ensure that:
 
-- MongoDB is running on your machine.
-- All dependencies are properly installed.
-
-node server/init.js admin@gmail.com:secretAdmin mongodb://127.0.0.1:27017/fake_so
+- Ensure MongoDB is running on your machine.
+- Check for any errors in the terminal and resolve dependencies issues if any.
 
