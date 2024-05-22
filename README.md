@@ -26,7 +26,7 @@ To get started with DevSwarm, follow these steps:
 
 3. Clone the repository to your local machine:
     ```sh
-    git clone https://github.com/yourusername/devswarm.git
+    git clone https://github.com/tdviri/devswarm.git
     cd devswarm
     ```
 
