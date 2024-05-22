@@ -49,7 +49,7 @@ To get started with DevSwarm, follow these steps:
 - Question and answer posting
 - Commenting on questions and answers
 - Tagging system
-- Admin privileges for managing the platform
+- Special admin privileges for managing the platform
 
 ## Dependencies
 
