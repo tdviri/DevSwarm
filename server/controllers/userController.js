@@ -240,7 +240,7 @@ async deleteUser (req, res){
     await Promise.all(user.tagsCreated.map(async (tagId) => {
       const isTagUsedByOtherUsers = await User.countDocuments({
         _id: { $ne: user._id }, 
-        tags: tagId
+        tagsCreated: tagId
       });
 
       if (isTagUsedByOtherUsers === 0) {
