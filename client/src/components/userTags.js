@@ -5,6 +5,7 @@ import NoTagsCreated from "./noTagsCreated";
 
 export default function UserTags(props) {
   const [isTagInUse, setIsTagInUse] = useState(false);
+  const [inUseTagId, setInUseTagId] = useState(null); // New state for specific tag in use
   const [editingTagId, setEditingTagId] = useState(null);
   const [newTagName, setNewTagName] = useState("");
   const [mapTags, setMapTags] = useState(null);
@@ -59,6 +60,7 @@ export default function UserTags(props) {
     allUsers.forEach((user) => {
       if (user.tagsCreated.includes(tag._id) && user._id !== loggedInUser._id) {
         setIsTagInUse(true);
+        setInUseTagId(tag._id); // Set specific tag ID
         setEditingTagId(null);
         setNewTagName("");
         props.fetchData();
@@ -67,6 +69,7 @@ export default function UserTags(props) {
     });
     if (valid) {
       setIsTagInUse(false);
+      setInUseTagId(null); // Clear specific tag ID
       await axios.put(
         "http://localhost:8000/api/edittag",
         { id: tag._id, name: newTagName },
@@ -108,11 +111,13 @@ export default function UserTags(props) {
           user._id !== loggedInUser._id
         ) {
           setIsTagInUse(true);
+          setInUseTagId(tag._id); // Set specific tag ID
           valid = false;
         }
       });
       if (valid) {
         setIsTagInUse(false);
+        setInUseTagId(null); // Clear specific tag ID
         await axios.delete("http://localhost:8000/api/deletetag", {
           data: { tagId: tag._id },
           withCredentials: true,
@@ -162,7 +167,7 @@ export default function UserTags(props) {
                     {tag.questionCount}{" "}
                     {tag.questionCount === 1 ? "question" : "questions"}
                   </span>
-                  {!isTagInUse && (
+                  {!isTagInUse || inUseTagId !== tag._id ? (
                     <div>
                       <button
                         className="edit-user-tag-btn"
@@ -181,8 +186,7 @@ export default function UserTags(props) {
                         Delete
                       </button>
                     </div>
-                  )}
-                  {isTagInUse && (
+                  ) : (
                     <span>
                       Cannot edit/delete tag because it's currently in use by
                       other users.
