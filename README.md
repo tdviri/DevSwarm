@@ -112,6 +112,6 @@ If you encounter any issues, ensure that:
 
 ## Admin Login Credentials
 
-Email: admin@gmail.com
-Password: secretAdmin
+- Email: admin@gmail.com
+- Password: secretAdmin
 
