@@ -2,7 +2,6 @@ import React from "react";
 import "../stylesheets/App.css";
 import { useState } from "react";
 import axios from "axios";
-import PropTypes from "prop-types";
 
 export default function AskQuestionForm(props) {
   const [formTitleError, setFormTitleError] = useState(false);

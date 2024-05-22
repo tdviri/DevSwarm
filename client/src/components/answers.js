@@ -1,7 +1,7 @@
 import React from "react";
 import "../stylesheets/App.css";
 import { FaArrowUp, FaArrowDown } from "react-icons/fa";
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 import EditAnswerForm from "./editAnswerForm";
 import CommentForm from "./commentForm";
 import axios from "axios";
@@ -189,7 +189,6 @@ export default function Answers(props) {
               comment._id,
             ),
         );
-        let commAnswerPostTimeMessage;
         let endYear = currTime.getFullYear();
         const monthArr = [
           "Jan",

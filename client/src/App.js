@@ -30,7 +30,6 @@ function App() {
   const [tags, setTags] = useState(null);
   const [comments, setComments] = useState(null);
   const [users, setUsers] = useState(null);
-  const [isNoQuestionsFound, setIsNoQuestionsFound] = useState(false);
   const [displayAnswers, setDisplayAnswers] = useState(false);
   const [answerPageIndex, setAnswerPageIndex] = useState(-1);
   const [displayAnswerForm, setIsDisplayAnswerForm] = useState(false);
@@ -51,7 +50,6 @@ function App() {
   const [viewingUserAnswers, setViewingUserAnswers] = useState(false);
   const [currentLoggedInUser, setCurrentLoggedInUser] = useState(null);
   const [isAdmin, setIsAdmin] = useState(false);
-  let response;
 
   useEffect(() => {
     fetchData();
@@ -292,10 +290,6 @@ function App() {
     setIsUnansweredBtnClick(false);
   }
 
-  function goToLoginPage() {
-    setShowLoginPage(true);
-  }
-
   function goToWelcomePage() {
     setIsLoggedIn(false);
     setIsGuest(false);
@@ -390,7 +384,6 @@ function App() {
                 ansArray={answers}
                 setQuestions={setQuestions}
                 handleAnswerPageIndex={handleAnswerPageIndex}
-                isNoQuestionsFound={isNoQuestionsFound}
                 questions={getSorted()}
               />
             </div>
